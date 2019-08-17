@@ -1,0 +1,250 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://kit.fontawesome.com/b47f0231f5.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous">
+    </script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css" />
+
+
+    <link rel="stylesheet" href="~/static/css/style.css">
+    <title>Company name</title>
+</head>
+
+<body>
+    <div id="loading">
+        <div class="d-flex justify-content-center vertical-center ">
+            <div class="spinner-grow" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <section class="nav">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="div-12">
+                    <div class="menunav">
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <div class="logo nopadding bckwhite">
+                                        <a href="@Url.Action("Index","Home")">
+                                            <img src="~/static/images/logo.webp" style="padding: 6px; width: 100%" alt="logo">
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-12">
+                                    <ul class="layout-ul nopadding">
+                                        <li class="activeRoute">
+                                            <a href="#Dashboard" onclick="getPage('IndexRaw')">
+                                                <div class="text-center">
+                                                    <i class="fas fa-home"></i>
+                                                    <p>
+                                                        Dashboard
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#Ticket" onclick="getPage('TicketRaw')">
+                                                <div class="text-center">
+                                                    <i class="fas fa-envelope"></i>
+                                                    <p>
+                                                        Ticket
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a id="FeedbackPanel" href="#feedback" onclick="getPage('feedbackRaw')">
+                                                <div class="text-center">
+                                                    <i class="fas fa-comment"></i>
+                                                    <p>
+                                                        Feedback
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a id="adminusermenu" href="#adminuser" onclick="getPage('usersraw')">
+                                                <div class="text-center">
+                                                    <i class="fas fa-users-cog"></i>
+                                                    <p>
+                                                        Admin Users
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li id="parentsidemenu" style="position: relative">
+                                            <a href="#collapseExample">
+                                                <div class="text-center">
+                                                    <i class="fas fa-users"></i>
+                                                    <p>
+                                                        Clients
+                                                    </p>
+                                                </div>
+
+
+                                            </a>
+                                            <div id="sidemenubar">
+                                                <ul class="apmenudrop">
+                                                    <li>
+                                                        <a href="#feedback">
+                                                            <div class="text-center">
+                                                                <i class="fas fa-tasks"></i>
+                                                                <p style="margin-bottom: 35px">
+                                                                    Manage Clients
+                                                                </p>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#feedback">
+                                                            <div class="text-center">
+                                                                <i class="fas fa-history"></i>
+                                                                <p style="margin-bottom: 0">
+                                                                    Login History
+                                                                </p>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="web-navbar nopadding">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-6 bckwhite">
+                                    <div class="logo nopadding ">
+                                        <a href="./index.html">
+                                            <img src="~/static/images/designlogo.jpg" height="75" alt="logo">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-6 bckwhite ">
+                                    <div class="float-right">
+                                        <div class="mycard Relative">
+                                            <i class="fas fa-user"></i>  <span style="padding-left: 5px; font-weight: 500">Tunjay Huseynov</span>
+                                        </div>
+                                        <div class="ProfileMenu">
+                                            <ul>
+                                                <li>Profile</li>
+                                                <li>Reset Password</li>
+                                                <li><a href="@Url.Action("LogOut","Home", new { Area = "AdminPanel"})" style="color: white">Log Out</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-12">
+
+                    <div class="BodyPart nopadding" style="padding: 20px;">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+
+
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js  "></script>
+
+
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+    <script src="~/static/js/script.js"></script>
+
+    <script>
+
+        // First Loading Part of Layout
+        @if (ViewBag.url != null)
+        {
+            <text>
+
+        $.get("@ViewBag.url", function (data) {
+            $(".BodyPart").html(function () {
+                return data
+            })
+            }
+        )
+        </text>
+        }
+
+        //It Shows Menu's active page
+        var $li = $('.layout-ul>li>a>div').click(function () {
+            $li.parent().parent().removeClass('activeRoute');
+            $(this).parent().parent().addClass('activeRoute');
+        });
+
+        // Ajax process to get data from the server
+        var getPage = function (url) {
+            $(".BodyPart").html("").html('<div id="loading"> <div class="d-flex justify-content-center vertical-center "> <div class="spinner-grow" role="status"> <span class="sr-only">Loading...</span></div></div> </div>');
+            $.get("/adminpanel/home/" + url, function (data) {
+
+
+                $(".BodyPart").html(function () { return data })
+
+
+            })
+        }
+    </script>
+</body>
+
+</html>

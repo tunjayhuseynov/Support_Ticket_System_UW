@@ -1,0 +1,154 @@
+﻿@model List<Upwork_2019_08_08.Models.Feedback>
+@{
+    Layout = null;
+}
+
+<h2>
+    Feedbacks <span>
+        <button type="button"
+                class="btn " data-toggle="modal" data-target="#exampleModalCenter">
+            +Add Feedback
+        </button>
+    </span>
+</h2>
+<table class="table table-bordered  ">
+    <thead class="tablecolor">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Date</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody class="bckwhite">
+        @{ int index = 0;}
+        @foreach (var item in Model)
+        {
+            index++;
+        <tr>
+            <th scope="row">@index.ToString()</th>
+            <td>@item.name</td>
+            <td>@item.email</td>
+            <td>@item.subject</td>
+            <td>@item.datetime.ToString("MMMM dd yyyy hh:mm")</td>
+            <td><a href="#Show" onclick="getMessage(@item.id)" data-target="#exampleModalCentermessage" data-toggle="modal">Show Message </a></td>
+        </tr>
+        }
+
+
+
+    </tbody>
+</table>
+<!--
+<nav aria-label="..." id="pagination">
+    <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active" aria-current="page">
+            <span class="page-link" style="background-color: #1c536b; border-color: #1c536b">
+                2
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>-->
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div id="finished">
+                <div class="d-flex justify-content-center vertical-center-text ">
+                    <h3>Successfully Sent  <i style="color: green;" class="far fa-check-circle"></i></h3>
+                </div>
+            </div>
+            <div class="modal-header model-header-success">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="addAction" action="@Url.Action("AddFeedback","Home")" method="post">
+
+                <div class="modal-body">
+                    <label for="Name">Name:</label><br />
+                    <input type="text" name="name" class="form-control" /> <br />
+                    <label for="email">E-mail:</label><br />
+                    <input type="email" name="email" class="form-control" /> <br />
+                    <label for="subject">Subject:</label><br />
+                    <input type="text" name="subject" class="form-control" /> <br />
+                    <label for="text" style="font-size: 20px;">Feedback</label><br>
+                    <textarea name="text" class="form-control" style="height: 250px;"></textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="submiting" class="btn btn-primary">Add</button>
+                </div>
+                <div id="loading" class="loadingModel">
+                    <div class="d-flex justify-content-center vertical-center ">
+                        <div class="spinner-grow" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+</nav>
+
+<div class="modal fade" id="exampleModalCentermessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="messageboddy">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(".table").DataTable(
+        {
+            dom: 'lBfrtip',
+            buttons: [
+                'pdfHtml5', 'excel',
+            ]
+        });
+    history.replaceState("", "Random", "/");
+    $(".loadingModel").hide();
+    $("#finished").hide();
+    $("#submiting").click(() => $(".loadingModel").show())
+    $('#addAction').ajaxForm(function () {
+        $(".loadingModel").hide();
+        $(".model-header-success").hide();
+        $("#addAction").hide()
+        $("#finished").show()
+        #("#FeedbackPanel").click()
+    });
+
+    var getMessage = function (id) {
+        $.get("/home/getFeedbackMessage/" + id, function (data) {
+            $("#messageboddy").html(data)
+        })
+    }
+</script>

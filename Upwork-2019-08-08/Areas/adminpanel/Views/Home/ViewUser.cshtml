@@ -1,0 +1,18 @@
+﻿@model Upwork_2019_08_08.Models.Admin
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/adminpanel/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1 style="color:#1c536b">User #@Model.id</h1> <br />
+
+<h3 style="color:#1c536b">Name: </h3> <h4>@Model.name</h4> <br />
+<h3 style="color:#1c536b">Surname:</h3> <h4> @Model.surname</h4> <br />
+<h3 style="color:#1c536b">Email: </h3> <h4>@Model.email</h4> <br />
+<h3 style="color:#1c536b">Status: </h3> <h4>
+    @if (Model.isAdmin == true)
+    {<span>Super Admin</span> }
+    else
+    { <span>Account Manager</span>}
+</h4>

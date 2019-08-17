@@ -1,0 +1,266 @@
+body{
+    margin: 0;
+    position: relative;
+    background-color: #AAA;
+    height: 100vh;
+}
+
+.bckwhite{
+    background-color: white;
+}
+.web-navbar{
+height: 75px;
+}
+.menunav{
+    width: 100px;
+}
+.nav{
+    
+    position: absolute;
+    float: left;
+}
+
+.nav i{
+    font-size: 20px;
+}
+
+.menunav img{
+    max-height: 75px;
+    height: auto;
+}
+
+.nopadding{
+    margin: 0 -15px;
+}
+.layout-ul{
+    list-style-type: none;
+    padding-left: 0px;
+    background: #bdbdbd;
+}
+
+    .layout-ul > li {
+        padding: 15px 0;
+        border-bottom: .1px solid #d8d8d8;
+    }
+
+    .layout-ul > li:hover {
+        background-color: #1c536b;
+    }
+
+.layout-ul>li>a{
+    color: white;
+    text-decoration: none;
+}
+
+.main {
+    position: relative;
+    left: 100px;
+    top: 0;
+    width: calc(100% - 100px);
+    background-color: #ebebeb;
+}
+
+.mycard{
+    padding-top: 20px;
+    cursor: pointer;
+}
+
+
+#loading{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: white;
+    z-index: 4;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 16px);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.vertical-center-text {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 125px);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+
+.BodyPart{
+    height: calc(100vh - 75px);
+    background-color: rgb(235, 235, 235);
+}
+
+.Relative{
+    position: relative;
+}
+
+.ProfileMenu {
+    display: none;
+    position: absolute;
+    right: 11px;
+    top: 50px;
+    z-index: 10;
+    padding: 0 20px;
+    background-color: #1c536b;
+}
+
+.ProfileMenu>ul{
+    font-weight: 500;
+    padding: 0;
+    color: white;
+    list-style-type: none;
+
+}
+
+    .ProfileMenu > ul > li {
+        padding-top: 10px;
+        cursor: pointer;
+        transition: all .5s ease;
+    }
+
+.ProfileMenu>ul>li:hover{
+   color: #ffed27;
+}
+
+.DisplayOn{
+    display: inline;
+}
+
+.logo{
+    height: 75px;
+}
+
+.loginBox {
+    box-shadow: -6px 5px 20px 0px #636363;
+    margin-top: 50px;
+    width: 100%;
+    background-color: white;
+}
+
+.loginImage {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.loginForm {
+    margin-top: 20px;
+    padding: 20px 70px;
+}
+
+    .loginForm i {
+        font-size: 30px;
+    }
+
+    .loginForm input {
+        margin: 10px 0;
+    }
+
+.loginTextColor {
+    color: rgb(80, 80, 80);
+}
+
+.tablecolor {
+    background-color: #1c536b;
+    color: white;
+}
+
+#pagination a {
+    color: black;
+}
+
+td {
+    word-break: break-all;
+    max-width: 150px;
+}
+
+.searchbox {
+    width: 200px;
+    float: right;
+}
+
+.activeRoute {
+    background-color: #1c536b;
+}
+
+#finished{
+    height: 80px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #1c536b !important;
+    color: white !important;
+    border: 1px solid #1c536b!important;
+}
+.paginate_button:hover {
+    background: #1c536b !important;
+}
+
+#DataTables_Table_0_paginate{
+    padding: 20px 0!important;
+}
+
+.pdfpadding{
+    margin-left: 20px;
+}
+.dt-buttons {
+    margin-left: 30px !important;
+}
+
+    .dt-buttons .buttons-html5 {
+        border: #1c536b !important;
+        background: #1c536b!important;
+    }
+    .dt-buttons .buttons-html5  span{
+        color: white;
+    }
+
+
+#btnMail p {
+    margin-bottom: 5px;
+}
+
+.card {
+    margin-bottom: 25px !important;
+    border: 2px solid #1c536b;
+}
+
+#btnMail {
+    font-weight: 600 !important;
+    color: #1c536b!important;
+}
+
+.accordion > .card:first-of-type {
+    border-bottom: 2px solid #1c536b!important;
+}
+.apmenudrop{
+    list-style-type: none;
+    text-align: center;
+    font-size: 13px;
+    padding: 2px;
+}
+
+.apmenudrop li a{
+    color: white;
+}
+#sidemenubar {
+    display: none;
+    position: absolute;
+    left: 100px;
+    top: 0;
+    background-color: #1c536b;
+    padding: 25px 25px;
+    z-index: 10;
+}
+
+#parentsidemenu:hover #sidemenubar{
+    display: inline-block;
+}
