@@ -5,6 +5,8 @@ body{
     height: 100vh;
 }
 
+
+
 .bckwhite{
     background-color: white;
 }
@@ -264,3 +266,8 @@ td {
 #parentsidemenu:hover #sidemenubar{
     display: inline-block;
 }
+
+.select2-container--default {
+    width: 100% !important;
+}
+

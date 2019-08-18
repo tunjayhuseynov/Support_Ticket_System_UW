@@ -42,6 +42,11 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             return View();
         }
 
+        public IActionResult IndexRaw()
+        {
+            return View();
+        }
+
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
@@ -52,7 +57,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
           {
               if(HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                if(_context.AmAndClients.Where(w=> w.clientID == _context.Tickets.Find(id).clientID).Count() == 0){
+                if(_context.AmAndClients.Where(w=> w.departamentID == _context.Tickets.Include(a=>a.Client).Where(d=> d.id == id).FirstOrDefault().Client.departmentID).Count() == 0){
                     return Content("You do not have a permissoin for this ticket");
                 }
             }
@@ -137,10 +142,10 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             }
             else if(id == 0)
             {
-                List<int> ClientIDs = _context.AmAndClients.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault(-1)).Select(i => i.clientID).ToList();
+                List<int> ClientIDs = _context.AmAndClients.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault(-1)).Select(i => i.departamentID).ToList();
                 foreach (var item in ClientIDs)
                 {
-                    tickets.AddRange(_context.Tickets.Where(w => w.clientID == item).ToList());
+                    tickets.AddRange(_context.Tickets.Include(s=>s.Client).Where(w => w.Client.departmentID == item).ToList());
                 }
 
             }
@@ -160,10 +165,10 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
             }else if(id == 0)
             {
-                List<int> ClientIDs = _context.AmAndClients.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault(-1)).Select(i => i.clientID).ToList();
+                List<int> ClientIDs = _context.AmAndClients.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault(-1)).Select(i => i.departamentID).ToList();
                 foreach (var item in ClientIDs)
                 {
-                    feedbacks.AddRange(_context.Feedbacks.Where(w => w.clientID == item).ToList());
+                    feedbacks.AddRange(_context.Feedbacks.Include(s=>s.Client).Where(w => w.Client.departmentID == item).ToList());
                 }
 
             }
@@ -174,6 +179,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             Task.Delay(500).Wait();
             List<Admin> admins = _context.Admins.OrderByDescending(w=>w.isAdmin).ToList();
+            ViewBag.departments = _context.Departaments.ToList();
 
             return View(admins);
         }
@@ -182,6 +188,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if(HttpContext.Session.GetInt32("isAdmin") == 1)
             {
+                
                 Admin admin = _context.Admins.Find(id);
                 return View(admin);
             }
@@ -249,14 +256,58 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             return Content("Done");
         }
 
-        public IActionResult AddUser()
+        public IActionResult AddUser(string name, string surname, string email, string password, int role, int[] users)
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
             {
-                
+
+                if (role == 0)
+                {
+                    if (users.Length == 0)
+                    {
+                        return Content("Empty User Error");
+                    }
+                }
+
+
+                var salt = Salt.Create();
+                var hash = Hash.Create(password.Trim(), salt);
+
+                Admin admin = new Admin
+                {
+                    name = name,
+                    surname = surname,
+                    email = email.Trim(),
+                    password = hash,
+                    token = salt,
+                    isAdmin = role == 1 ? true : false,
+                };
+
+                _context.Admins.Add(admin);
+                _context.SaveChanges();
+
+                if(users.Length > 0)
+                {
+                    List<AmAndClient> amAndClients = new List<AmAndClient>();
+                    foreach (var item in users)
+                    {
+                        AmAndClient amAndClient = new AmAndClient()
+                        {
+                            amID = admin.id,
+                            departamentID = item,
+                            assignedTime = DateTime.Now,
+                        };
+                        amAndClients.Add(amAndClient);
+                    }
+
+                    _context.AmAndClients.AddRange(amAndClients);
+                }
+
                 return Content("Done");
             }
             return Content("Auth Failed");
         }
     }
+
+
 }

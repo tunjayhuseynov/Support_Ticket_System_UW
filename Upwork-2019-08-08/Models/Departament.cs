@@ -15,5 +15,6 @@ namespace Upwork_2019_08_08.Models
         public string name { get; set; }
 
         public ICollection<Client> Client { get; set; }
+        public ICollection<AmAndClient> amAndClients { get; set; }
     }
 }

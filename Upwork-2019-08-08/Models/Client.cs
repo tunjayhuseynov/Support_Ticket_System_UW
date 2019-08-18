@@ -26,7 +26,7 @@ namespace Upwork_2019_08_08.Models
         public ICollection<LogHistorie> LogHistorie { get; set; }
         public ICollection<Feedback> Feedback { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
-        public ICollection<AmAndClient> amAndClients { get; set; }
+
 
     }
 }
