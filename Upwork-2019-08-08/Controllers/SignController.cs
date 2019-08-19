@@ -52,6 +52,8 @@ namespace Upwork_2019_08_08.Controllers
                     _context.LogHistories.Add(logHistorie);
                     _context.SaveChanges();
 
+                    HttpContext.Session.SetString("fullname", client.name + " " + client.surname);
+
                     return RedirectToAction("Index", "Home");
                 }
                 
@@ -84,7 +86,6 @@ namespace Upwork_2019_08_08.Controllers
                 name = name,
                 surname = surname,
                 email = email.Trim(),
-                departmentID = departmentID,
                 password = hash,
                 token = salt
             };
@@ -93,6 +94,7 @@ namespace Upwork_2019_08_08.Controllers
             _context.SaveChanges();
 
             HttpContext.Session.SetInt32("LogedIn", _context.Clients.Where(w => w.email == email).FirstOrDefault().id);
+            HttpContext.Session.SetString("fullname", client.name + " " + client.surname);
 
             return RedirectToAction("Index","Home");
         }

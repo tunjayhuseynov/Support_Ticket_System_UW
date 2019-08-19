@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +19,8 @@ namespace Upwork_2019_08_08.Models
         public string email { get; set; }
         public bool isAdmin { get; set; }
 
-        public ICollection<AmAndClient> amAndClients { get; set; }
+        [ForeignKey("amID")]
+        public ICollection<AmAndClient> amAndClient { get; set; }
 
     }
 }

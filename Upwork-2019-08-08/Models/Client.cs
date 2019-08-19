@@ -18,14 +18,12 @@ namespace Upwork_2019_08_08.Models
         public string token { get; set; }
         public string email { get; set; }
 
-        public int departmentID { get; set; }
-
-
-        public Departament Department { get; set; }
 
         public ICollection<LogHistorie> LogHistorie { get; set; }
         public ICollection<Feedback> Feedback { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<DepartamentUser> DepartamentUsers { get; set; }
+
 
 
     }

@@ -7,11 +7,14 @@
 
 <h2>
     Admin Users <span>
+    @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
+    {
         <button type="button"
                 class="btn " data-toggle="modal" data-target="#exampleModalCenter">
             +Add User
         </button>
-    </span>
+    }
+</span>
 </h2>
 <table class="table table-bordered ">
     <thead class="tablecolor">
@@ -51,10 +54,15 @@
                     { <text>Account Manager</text>}
                 </td>
                 <td>
-                    <a href="@Url.Action("ViewUser","Home", new {id=item.id })" target="_blank">View </a>|
-                    <a href="@Url.Action("EditUser","Home", new {id=item.id })" target="_blank"> Edit </a>|
-                    <a href="#delete" onclick="myFunction(@item.id)"> Delete </a>|
-                    <a href="@Url.Action("ResetPassword","Home", new {id=item.id })" target="_blank"> Reset Password </a>
+                    <a href="@Url.Action("ViewUser","Home", new {id=item.id })" target="_blank">View </a>
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
+                    {
+                        <text>
+                            |
+                            <a href="@Url.Action("EditUser","Home", new {id=item.id })" target="_blank"> Edit </a>|
+                            <a href="#delete" onclick="myFunction(@item.id)"> Delete </a>|
+                            <a href="@Url.Action("ResetPassword","Home", new {id=item.id })" target="_blank"> Reset Password </a></text>
+                    }
                 </td>
                 <!-- <td></td> -->
 

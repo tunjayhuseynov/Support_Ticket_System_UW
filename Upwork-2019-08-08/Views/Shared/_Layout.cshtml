@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +13,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script src="https://kit.fontawesome.com/b47f0231f5.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous">
     </script>
 
 
@@ -103,23 +104,24 @@
                             <div class="row">
                                 <div class="col-6 bckwhite">
                                     <div class="logo nopadding ">
-                                        <a href="./index.html">
-                                            <img src="~/static/images/designlogo.jpg" height="75" alt="logo">
-                                        </a>
+
+                                        <img src="~/static/images/designlogo.jpg" height="75" alt="logo">
+
                                     </div>
                                 </div>
                                 <div class="col-6 bckwhite ">
                                     <div class="float-right">
                                         <div class="mycard Relative">
-                                            <i class="fas fa-user"></i>  <span style="padding-left: 5px; font-weight: 500">Tunjay Huseynov</span>
+                                            <i class="fas fa-user"></i>  <span style="padding-left: 5px; font-weight: 500">@HttpContextAccessor.HttpContext.Session.GetString("fullname")</span>
+                                            <div class="ProfileMenu">
+                                                <ul>
+                                                    <li><i style="margin-right:3px;" class="far fa-id-badge"> </i> Profile</li>
+                                                    <li><i class="fas fa-key"> </i> <span>Reset Password</span></li>
+                                                    <li><a href="@Url.Action("LogOut","Home")" style="color: white"><i class="fas fa-sign-out-alt"> </i> Log Out</a></li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="ProfileMenu">
-                                            <ul>
-                                                <li>Profile</li>
-                                                <li>Reset Password</li>
-                                                <li><a href="@Url.Action("LogOut","Home")" style="color: white">Log Out</a></li>
-                                            </ul>
-                                        </div>
+
                                     </div>
 
 

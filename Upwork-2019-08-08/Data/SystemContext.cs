@@ -22,6 +22,8 @@ namespace Upwork_2019_08_08.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<AmAndClient> AmAndClients { get; set; }
+        public DbSet<DepartamentUser> DepartamentUsers { get; set; }
+        public DbSet<AmUser> AmUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Client>().ToTable("Clients");
@@ -32,7 +34,8 @@ namespace Upwork_2019_08_08.Data
             modelBuilder.Entity<Message>().ToTable("Messages");
             modelBuilder.Entity<Admin>().ToTable("Admins");
             modelBuilder.Entity<AmAndClient>().ToTable("AmAndClients");
-
+            modelBuilder.Entity<DepartamentUser>().ToTable("DepartamentUsers");
+            modelBuilder.Entity<AmUser>().ToTable("AmUsers");
         }
     }
 }

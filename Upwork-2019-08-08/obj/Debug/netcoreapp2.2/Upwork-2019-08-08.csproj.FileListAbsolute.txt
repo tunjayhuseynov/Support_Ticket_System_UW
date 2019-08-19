@@ -50,3 +50,4 @@ C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcor
 C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Razor\Areas\adminpanel\Views\Home\ViewUser.g.cshtml.cs
 C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Razor\Areas\adminpanel\Views\Home\EditUser.g.cshtml.cs
 C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Razor\Areas\adminpanel\Views\Home\IndexRaw.g.cshtml.cs
+C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Razor\Areas\adminpanel\Views\Home\ManageClients.g.cshtml.cs

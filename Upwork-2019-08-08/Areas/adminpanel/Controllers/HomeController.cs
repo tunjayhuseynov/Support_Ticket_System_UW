@@ -57,7 +57,8 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
           {
               if(HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                if(_context.AmAndClients.Where(w=> w.departamentID == _context.Tickets.Include(a=>a.Client).Where(d=> d.id == id).FirstOrDefault().Client.departmentID).Count() == 0){
+                int clId = _context.Tickets.Find(id).clientID;
+                if(_context.AmUsers.Where(w=> w.clientID == clId && w.AmID == HttpContext.Session.GetInt32("AdminLogedIn")).Count() == 0){
                     return Content("You do not have a permissoin for this ticket");
                 }
             }
@@ -142,18 +143,38 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             }
             else if(id == 0)
             {
+                /*
                 List<int> ClientIDs = _context.AmAndClients.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault(-1)).Select(i => i.departamentID).ToList();
                 foreach (var item in ClientIDs)
                 {
                     tickets.AddRange(_context.Tickets.Include(s=>s.Client).Where(w => w.Client.departmentID == item).ToList());
-                }
+                }*/
 
+                /*   List<int> ClientId = new List<int>();
+
+                   foreach (var item in _context.AmAndClients.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(i => i.departamentID).ToList())
+                   {
+                       ClientId.AddRange(_context.DepartamentUsers.Where(w => w.departamentID == item).Select(i => i.clientID).ToList());
+
+                   }
+
+                   foreach (var item in ClientId)
+                   {
+                       tickets.AddRange(_context.Tickets.Where(w => w.clientID == item).ToList());
+                   }*/
+
+                
+                var ClientId = _context.AmUsers.Where(w => w.AmID == HttpContext.Session.GetInt32("AdminLogedIn")).GroupBy(d=>d.clientID).Select(i => i.Key);
+                foreach (var item in ClientId)
+                {
+                    tickets.AddRange(_context.Tickets.Where(w => w.clientID == item).ToList());
+                }
             }
 
             return View(tickets);
         }
 
-
+        /*
         public IActionResult FeedbackRaw()
         {
             List<Feedback> feedbacks = new List<Feedback>();
@@ -173,6 +194,13 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
             }
             return View(feedbacks);
+        }*/
+
+        public IActionResult FeedbackRaw()
+        {
+            Task.Delay(500).Wait();
+            List<Feedback> feedbacks = _context.Feedbacks.OrderByDescending(w => w.datetime).ToList();
+            return View(feedbacks);
         }
 
         public IActionResult UsersRaw()
@@ -186,14 +214,11 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
         public IActionResult ViewUser(int id)
         {
-            if(HttpContext.Session.GetInt32("isAdmin") == 1)
-            {
-                
+
                 Admin admin = _context.Admins.Find(id);
                 return View(admin);
-            }
 
-            return Content("Auth Failed");
+
         }
 
         public IActionResult EditUser(int id)
@@ -227,6 +252,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
             {
                 _context.Admins.Remove(_context.Admins.Find(id));
+                _context.SaveChanges();
                 return Content("Done");
             }
             return Content("Auth Failed");
@@ -256,6 +282,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             return Content("Done");
         }
 
+        [HttpPost]
         public IActionResult AddUser(string name, string surname, string email, string password, int role, int[] users)
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
@@ -286,26 +313,42 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 _context.Admins.Add(admin);
                 _context.SaveChanges();
 
-                if(users.Length > 0)
-                {
-                    List<AmAndClient> amAndClients = new List<AmAndClient>();
-                    foreach (var item in users)
+              
+                    if (users.Length > 0)
                     {
-                        AmAndClient amAndClient = new AmAndClient()
+                        List<AmAndClient> amAndClients = new List<AmAndClient>();
+                        foreach (var item in users)
                         {
-                            amID = admin.id,
-                            departamentID = item,
-                            assignedTime = DateTime.Now,
-                        };
-                        amAndClients.Add(amAndClient);
-                    }
+                            AmAndClient amAndClient = new AmAndClient()
+                            {
+                                amID = admin.id,
+                                departamentID = item,
+                                assignedTime = DateTime.Now,
+                            };
+                            amAndClients.Add(amAndClient);
+                        }
 
-                    _context.AmAndClients.AddRange(amAndClients);
-                }
+                        _context.AmAndClients.AddRange(amAndClients);
+                        _context.SaveChanges();
+                    }
+                
 
                 return Content("Done");
             }
             return Content("Auth Failed");
+        }
+
+        public IActionResult ManageClients()
+        {
+
+            List<Departament> departaments = new List<Departament>();
+
+            if (HttpContext.Session.GetInt32("isAdmin") == 1)
+            {
+                 departaments = _context.Departaments.Include(w=>w.DepartamentUser).ToList();
+            }
+
+            return View(departaments);
         }
     }
 

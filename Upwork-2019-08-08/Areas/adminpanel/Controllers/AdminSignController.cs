@@ -41,6 +41,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 if (Hash.Validate(password.Trim(), admin.token, admin.password))
                 {
                     HttpContext.Session.SetInt32("AdminLogedIn", admin.id);
+                    HttpContext.Session.SetString("fullname", admin.name + " " + admin.surname);
                     if (admin.isAdmin)
                     {
                         HttpContext.Session.SetInt32("isAdmin", 1);
@@ -84,6 +85,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             _context.SaveChanges();
 
             HttpContext.Session.SetInt32("AdminLogedIn", _context.Admins.Where(w => w.email == email).FirstOrDefault().id);
+            HttpContext.Session.SetString("fullname", admin.name + " " + admin.surname);
 
             return RedirectToAction("Index", "Home");
         }

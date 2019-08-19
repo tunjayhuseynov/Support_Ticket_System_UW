@@ -14,7 +14,10 @@ namespace Upwork_2019_08_08.Models
         public int id { get; set; }
         public string name { get; set; }
 
-        public ICollection<Client> Client { get; set; }
-        public ICollection<AmAndClient> amAndClients { get; set; }
+
+        public ICollection<AmAndClient> amAndClient { get; set; }
+       
+        public ICollection<DepartamentUser> DepartamentUser { get; set; }
+
     }
 }

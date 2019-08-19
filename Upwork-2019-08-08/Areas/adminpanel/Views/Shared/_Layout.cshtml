@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,7 +109,7 @@
                                             <div id="sidemenubar" style="border-left: 1px solid white">
                                                 <ul class="apmenudrop">
                                                     <li>
-                                                        <a href="#feedback">
+                                                        <a href="#feedback" onclick="getPage('ManageClients')">
                                                             <div class="text-center">
                                                                 <i class="fas fa-tasks"></i>
                                                                 <p style="margin-bottom: 35px">
@@ -153,23 +154,24 @@
                             <div class="row">
                                 <div class="col-6 bckwhite">
                                     <div class="logo nopadding ">
-                                        <a href="./index.html">
-                                            <img src="~/static/images/designlogo.jpg" height="75" alt="logo">
-                                        </a>
+
+                                        <img src="~/static/images/designlogo.jpg" height="75" alt="logo">
+
                                     </div>
                                 </div>
                                 <div class="col-6 bckwhite ">
                                     <div class="float-right">
                                         <div class="mycard Relative">
-                                            <i class="fas fa-user"></i>  <span style="padding-left: 5px; font-weight: 500">Tunjay Huseynov</span>
+                                            <i class="fas fa-user"></i>  <span style="padding-left: 5px; font-weight: 500">@HttpContextAccessor.HttpContext.Session.GetString("fullname")</span>
+                                            <div class="ProfileMenu">
+                                                <ul>
+                                                    <li><i style="margin-right:3px;" class="far fa-id-badge"> </i> Profile</li>
+                                                    <li><i class="fas fa-key"> </i> <span>Reset Password</span></li>
+                                                    <li><a href="@Url.Action("LogOut","Home", new { Area = "AdminPanel"})" style="color: white"><i class="fas fa-sign-out-alt"> </i> Log Out</a></li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="ProfileMenu">
-                                            <ul>
-                                                <li>Profile</li>
-                                                <li>Reset Password</li>
-                                                <li><a href="@Url.Action("LogOut","Home", new { Area = "AdminPanel"})" style="color: white">Log Out</a></li>
-                                            </ul>
-                                        </div>
+
                                     </div>
 
 
@@ -236,6 +238,10 @@
             $(this).parent().parent().addClass('activeRoute');
         });
 
+        $("#sidemenubar>.apmenudrop>li>a>div").click(function () {
+            $("li").removeClass('activeRoute')
+            $("#parentsidemenu").addClass('activeRoute')
+        })
         // Ajax process to get data from the server
         var getPage = function (url) {
             $(".BodyPart").html("").html('<div id="loading"> <div class="d-flex justify-content-center vertical-center "> <div class="spinner-grow" role="status"> <span class="sr-only">Loading...</span></div></div> </div>');
