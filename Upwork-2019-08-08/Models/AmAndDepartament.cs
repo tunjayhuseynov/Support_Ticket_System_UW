@@ -9,7 +9,7 @@ namespace Upwork_2019_08_08.Models
 {
 
     // Get Relations between Account Manager and Clients from DB
-    public class AmAndClient
+    public class AmAndDepartament
     {
         [Key]
         public int id { get; set; }

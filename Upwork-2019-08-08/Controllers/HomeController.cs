@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Upwork_2019_08_08.Data;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Upwork_2019_08_08.Controllers
 {
@@ -36,6 +38,8 @@ namespace Upwork_2019_08_08.Controllers
             _env = env;
 
         }
+
+        /* INDEX MENU */
         public IActionResult Index()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -46,12 +50,16 @@ namespace Upwork_2019_08_08.Controllers
             return View();
         }
 
+        /* INDEX MENU */
         public IActionResult IndexRaw()
         {
             Task.Delay(500).Wait();
             return View();
         }
 
+
+
+        /* FEEDBACK MENU */
         public IActionResult FeedbackRaw()
         {
             Task.Delay(500).Wait();
@@ -60,6 +68,8 @@ namespace Upwork_2019_08_08.Controllers
             return View(feedbacks);
         }
 
+
+        /*  TICKET MENU  */
         public IActionResult TicketRaw()
         {
             Task.Delay(500).Wait();
@@ -74,6 +84,8 @@ namespace Upwork_2019_08_08.Controllers
             return View();
         }
 
+
+        /* VIEW A TICKET PAGE */
         public IActionResult ViewTicket(int id)
         {
             List<string> names = new List<string>();
@@ -106,6 +118,8 @@ namespace Upwork_2019_08_08.Controllers
         }
 
 
+
+        /*  ADD TICKET PROCESS  */
         [HttpPost]
         public IActionResult AddTicket(string subject, string text, List<IFormFile> files)
         {
@@ -115,7 +129,7 @@ namespace Upwork_2019_08_08.Controllers
             {
                 if (formFile.Length > 0)
                 {
-                    // full path to file in temp location
+                    
                     string Filename = DateTime.Now.ToString("yyyyMMddHHmmssffff") + formFile.FileName.Replace(" ","");
                     var path = Path.Combine(_env.WebRootPath, "files/"+Filename);
                     filePaths.Add(path.Trim());
@@ -149,6 +163,8 @@ namespace Upwork_2019_08_08.Controllers
             return Content("Done");
         }
 
+
+        /*  CLOSE A TICKET PROCESS  */
         public IActionResult CloseTicket(int id)
         {
             try
@@ -166,7 +182,9 @@ namespace Upwork_2019_08_08.Controllers
 
         }
 
-        public IActionResult AddMessage(string subject, string text, List<IFormFile> files, int ticketid)
+
+        /*  ADD A MESSAGE PROCESS   */
+        public IActionResult AddMessage( string text, List<IFormFile> files, int ticketid)
         {
             var filePaths = new List<string>();
             foreach (var formFile in files)
@@ -193,7 +211,6 @@ namespace Upwork_2019_08_08.Controllers
             Message message = new Message
             {
                 ticketID = ticketid,
-                subject = subject,
                 message = text,
                 filename = filenameProcess,
                 datetime = DateTime.Now,
@@ -208,6 +225,8 @@ namespace Upwork_2019_08_08.Controllers
             return Content("Done");
         }
 
+
+        /*   ADD A FEEDBACK PROCESS   */
         [HttpPost]
         public IActionResult AddFeedback(string name, string email, string text, string subject)
         {
@@ -227,6 +246,8 @@ namespace Upwork_2019_08_08.Controllers
             return Content("Done");
         }
 
+
+        /*  LOG OUT PROCESS  */
         public IActionResult LogOut()
         {
             LogHistorie logHistorie = new LogHistorie
@@ -243,18 +264,26 @@ namespace Upwork_2019_08_08.Controllers
             return RedirectToAction("Index", "Sign");
         }
 
+
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+
+
+        /*  AJAX GET FEEDBACK MESSAGE  */
         public IActionResult getFeedbackMessage(int id)
         {
 
             return Content(_context.Feedbacks.Find(id).message);
         }
 
+
+        /*  AJAX DELETE FEEDBACK MESSAGE  */
         public IActionResult deleteFeedbackMessage(int id)
         {
             if (_context.Feedbacks.Find(id).id == HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault(0))
@@ -265,5 +294,8 @@ namespace Upwork_2019_08_08.Controllers
 
             return Content("Done");
         }
+
+
+
     }
 }

@@ -20,7 +20,7 @@ namespace Upwork_2019_08_08.Models
         public bool isAdmin { get; set; }
 
         [ForeignKey("amID")]
-        public ICollection<AmAndClient> amAndClient { get; set; }
+        public ICollection<AmAndDepartament> amAndDepartament { get; set; }
 
     }
 }

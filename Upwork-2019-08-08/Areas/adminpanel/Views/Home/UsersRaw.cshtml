@@ -9,10 +9,10 @@
     Admin Users <span>
     @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
     {
-        <button type="button"
-                class="btn " data-toggle="modal" data-target="#exampleModalCenter">
-            +Add User
-        </button>
+                    <button type="button"
+                            class="btn txttype" data-toggle="modal" data-target="#exampleModalCenter">
+                        <i style="color:#1c536b" class="fas fa-plus-square"> </i> User
+                    </button>
     }
 </span>
 </h2>

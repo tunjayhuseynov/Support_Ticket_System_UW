@@ -6,8 +6,8 @@
 <h2>
     Feedbacks <span>
         <button type="button"
-                class="btn " data-toggle="modal" data-target="#exampleModalCenter">
-            +Add Feedback
+                class="btn txttype" data-toggle="modal" data-target="#exampleModalCenter">
+            <i style="color:#1c536b" class="fas fa-plus-square"> </i> Feedback
         </button>
     </span>
 </h2>
@@ -79,13 +79,13 @@
 
                 <div class="modal-body">
                     <label for="Name">Name:</label><br />
-                    <input type="text" name="name" class="form-control" /> <br />
+                    <input data-validation="required" type="text" name="name" class="form-control" /> <br />
                     <label for="email">E-mail:</label><br />
-                    <input type="email" name="email" class="form-control" /> <br />
+                    <input data-validation="email" type="email" name="email" class="form-control" /> <br />
                     <label for="subject">Subject:</label><br />
-                    <input type="text" name="subject" class="form-control" /> <br />
+                    <input data-validation="required" type="text" name="subject" class="form-control" /> <br />
                     <label for="text" style="font-size: 20px;">Feedback</label><br>
-                    <textarea name="text" class="form-control" style="height: 250px;"></textarea>
+                    <textarea  data-validation="required" name="text" class="form-control" style="height: 250px;"></textarea>
 
                 </div>
                 <div class="modal-footer">
@@ -126,6 +126,15 @@
 
 
 <script>
+      $.validate({
+    validateOnBlur : false, // disable validation when input looses focus
+    errorMessagePosition : 'top', // Instead of 'inline' which is default
+    scrollToTopOnError : false, // Set this property to true on longer forms
+        onSuccess : function($form) {
+           $("#submiting").click(() => $(".loadingModel").show())
+      return false
+    },
+      });
 
     $(".table").DataTable(
         {
@@ -137,7 +146,7 @@
     history.replaceState("", "Random", "/");
     $(".loadingModel").hide();
     $("#finished").hide();
-    $("#submiting").click(() => $(".loadingModel").show())
+
     $('#addAction').ajaxForm(function () {
         $(".loadingModel").hide();
         $(".model-header-success").hide();

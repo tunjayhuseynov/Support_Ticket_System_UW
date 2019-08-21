@@ -63,7 +63,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 }
             }
               List<string> names = new List<string>();
-              List<Message> messages = _context.Messages.Include(i=> i.Ticket.Client).Where(w => w.ticketID == id).ToList();
+              List<Message> messages = _context.Messages.Include(i=> i.Ticket.Client).Where(w => w.ticketID == id).OrderBy(a=> a.datetime).ToList();
 
               foreach (var item in messages)
               {
@@ -79,7 +79,8 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
               ViewBag.names = names;
               ViewBag.ticket = _context.Tickets.Find(id);
-              ViewBag.ClientName = _context.Tickets.Include(w => w.Client).Where(w => w.id == id).FirstOrDefault().Client.name;
+              ViewBag.department = _context.Tickets.Include(w => w.Departament).Where(s => s.id == id).FirstOrDefault().Departament.name;
+              ViewBag.ClientName = _context.Tickets.Include(w => w.Client).Where(w => w.id == id).FirstOrDefault().Client.name +" "+  _context.Tickets.Include(w => w.Client).Where(w => w.id == id).FirstOrDefault().Client.surname;
 
               if (HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault(-1) != -1)
               {
@@ -91,7 +92,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
               }
           }
 
-        public IActionResult AddMessage(string subject, string text, List<IFormFile> files, int ticketid)
+        public IActionResult AddMessage(string text, List<IFormFile> files, int ticketid)
         {
             var filePaths = new List<string>();
             foreach (var formFile in files)
@@ -118,7 +119,6 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             Message message = new Message
             {
                 ticketID = ticketid,
-                subject = subject,
                 message = text,
                 filename = filenameProcess,
                 datetime = DateTime.Now,
@@ -316,10 +316,10 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
               
                     if (users.Length > 0)
                     {
-                        List<AmAndClient> amAndClients = new List<AmAndClient>();
+                        List<AmAndDepartament> amAndClients = new List<AmAndDepartament>();
                         foreach (var item in users)
                         {
-                            AmAndClient amAndClient = new AmAndClient()
+                        AmAndDepartament amAndClient = new AmAndDepartament()
                             {
                                 amID = admin.id,
                                 departamentID = item,
@@ -328,7 +328,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                             amAndClients.Add(amAndClient);
                         }
 
-                        _context.AmAndClients.AddRange(amAndClients);
+                        _context.AmAndDepartaments.AddRange(amAndClients);
                         _context.SaveChanges();
                     }
                 
@@ -340,15 +340,69 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
         public IActionResult ManageClients()
         {
-
+            Task.Delay(500);
             List<Departament> departaments = new List<Departament>();
 
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
             {
                  departaments = _context.Departaments.Include(w=>w.DepartamentUser).ToList();
+            }else if(HttpContext.Session.GetInt32("isAdmin") == 0)
+            {
+                departaments = _context.AmAndDepartaments.Include(w => w.Departament).Where(s => s.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault()).Select(a => a.Departament).Include(a=>a.DepartamentUser).ToList();
+               
             }
 
             return View(departaments);
+        }
+
+
+        public IActionResult AddClient(string name)
+        {
+            Departament departament = new Departament
+            {
+                name = name,
+            };
+
+            _context.Departaments.Add(departament);
+            _context.SaveChanges();
+
+            return Content("Done");
+        }
+
+        public IActionResult AddUser(string name, string surname, string email, string password, int[] users)
+        {
+            if (HttpContext.Session.GetInt32("isAdmin") == 1)
+            {
+                var salt = Salt.Create();
+                var hash = Hash.Create(password.Trim(), salt);
+
+                Client client = new Client
+                {
+                    name = name,
+                    surname = surname,
+                    email = email,
+                    password = hash,
+                    token = salt
+                };
+
+                _context.Clients.Add(client);
+                _context.SaveChanges();
+
+                foreach (var item in users)
+                {
+                    DepartamentUser departamentuser = new DepartamentUser
+                    {
+                        clientID = client.id,
+                        departamentID = item,
+                        assignedTime = DateTime.Now,
+                    };
+                    _context.DepartamentUsers.Add(departamentuser);
+                    _context.SaveChanges();
+                }
+                return Content("Done");
+            }
+
+            return Content("Failed Auth");
         }
     }
 

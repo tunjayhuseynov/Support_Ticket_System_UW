@@ -41,17 +41,17 @@
                 <td>@item.subject</td>
                 <td>@item.message</td>
                 <td>@item.datetime.ToString("MMMM dd yyyy hh:mm")</td>
-                <td>
+                <td class="statuscolor statuspadding ">
                     @switch (item.status)
                     {
                         case 'n':
-                            <span style="color: green">New</span>
+                            <div style="background-color: green"><span style="font-weight: 700">New</span></div>
                             break;
                         case 'p':
-                            <span style="color: goldenrod">In Progress</span>
+                            <div class="" style="background-color: darkorange"><span style="font-weight: 700">In Progress</span></div>
                             break;
                         case 'c':
-                            <span style="color: red">Closed</span>
+                            <div class="" style="background-color: red"><span style="font-weight: 700">Closed</span></div>
                             break;
                     }
                 </td>

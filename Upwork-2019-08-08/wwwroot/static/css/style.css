@@ -34,6 +34,9 @@ height: 75px;
 .nopadding{
     margin: 0 -15px;
 }
+.semipadding{
+    margin: 0 -8px;
+}
 .layout-ul{
     list-style-type: none;
     padding-left: 0px;
@@ -89,12 +92,20 @@ height: 75px;
 .vertical-center-text {
     margin: 0;
     position: absolute;
-    top: 50%;
-    left: calc(50% - 125px);
+    top: 36%;
+    left: calc(50% - 290px);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 }
 
+.textpmodel {
+    position: absolute;
+    top: 170px;
+    padding: 0px 35px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+}
 
 .BodyPart{
     height: calc(100vh - 75px);
@@ -196,7 +207,7 @@ td {
 }
 
 #finished{
-    height: 80px;
+    height: 230px;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
@@ -234,7 +245,7 @@ td {
 
 .card {
     margin-bottom: 25px !important;
-    border: 2px solid #1c536b;
+   /* border: 2px solid #1c536b; */
 }
 
 #btnMail {
@@ -243,7 +254,7 @@ td {
 }
 
 .accordion > .card:first-of-type {
-    border-bottom: 2px solid #1c536b!important;
+   /* border-bottom: 2px solid #1c536b!important;*/
 }
 .apmenudrop{
     list-style-type: none;
@@ -273,3 +284,54 @@ td {
     width: 100% !important;
 }
 
+.txttype {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.statuscolor {
+    color: white;
+    text-align: center;
+}
+
+.statuspadding {
+    padding: 7px 20px;
+}
+
+.finishedone {
+    padding: 50px 0;
+    width: 97%;
+    background-color: palegreen;
+}
+
+.ticketinfo > li {
+    padding: 10px 0;
+    padding-left: 10px;
+}
+
+    .ticketinfo > li > p {
+        margin: 0;
+    }
+
+.ticketinfo {
+    list-style-type: none;
+    box-shadow: -13px 20px 20px 0px #3e3e3e29;
+    padding: 0;
+    border: .5px solid #00000030
+}
+
+.bckWhite {
+    background-color: white;
+}
+
+.bckGray {
+    background-color: #ebebeb;
+}
+
+.infobtn {
+    padding: 5px 30px;
+    background-color: #1c536b;
+    color: white;
+    border: none;
+    margin-left: 10px;
+}

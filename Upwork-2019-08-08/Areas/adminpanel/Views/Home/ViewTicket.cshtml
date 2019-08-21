@@ -4,118 +4,242 @@
 @{
     Layout = "~/Areas/adminpanel/Views/Shared/_Layout.cshtml";
 }
-
-<h2>
-    Ticket #@ViewBag.ticket.id <span>
+@*
     @if (ViewBag.ticket.status != 'c')
     {
         <button type="button"
-                class="btn " data-toggle="modal" data-target="#exampleModalCenter">
-            +Add Message
+                class="btn txttype" data-toggle="modal" data-target="#exampleModalCenter">
+            <i style="color:#1c536b" class="fas fa-plus-square"> </i> Message
         </button>
-    }
-</span>
-</h2>
+    }*@
+<div style="    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto; margin: -20px ;padding-top: 10px;  background-color: #ebebeb; ">
+    <div class="row">
+        <div class="col-3">
+            <ul style="list-style-type: none; padding-bottom: 1px; padding-right: 1px; " class="ticketinfo">
+                <li style="padding-bottom: 20px; font-weight: 500;" class="bckGray"><i class="fas fa-ticket-alt"></i> Ticket Information</li>
+                <li class="bckWhite"><span style="font-weight: 500">Department:</span> <p>@ViewBag.department</p></li>
+                <li class="bckGray"><span style="font-weight: 500">Submitted:</span> <p>@ViewBag.ticket.datetime.ToString("dd/MM/yy hh:mm")</p></li>
+                <li class="bckWhite">
+                    <span style="font-weight: 500">Last Updated:</span>
+                    @if (Model.Any())
+                    {
+                        <text> <p> @Model.Last().datetime.ToString("dd/MM/yy hh:mm") </p> </text>
+                    }
+                    else
+                    {
+                        <text> <p> @ViewBag.ticket.datetime.ToString("dd/MM/yy hh:mm") </p></text>
+                    }
 
-<h5>
-    Status:                 @switch (ViewBag.ticket.status)
-    {
-        case 'n':
-            <span style="color: green">New</span>
-            break;
-        case 'p':
-            <span style="color: goldenrod">In Progress</span>
-            break;
-        case 'c':
-            <span style="color: red">Closed</span>
-            break;
-    }
-</h5>
-<button class="dt-button buttons-pdf buttons-html5" onclick="myFunction()" style="background: #1c536b!important; color: white;">Close the ticket</button>
-
-<div class="accordion" id="accordionExample">
-    @{ int row = 0;}
-    @foreach (var item in Model)
-    {
-        string collapsename = "collapse" + row.ToString();
-        <div class="card">
-            <div class="card-header" id="headingOne">
-                <h2 class="mb-0">
-                    <button class="btn btn-link" id="btnMail" type="button" data-toggle="collapse" data-target="#@collapsename" aria-expanded="true" aria-controls="collapseOne">
-                        <p style="text-align: start">Subject: @item.subject</p>     <p style="text-align: start">Date: @item.datetime.ToString("dd MMMM yyyy hh:mm") </p>  <p style="text-align: start">
-                            From whom: @if (item.fromID == HttpContextAccessor.HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault(0) && item.from == false)
-                            {<span>you</span> }
-                            else
-                            { <span>@ViewBag.names[row]</span>}
-                        </p>
-                    </button>
-                </h2>
-            </div>
-
-            <div id="@collapsename" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                <div class="card-body">
-                    @item.message
-                    @if (item.filename != null)
-                    {<p style="margin-top: 10px">
-                            @{
-                                List<string> files = item.filename.Split(" ").ToList();
-                            }
-                            @if (files.Count > 1)
-                            {
-                                <span>
-                                    Files: @foreach (var item2 in files)
-                                    {
-                                        <span> <a href="/files/@item2.Trim().Split('/').Last()" download>@item2.Trim().Split('/').Last()</a></span>
-
-                                    }
-                                </span>
-                            }
-                            else
-                            {
-                                <span>File:  <span> <a href="/files/@item.filename" download>@item.filename.Split('/').Last()</a></span> </span>
-                            }
-                        </p>}
-                </div>
-            </div>
-        </div>row++;
-    }
-
-    <div class="card">
-        <div class="card-header" id="headingOne">
-            <h2 class="mb-0">
-                <button class="btn btn-link" id="btnMail" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="true" aria-controls="collapseOne">
-                    <p style="text-align: start">Subject: @ViewBag.ticket.subject</p>     <p style="text-align: start">Date: @ViewBag.ticket.datetime.ToString("dd MMMM yyyy hh:mm") </p>  <p style="text-align: start">
-                        From whom: 
-                         <span>@ViewBag.ClientName</span>
-                    </p>
-                </button>
-            </h2>
+                    
+                    @if (ViewBag.ticket.status != 'c')
+                    {
+                        <div style="margin-top: 10px;">
+                            <button id="rplybtn" class="infobtn"><i class="fas fa-edit"></i> Reply</button>
+                            <button class="infobtn" onclick="myFunction()"><i class="fas fa-ban"></i> Close</button>
+                        </div>
+                    }
+                </li>
+            </ul>
         </div>
+        <div class="col-9">
+            <h2 style="border-bottom: 2px solid #b1b1b1; color: #1c536b">View Ticket</h2>
+            @if (ViewBag.ticket.status == 'c')
+            {
+                <div class="alert alert-warning text-center" role="alert" style="padding: 37px 0">
+                    This ticket has been closed and cannot be reopened
+                </div>
+            }
+            <table style="width: 100%; margin-top: 20px;">
+                <tbody>
+                    <tr style="border-top: 1px solid #b1b1b1; border-bottom: 1px solid #b1b1b1; padding: 0 5px ">
+                        <td style="width: 50%;padding: 10px;">Ticket Number:</td>
+                        <td style="width: 50%">#@ViewBag.ticket.id</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #b1b1b1;">
+                        <td style="width: 50%;padding: 10px;">Subject:</td>
+                        <td>@ViewBag.ticket.subject</td>
+                    </tr>
+                </tbody>
+            </table>
+            @if (ViewBag.ticket.status != 'c')
+            {
+            <div class="accordion" id="replybox" style="margin-top: 20px; ">
 
-        <div id="collapse" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body">
-                @ViewBag.ticket.message
-                @if (ViewBag.ticket.filename != null)
-                {<p style="margin-top: 10px">
-                        @{
-                            string[] files = ViewBag.ticket.filename.Split(" ");
-                        }
-                        @if (files.Length > 1)
-                        {
-                            <span>
-                                Files: @foreach (var item in files)
-                                {
-                                    <span> <a href="/files/@item.Split('/').Last()" download>@item.Split('/').Last()</a></span>
+                <div class="card">
+                    <div class="card-header" id="reply" style="padding-left: 0; background-color: #7bd7ff59">
+                        <h4 class="mb-0">
+                            <button class="btn btn-link" id="btnMail" type="button"
+                                    data-toggle="collapse" data-target="#replybody"
+                                    aria-expanded="true" aria-controls="collapsereply" style="padding: 0; padding-bottom: 20px; padding-left: 15px;">
+                                <i class="fas fa-edit" style="color: #1c536b;"></i>
+                                <span style="text-align: start; color: #1c536b; font-weight: 500">Reply</span>
 
-                                }
-                            </span>
-                        }
-                    </p>}
+                            </button>
+                            <button class="btn btn-link" id="btnMail2" type="button"
+                                    data-toggle="collapse" data-target="#replybody"
+                                    aria-expanded="false" aria-controls="collapsereply" style="padding: 0; padding-bottom: 20px; padding-left: 15px; float: right;">
+                                <h4 style="float: right;color: #1c536b;">+</h4>
+
+                            </button>
+
+                        </h4>
+                    </div>
+
+                    <div id="replybody" class="collapse" aria-labelledby="headingOne"
+                         data-parent="#replybox">
+                        <div class="card-body">
+                            <form id="addAction" action="@Url.Action("AddMessage", "Home")" method="post" enctype="multipart/form-data">
+                                <div class="container-fluid">
+                                    <div class="row">
+
+                                        <div class="col-6">
+                                            <label for="name" style="font-size: 20px;">Name:</label><br>
+                                            <input name="name" value="Tunjay Huseynov" disabled class="form-control" type="text" /> <br />
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="email" style="font-size: 20px;">Email Address:</label><br>
+                                            <input name="email" value="tunjayhuseynov@gmail.com" disabled class="form-control" type="text" /> <br />
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="text" style="font-size: 20px;">Message:</label> <br />
+                                            <textarea name="text" class="form-control" style="height: 250px;"></textarea> <br />
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="hidden" value="@ViewBag.ticket.id" name="ticketid" />
+                                            <label for="files" style="font-size: 20px;">Attachments:</label> <br />
+                                            <input type="file" id="file" accept=".pdf, .doc, .jpeg, .png, .jpg" class="form-control-file" name="files" multiple /> <br />
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <button type="submit" id="submiting" class="btn btn-primary">Reply</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>}
+            <div class="accordion" id="accordionExample" style="margin-top: 20px">
+
+                <div class="card">
+                    <div class="card-header" id="reply" style="padding-left: 0">
+                        <h2 class="mb-0">
+                            <span style="float: right; font-size: 15px;">@ViewBag.ticket.datetime.ToString("dd/MM/yy hh:mm")</span>
+                            <button class="btn btn-link" id="btnMail" type="button"
+                                    data-toggle="collapse" data-target="#"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                <i class="fas fa-user"
+                                   style="float: left; font-size: 42px ;margin-right: 10px; height: 80px; padding-top: 6px;  "></i>
+                                <p style="text-align: start; float: left;">@ViewBag.ClientName</p>
+                                <p style="text-align: start;">
+                                    <span style="font-size: 14px; text-decoration: none">Client</span>
+                                </p>
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="body" class="collapse show" aria-labelledby="headingOne"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            @ViewBag.ticket.message
+                            @if (ViewBag.ticket.filename != null)
+                            {<p style="margin-top: 10px">
+                                    @{
+                                        string[] files = ViewBag.ticket.filename.Split(" ");
+                                    }
+                                    @if (files.Length > 0)
+                                    {
+                                        <span>
+                                            Attachments: @foreach (var item in files)
+                                            {
+                                                <span> <a href="/files/@item.Split('/').Last()" download>@item.Split('/').Last()</a></span>
+
+                                            }
+                                        </span>
+                                    }
+                                </p>}
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.Count > 0)
+                {
+
+                    foreach (var item in Model)
+                    {
+
+
+                        <div class="card">
+                            <div class="card-header" id="reply" style="padding-left: 0">
+                                <h2 class="mb-0">
+                                    <span style="float: right; font-size: 15px;">@item.datetime.ToString("dd/MM/yy hh:mm")</span>
+                                    <button class="btn btn-link" id="btnMail" type="button"
+                                            data-toggle="collapse" data-target="#"
+                                            aria-expanded="true" aria-controls="collapseOne">
+                                        <i class="fas fa-user"
+                                           style="float: left; font-size: 42px ;margin-right: 10px; height: 80px; padding-top: 6px; "></i>
+                                        <p style="text-align: start; float: left;">
+                                            @if (item.from == true)
+                                            {
+                                                <text> @ViewBag.ClientName </text>
+                                            }
+                                            else
+                                            {
+                                                <text> Support Desk </text>
+                                            }
+                                        </p>
+                                        <p style="text-align: start;">
+                                            <span style="font-size: 14px; text-decoration: none">
+                                                @if (item.from == true)
+                                                {
+                                                    <text>Client</text>
+                                                }
+                                                else
+                                                {
+                                                    <text>Staff</text>
+                                                }
+                                            </span>
+                                        </p>
+                                    </button>
+                                </h2>
+                            </div>
+
+                            <div id="body" class="collapse show" aria-labelledby="headingOne"
+                                 data-parent="#accordionExample">
+                                <div class="card-body">
+                                    @item.message
+                                    @if (item.filename != null)
+                                    {<p style="margin-top: 10px">
+                                            @{
+                                                string[] files = item.filename.Split(" ");
+                                            }
+                                            @if (files.Length > 0)
+                                            {
+                                                <span>
+                                                    Attachments: @foreach (var itemfile in files)
+                                                    {
+                                                        <span> <a href="/files/@itemfile.Split('/').Last()" download>@itemfile.Split('/').Last()</a></span>
+
+                                                    }
+                                                </span>
+                                            }
+                                        </p>}
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
             </div>
         </div>
     </div>
 </div>
 
+<!--
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -160,7 +284,7 @@
         </div>
     </div>
 </div>
-
+    -->
 <script>
         var uploadField = document.getElementById("file");
 
@@ -181,6 +305,11 @@
         $("#finished").show()
         window.location.reload()
     });
+
+    $("#rplybtn").click(function () {
+        $("#replybody").collapse('toggle')
+
+    })
 
     function myFunction() {
 
