@@ -28,7 +28,7 @@ namespace Upwork_2019_08_08.Models
         public ICollection<AmAndDepartament> amAndDepartament { get; set; }
        
         public ICollection<DepartamentUser> DepartamentUser { get; set; }
-
+        public ICollection<Client> Client { get; set; }
 
 
     }

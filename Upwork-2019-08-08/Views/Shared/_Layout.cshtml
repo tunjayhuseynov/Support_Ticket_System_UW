@@ -184,16 +184,13 @@
                                             <i class="fas fa-user"></i>  <span style="padding-left: 5px; font-weight: 500">@HttpContextAccessor.HttpContext.Session.GetString("fullname")</span>
                                             <div class="ProfileMenu">
                                                 <ul>
-                                                    <li><i style="margin-right:3px;" class="far fa-id-badge"> </i> Profile</li>
-                                                    <li><i class="fas fa-key"> </i> <a  style="color: white" href="@Url.Action("ResetPassword","Home", new {id= HttpContextAccessor.HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault()})"> <span>Reset Password</span></a></li>
+                                                    <li><a style="color: white" href="@Url.Action("Profile","Home", new { id = HttpContextAccessor.HttpContext.Session.GetInt32("LogedIn") })"><i style="margin-right:3px;" class="far fa-id-badge"> </i>  Profile</a></li>
+                                                    <li><a style="color: white" href="@Url.Action("ResetPassword","Home", new {id= HttpContextAccessor.HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault()})"> <i class="fas fa-key"> </i> <span>Reset Password</span></a></li>
                                                     <li><a href="@Url.Action("LogOut","Home")" style="color: white"><i class="fas fa-sign-out-alt"> </i> Log Out</a></li>
                                                 </ul>
                                             </div>
                                         </div>
-
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>

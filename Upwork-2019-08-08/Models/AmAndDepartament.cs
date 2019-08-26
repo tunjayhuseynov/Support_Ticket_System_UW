@@ -13,8 +13,8 @@ namespace Upwork_2019_08_08.Models
     {
         [Key]
         public int id { get; set; }
-        public int departamentID { get; set; }
-        public int amID { get; set; }
+        public int? departamentID { get; set; }
+        public int? amID { get; set; }
         public DateTime assignedTime { get; set; }
 
         [ForeignKey("departamentID")]

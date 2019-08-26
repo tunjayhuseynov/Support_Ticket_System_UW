@@ -17,7 +17,7 @@
             <th scope="col">#</th>
             <th scope="col">Reference Num.</th>
             <th scope="col">Subject</th>
-            <th scope="col">Message</th>
+            <th scope="col">Company</th>
             <th scope="col">Date</th>
             <th scope="col">Status</th>
             <th scope="col">Action</th>
@@ -39,7 +39,7 @@
                 <th scope="row">@index.ToString()</th>
                 <td ><a href="@Url.Action("ViewTicket","Home", new {id=item.id })" target="_blank">Ref-@item.id.ToString("D9")</a></td>
                 <td>@item.subject</td>
-                <td>@item.message</td>
+                <td>@item.Client.Company.name</td>
                 <td>@item.datetime.ToString("MMMM dd yyyy hh:mm")</td>
                 <td class="statuscolor statuspadding ">
                     @switch (item.status)

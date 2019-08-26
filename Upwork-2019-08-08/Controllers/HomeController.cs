@@ -373,5 +373,12 @@ namespace Upwork_2019_08_08.Controllers
 
             return Content("Check You E-mail");
         }
+
+        public IActionResult Profile(int id)
+        {
+
+
+            return View(_context.Clients.Find(id));
+        }
     }
 }

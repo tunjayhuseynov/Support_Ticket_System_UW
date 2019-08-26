@@ -59,3 +59,6 @@ C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcor
 C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Upwork-2019-08-08.csprojAssemblyReference.cache
 C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Razor\Views\Sign\GetEmailForPassword.g.cshtml.cs
 C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Razor\Areas\adminpanel\Views\AdminSign\GetEmailForPassword.g.cshtml.cs
+C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Razor\Areas\adminpanel\Views\Home\LogHistory.g.cshtml.cs
+C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Razor\Areas\adminpanel\Views\Home\Profile.g.cshtml.cs
+C:\Users\tunca\source\repos\Upwork-2019-08-08\Upwork-2019-08-08\obj\Debug\netcoreapp2.2\Razor\Views\Home\Profile.g.cshtml.cs

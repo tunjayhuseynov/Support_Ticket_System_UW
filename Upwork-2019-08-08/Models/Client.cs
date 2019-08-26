@@ -21,10 +21,11 @@ namespace Upwork_2019_08_08.Models
         public int? createdBy { get; set; }
         public bool? isActive { get; set; }
         public int? lastModifiedBy { get; set; }
+        public int? companyID { get; set; }
 
 
         public Admin Admin { get; set; }
-
+        public Company Company { get; set; }
 
 
         public ICollection<LogHistorie> LogHistorie { get; set; }

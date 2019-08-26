@@ -1,0 +1,49 @@
+﻿
+@{
+    Layout = null;
+}
+
+<h2>
+    Logs <span>
+        <!--  <button type="button"
+                  class="btn " data-toggle="modal" data-target="#exampleModalCenter">
+              +Add Feedback
+          </button>-->
+    </span>
+</h2>
+<table class="table table-bordered responsive" style="width: 100%">
+    <thead class="tablecolor">
+        <tr>
+        <tr>
+            <th>id</th>
+            <th>clientID</th>
+            <th>date</th>
+            <th>logStatus</th>
+
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>id</th>
+            <th>clientID</th>
+            <th>date</th>
+            <th>logStatus</th>
+        </tr>
+    </tfoot>
+</table>
+
+<script>
+    $(".table").DataTable({
+        responsive: true,
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "ajax": {
+            "url": "api/Data/Logs",
+            "type": "POST",
+            "datatype": "json"
+        },
+        
+
+    });
+      
+</script>

@@ -113,9 +113,9 @@
                     </div>
                 </a>
             </li>
-            <li id="parentsidemenu" style="position: relative">
+            <li class="parentsidemenu" style="position: relative">
                 <a href="#collapseExample">
-                    <div class="text-center">
+                    <div class="text-center clientsdiv">
                         <i class="fas fa-users"></i>
                         <p>
                             Clients
@@ -137,7 +137,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#feedback">
+                            <a href="#" onclick="getPage('LogHistory')">
                                 <div class="text-center">
                                     <i class="fas fa-history"></i>
                                     <p style="margin-bottom: 0">
@@ -214,9 +214,9 @@
                                                 </div>
                                             </a>
                                         </li>
-                                        <li id="parentsidemenu" style="position: relative">
+                                        <li class="parentsidemenu" style="position: relative">
                                             <a href="#collapseExample">
-                                                <div class="text-center">
+                                                <div class="text-center clientsdiv">
                                                     <i class="fas fa-users"></i>
                                                     <p>
                                                         Clients
@@ -238,7 +238,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="#feedback">
+                                                        <a href="#feedback" onclick="getPage('LogHistory')">
                                                             <div class="text-center">
                                                                 <i class="fas fa-history"></i>
                                                                 <p style="margin-bottom: 0">
@@ -287,7 +287,7 @@
                                             <i class="fas fa-user"></i>  <span style="padding-left: 5px; font-weight: 500">@HttpContextAccessor.HttpContext.Session.GetString("fullname")</span>
                                             <div class="ProfileMenu">
                                                 <ul>
-                                                    <li><i style="margin-right:3px;" class="far fa-id-badge"> </i> Profile</li>
+                                                    <li><i style="margin-right:3px;" class="far fa-id-badge"> </i> <a style="color: white" href="@Url.Action("Profile","Home", new { id = HttpContextAccessor.HttpContext.Session.GetInt32("AdminLogedIn") })">Profile</a> </li>
                                                     <li><i class="fas fa-key"> </i> <a  style="color: white" href="@Url.Action("ResetPassword","Home", new {id= HttpContextAccessor.HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault()})"><span>Reset Password</span></a> </li>
                                                     <li><a href="@Url.Action("LogOut","Home", new { Area = "AdminPanel"})" style="color: white"><i class="fas fa-sign-out-alt"> </i> Log Out</a></li>
                                                 </ul>
@@ -351,13 +351,16 @@
 
         //It Shows Menu's active page
         var $li = $('.layout-ul>li>a>div').click(function () {
+            if ($(this).attr('class') == 'text-center clientsdiv') {
+                return
+            }
             $li.parent().parent().removeClass('activeRoute');
             $(this).parent().parent().addClass('activeRoute');
         });
 
         $("#sidemenubar>.apmenudrop>li>a>div").click(function () {
             $("li").removeClass('activeRoute')
-            $("#parentsidemenu").addClass('activeRoute')
+            $(".parentsidemenu").addClass('activeRoute')
         })
         // Ajax process to get data from the server
         var getPage = function (url) {

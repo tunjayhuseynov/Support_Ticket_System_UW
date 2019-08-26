@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
 using System.IO;
-using MailKit;
 using MailKit.Net.Smtp;
 using MimeKit;
 using MailKit.Security;
@@ -75,21 +74,14 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             {
                 List<Ticket> tickets = new List<Ticket>();
 
-                var DepartamentID = _context.AmAndDepartaments.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(i => i.departamentID).ToList();
-                foreach (var item in DepartamentID)
-                {
-                    var ClientId = _context.DepartamentUsers.Where(w => w.departamentID == item).Select(i => i.clientID).ToList();
+                List<int?> DepartamentID = _context.AmAndDepartaments.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(i => i.departamentID).ToList();
 
-                    foreach (var iding in ClientId)
-                    {
-                        tickets.AddRange(_context.Tickets.Where(w => w.clientID == iding).ToList());
-                    }
-                }
-
-                if (!tickets.Where(w=> w.id == id).Any())
+                if (!DepartamentID.Contains(_context.Tickets.Include(w => w.Client).FirstOrDefault().Client.companyID))
                 {
                     return Content("You do not have a permissoin for this ticket");
+
                 }
+
             }
             List<string> names = new List<string>();
             List<Message> messages = _context.Messages.Include(i => i.Ticket.Client).Where(w => w.ticketID == id).OrderBy(a => a.datetime).ToList();
@@ -210,20 +202,16 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             int? id = HttpContext.Session.GetInt32("isAdmin");
             if (id == 1)
             {
-                tickets = _context.Tickets.OrderByDescending(w => w.status).OrderByDescending(w => w.status == 'n').ToList();
+                tickets = _context.Tickets.Include(s=>s.Client.Company).OrderByDescending(w => w.status).OrderByDescending(w => w.status == 'n').ToList();
             }
             else if (id == 0)
             {
 
-                var DepartamentID = _context.AmAndDepartaments.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(i => i.departamentID).ToList();
+                List<int?> DepartamentID = _context.AmAndDepartaments.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(i => i.departamentID).ToList();
+
                 foreach (var item in DepartamentID)
                 {
-                    var ClientId = _context.DepartamentUsers.Where(w => w.departamentID == item).Select(i => i.clientID).ToList();
-
-                    foreach (var iding in ClientId)
-                    {
-                        tickets.AddRange(_context.Tickets.Where(w => w.clientID == iding).ToList());
-                    }
+                    tickets.AddRange(_context.Tickets.Include(s => s.Client.Company).Where(w => w.Client.companyID == item).ToList());
                 }
                 tickets = tickets.OrderByDescending(w => w.status).OrderByDescending(w => w.status == 'n').ToList();
             }
@@ -235,55 +223,26 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                List<AmUser> list = _context.AmUsers.Where(w => w.AmID == HttpContext.Session.GetInt32("AdminLogedIn")).ToList();
-                if (list.Any())
+                List<Ticket> tickets = new List<Ticket>();
+                List<int> ClientId = new List<int>();
+
+                var DepartamentID = _context.AmAndDepartaments.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(i => i.departamentID).ToList();
+
+                if (!DepartamentID.Contains(_context.Tickets.Include(w => w.Client).FirstOrDefault().Client.companyID))
                 {
-                    if (list.Where(w => w.clientID == _context.Tickets.Find(id).clientID).Any())
-                    {
-                        Ticket ticket = _context.Tickets.Find(id);
-                        ticket.status = 'c';
-                        _context.Tickets.Update(ticket);
-                        _context.SaveChanges();
-                        return Content("Done");
-                    }
+                    return Content("You do not have a permissoin for this ticket");
+
                 }
-            }
-            else if (HttpContext.Session.GetInt32("isAdmin") == 1)
-            {
-                Ticket ticket = _context.Tickets.Find(id);
-                ticket.status = 'c';
-                _context.Tickets.Update(ticket);
-                _context.SaveChanges();
-                return Content("Done");
+
             }
 
-            return Content("Auth Failed");
-
+            Ticket ticket = _context.Tickets.Find(id);
+            ticket.status = 'c';
+            _context.Tickets.Update(ticket);
+            _context.SaveChanges();
+            return Content("Done");
 
         }
-
-        /*
-        public IActionResult FeedbackRaw()
-        {
-            List<Feedback> feedbacks = new List<Feedback>();
-            Task.Delay(500).Wait();
-            int? id = HttpContext.Session.GetInt32("isAdmin");
-            if(id == 1)
-            {
-                 feedbacks = _context.Feedbacks.OrderByDescending(w=>w.datetime).ToList();
-
-            }else if(id == 0)
-            {
-                List<int> ClientIDs = _context.AmAndClients.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault(-1)).Select(i => i.departamentID).ToList();
-                foreach (var item in ClientIDs)
-                {
-                    feedbacks.AddRange(_context.Feedbacks.Include(s=>s.Client).Where(w => w.Client.departmentID == item).ToList());
-                }
-
-            }
-            return View(feedbacks);
-        }*/
-
 
 
         //
@@ -451,11 +410,11 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
             {
-                departaments = _context.Companies.Include(w => w.DepartamentUser).ToList();
+                departaments = _context.Companies.Include(w => w.Client).ToList();
             }
             else if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                departaments = _context.AmAndDepartaments.Include(w => w.Company).Where(s => s.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault()).Select(a => a.Company).Include(a => a.DepartamentUser).ToList();
+                departaments = _context.AmAndDepartaments.Include(w => w.Company).Where(s => s.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault()).Select(a => a.Company).Include(a => a.Client).ToList();
 
             }
 
@@ -488,9 +447,9 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             return Content("Done");
         }
 
-        public IActionResult AddUser(string name, string surname, string email, string password, int[] users)
+        public IActionResult AddUser(string name, string surname, string email, string password, int users)
         {
-            if(_context.Clients.Where(w=> w.email == email.Trim()).Any())
+            if (_context.Clients.Where(w => w.email == email.Trim()).Any())
             {
                 return Content("Taken");
             }
@@ -507,23 +466,14 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                     email = email,
                     password = hash,
                     token = salt,
-                    isActive = true
+                    isActive = true,
+                    companyID = users,
                 };
 
                 _context.Clients.Add(client);
                 _context.SaveChanges();
 
-                foreach (var item in users)
-                {
-                    DepartamentUser departamentuser = new DepartamentUser
-                    {
-                        clientID = client.id,
-                        departamentID = item,
-                        assignedTime = DateTime.Now,
-                    };
-                    _context.DepartamentUsers.Add(departamentuser);
-                    _context.SaveChanges();
-                }
+
                 return Content("Done");
             }
 
@@ -581,13 +531,8 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                if(_context.AmUsers.Where(w=>w.AmID == HttpContext.Session.GetInt32("AdminLogedIn")).FirstOrDefault().DepartamentID != id)
-                {
-                    return Content("Auth Failed");
-                }
-                
+                return Content("Auth Failed");
             }
-
 
             Company departament = _context.Companies.Find(id);
             return View(departament);
@@ -597,10 +542,8 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                if (_context.AmUsers.Where(w => w.AmID == HttpContext.Session.GetInt32("AdminLogedIn")).FirstOrDefault().DepartamentID != id)
-                {
-                    return Content("Auth Failed");
-                }
+                return Content("Auth Failed");
+
             }
 
             _context.Companies.Remove(_context.Companies.Find(id));
@@ -622,7 +565,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             _context.Companies.Update(departament);
             _context.SaveChanges();
 
-            return RedirectToAction("ViewClient","Home", new {  id= UserId});
+            return RedirectToAction("ViewClient", "Home", new { id = UserId });
 
         }
 
@@ -633,19 +576,14 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 List<Client> ClientId = new List<Client>();
 
                 var DepartamentID = _context.AmAndDepartaments.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(i => i.departamentID).ToList();
-                foreach (var item in DepartamentID)
-                {
-                    ClientId = _context.DepartamentUsers.Include(s=>s.Client).Where(w => w.departamentID == item).Select(i => i.Client).ToList();
 
-                }
-
-                if (!ClientId.Any())
+                if (!DepartamentID.Contains(id))
                 {
                     return Content("Auth Failed");
                 }
             }
 
-            List<Client> clients = _context.DepartamentUsers.Include(w => w.Client).Where(s => s.departamentID == id).Select(i=> i.Client).ToList();
+            List<Client> clients = _context.Clients.Where(w => w.companyID == id).ToList();
             ViewBag.name = _context.Companies.Find(id).name;
             return View(clients);
         }
@@ -654,10 +592,9 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                if (!(_context.AmUsers.Where(w => w.AmID == HttpContext.Session.GetInt32("AdminLogedIn")).Where(s => s.clientID == id).Any()))
-                {
-                    return Content("Auth Failed");
-                }
+
+                return Content("Auth Failed");
+
             }
 
             Client client = _context.Clients.Find(id);
@@ -671,13 +608,11 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                if (!(_context.AmUsers.Where(w => w.AmID == HttpContext.Session.GetInt32("AdminLogedIn")).Where(s => s.clientID == id).Any()))
-                {
-                    return Content("Auth Failed");
-                }
+                return Content("Auth Failed");
+
             }
 
-            
+
             return View(_context.Clients.Find(id));
         }
 
@@ -685,10 +620,9 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                if (!(_context.AmUsers.Where(w => w.AmID == HttpContext.Session.GetInt32("AdminLogedIn")).Where(s => s.clientID == UserId).Any()))
-                {
-                    return Content("Auth Failed");
-                }
+
+                return Content("Auth Failed");
+
             }
 
             Client client = _context.Clients.Find(UserId);
@@ -706,12 +640,42 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                if (!(_context.AmUsers.Where(w => w.AmID == HttpContext.Session.GetInt32("AdminLogedIn")).Where(s => s.clientID == id).Any()))
+                List<int?> DepartamentID = _context.AmAndDepartaments.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(i => i.departamentID).ToList();
+
+                if (!DepartamentID.Contains(_context.Clients.Find(id).companyID))
                 {
                     return Content("Auth Failed");
                 }
             }
             return View(_context.Clients.Find(id));
+        }
+
+
+        //
+        //
+        //
+        //
+        // Log History
+        //
+        ///
+        //
+        //
+        //
+        public IActionResult LogHistory()
+        {
+            return View();
+        }
+
+        //
+        //
+        //
+        //Profile
+
+        public IActionResult Profile(int id)
+        {
+           
+
+            return View(_context.Admins.Find(id));
         }
     }
 }
