@@ -17,6 +17,14 @@ namespace Upwork_2019_08_08.Models
         public string password { get; set; }
         public string token { get; set; }
         public string email { get; set; }
+        public DateTime? createdDate { get; set; }
+        public int? createdBy { get; set; }
+        public bool? isActive { get; set; }
+        public int? lastModifiedBy { get; set; }
+
+
+        public Admin Admin { get; set; }
+
 
 
         public ICollection<LogHistorie> LogHistorie { get; set; }

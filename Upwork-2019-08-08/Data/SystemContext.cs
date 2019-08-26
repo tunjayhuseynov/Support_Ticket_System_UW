@@ -11,11 +11,11 @@ namespace Upwork_2019_08_08.Data
     {
         public SystemContext(DbContextOptions<SystemContext> options) : base(options)
         {
-
+            
         }
 
         public DbSet<Client> Clients { get; set; }
-        public DbSet<Departament> Departaments { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<LogHistorie> LogHistories { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
@@ -24,10 +24,12 @@ namespace Upwork_2019_08_08.Data
         public DbSet<AmAndDepartament> AmAndDepartaments { get; set; }
         public DbSet<DepartamentUser> DepartamentUsers { get; set; }
         public DbSet<AmUser> AmUsers { get; set; }
+        public DbSet<Department> Departments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Client>().ToTable("Clients");
-            modelBuilder.Entity<Departament>().ToTable("Departaments");
+            modelBuilder.Entity<Department>().ToTable("Departments");
+            modelBuilder.Entity<Company>().ToTable("Companies");
             modelBuilder.Entity<Feedback>().ToTable("Feedbacks");
             modelBuilder.Entity<LogHistorie>().ToTable("LogHistories");
             modelBuilder.Entity<Ticket>().ToTable("Tickets");

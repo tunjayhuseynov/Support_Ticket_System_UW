@@ -1,0 +1,56 @@
+﻿@model Upwork_2019_08_08.Models.Client
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/adminpanel/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    input {
+        margin-bottom: 15px;
+    }
+</style>
+
+
+<form method="post" action="@Url.Action("EditClientUserProcess","Home")">
+    <div class="container-fluid viewback">
+        <h2 style="color:#1c536b">Admin User #@Model.id</h2> <br />
+        <div class="row">
+            <input type="hidden" value="@Model.id" name="UserId" />
+            <div class="col-6">
+                <h3 style="color:#1c536b">Name: </h3>
+                <input type="text" class="form-control" value="@Model.name" name="name" /> <br />
+            </div>
+            <div class="col-6">
+                <h3 style="color:#1c536b">Surname:</h3>
+                <input type="text" class="form-control" value="@Model.surname" name="surname" /> <br />
+            </div>
+            <div class="col-6">
+                <h3 style="color:#1c536b">Email:</h3>
+                <input type="text" class="form-control" value="@Model.email" name="email" /> <br />
+            </div>
+            <div class="col-6">
+                <h3 style="color:#1c536b">Status:</h3>
+                <select name="active" id="status" required class="form-control">
+                    @if (Model.isActive == true)
+                    {
+                        <option value="1" selected>Active</option>
+                        <option value="0">Inactive</option>
+                    }
+                    else
+                    {
+                        <option value="1">Active</option>
+                        <option value="0" selected>Inactive</option>
+
+                    }
+
+
+                </select> <br />
+            </div>
+            <div class="col-12 text-center">
+
+                <button style="background: #1c536b; border: #1c536b; margin-top: 35px;" type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</form>

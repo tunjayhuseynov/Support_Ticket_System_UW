@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="JqueryDataTables.ServerSide.AspNetCoreWeb" Version="2.2.0" />
+    <PackageReference Include="MailKit" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -35,7 +36,6 @@
     <Folder Include="Areas\adminpanel\Data\" />
     <Folder Include="Areas\adminpanel\Models\" />
     <Folder Include="wwwroot\files\" />
-    <Folder Include="wwwroot\static\images\" />
   </ItemGroup>
 
 </Project>

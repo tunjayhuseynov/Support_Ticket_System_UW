@@ -93,7 +93,7 @@ height: 75px;
     margin: 0;
     position: absolute;
     top: 36%;
-    left: calc(50% - 290px);
+    left: calc(50% - 357px);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 }
@@ -200,6 +200,10 @@ td {
 .searchbox {
     width: 200px;
     float: right;
+}
+
+.maincolor {
+    color: #1c536b!important;
 }
 
 .activeRoute {
@@ -334,4 +338,91 @@ td {
     color: white;
     border: none;
     margin-left: 10px;
+}
+
+.MobileNav {
+    display: none;
+    position: absolute;
+    left: -150px;
+    top: 75px;
+    z-index: 10;
+    transition: left 1s ease;
+}
+
+    .MobileNav li {
+        padding: 20px;
+        padding-left: 35px;
+    }
+
+.mobiletab {
+    display: none;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    z-index: 15;
+}
+
+.circlemobile {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #1c536b
+}
+
+    .circlemobile i {
+        position: absolute;
+        left: calc(50% - 7px);
+        top: calc(50% - 8px);
+        color: white;
+    }
+.hidelogo{
+    display: none;
+}
+
+
+
+.aPadding a {
+    padding: 0 5px;
+    white-space: nowrap;
+}
+
+.viewback {
+    background-color: white;
+    padding: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .hidenav {
+        display: none;
+    }
+
+    .hidelogo{
+        display: inline;
+    }
+
+    .hidedesignlogo {
+        display: none;
+    }
+
+    .MobileNav {
+        display: inline;
+    }
+
+    .main {
+        left: 0;
+        width: 100%;
+    }
+
+    .mobiletab {
+        display: inline;
+    }
+
+    body {
+        background-color: rgb(235, 235, 235);
+    }
+
+    #sidemenubar{
+        margin-left: 42px;
+    }
 }

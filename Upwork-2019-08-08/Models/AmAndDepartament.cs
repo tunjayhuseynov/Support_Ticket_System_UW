@@ -18,7 +18,7 @@ namespace Upwork_2019_08_08.Models
         public DateTime assignedTime { get; set; }
 
         [ForeignKey("departamentID")]
-        public Departament Departament { get; set; }
+        public Company Company { get; set; }
         public Admin Admin { get; set; }
     }
 }

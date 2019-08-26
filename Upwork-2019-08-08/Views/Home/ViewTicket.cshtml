@@ -17,7 +17,7 @@
     margin-right: auto;
     margin-left: auto; margin: -20px ;padding-top: 10px;  background-color: #ebebeb; ">
     <div class="row">
-        <div class="col-3">
+        <div class="col-sm-3 col-12">
             <ul style="list-style-type: none; padding-bottom: 1px; padding-right: 1px; " class="ticketinfo">
                 <li style="padding-bottom: 20px; font-weight: 500;" class="bckGray"><i class="fas fa-ticket-alt"></i> Ticket Information</li>
                 <li class="bckWhite"><span style="font-weight: 500">Department:</span> <p>@ViewBag.department</p></li>
@@ -44,7 +44,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col-9">
+        <div class="col-sm-9 col-12">
             <h2 style="border-bottom: 2px solid #b1b1b1; color: #1c536b">View Ticket</h2>
             @if (ViewBag.ticket.status == 'c')
             {
@@ -81,7 +81,7 @@
                                 <button class="btn btn-link" id="btnMail2" type="button"
                                         data-toggle="collapse" data-target="#replybody"
                                         aria-expanded="false" aria-controls="collapsereply" style="padding: 0; padding-bottom: 20px; padding-left: 15px; float: right;">
-                                    <h4 style="float: right;color: #1c536b;">+</h4>
+                                    <h4 style="float: right;color: #1c536b;" id="plusicon">+</h4>
 
                                 </button>
 
@@ -96,16 +96,16 @@
                                         <div class="row">
 
                                             <div class="col-6">
-                                                <label for="name" style="font-size: 20px;">Name:</label><br>
-                                                <input name="name" value="Tunjay Huseynov" disabled class="form-control" type="text" /> <br />
+                                                <label for="name" style="font-size: 19px;">Name:</label><br>
+                                                <input  name="name" value="Tunjay Huseynov" disabled class="form-control" type="text" /> <br />
                                             </div>
                                             <div class="col-6">
-                                                <label for="email" style="font-size: 20px;">Email Address:</label><br>
+                                                <label for="email" style="font-size: 19px;">Email Address:</label><br>
                                                 <input name="email" value="tunjayhuseynov@gmail.com" disabled class="form-control" type="text" /> <br />
                                             </div>
                                             <div class="col-12">
                                                 <label for="text" style="font-size: 20px;">Message:</label> <br />
-                                                <textarea data-validation="required" name="text" class="form-control" style="height: 250px;"></textarea> <br />
+                                                <textarea required name="text" class="form-control" style="height: 250px;"></textarea> <br />
                                             </div>
                                             <div class="col-12">
                                                 <input type="hidden" value="@ViewBag.ticket.id" name="ticketid" />
@@ -287,11 +287,7 @@
     -->
 <script>
 
-      $.validate({
-    validateOnBlur : false, // disable validation when input looses focus
-    errorMessagePosition : 'top', // Instead of 'inline' which is default
-    scrollToTopOnError : false // Set this property to true on longer forms
-  });
+
         var uploadField = document.getElementById("file");
 
         uploadField.onchange = function() {
@@ -299,17 +295,29 @@
                     alert("File size must be less than 2MB!");
                     this.value = "";
                     };
-                };
+    };
 
+        $('#replybody').on('show.bs.collapse', function () {
+
+        $("#plusicon").html("-")
+    })
+
+    $('#replybody').on('hide.bs.collapse', function () {
+
+        $("#plusicon").html("+")
+    })
+
+
+      //$("#submiting").click(() => $("#loading").show())
    // $(".loadingModel").hide();
    // $("#finished").hide();
-   // $("#submiting").click(() => $(".loadingModel").show())
+
     $('#addAction').ajaxForm(function () {
      //   $(".loadingModel").hide();
        // $(".model-header-success").hide();
-      //  $("#addAction").hide()
-      //  $("#finished").show()
-        window.location.reload()
+        //  $("#addAction").hide()
+        window.location.reload();
+
     });
 
     $("#rplybtn").click(function () {

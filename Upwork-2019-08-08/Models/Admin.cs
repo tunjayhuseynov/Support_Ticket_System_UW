@@ -22,5 +22,10 @@ namespace Upwork_2019_08_08.Models
         [ForeignKey("amID")]
         public ICollection<AmAndDepartament> amAndDepartament { get; set; }
 
+        [ForeignKey("createdBy")]
+        public ICollection<Company> Departament { get; set; }
+
+        [ForeignKey("createdBy")]
+        public ICollection<Client> Client { get; set; }
     }
 }

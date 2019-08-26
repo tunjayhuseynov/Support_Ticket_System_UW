@@ -18,12 +18,14 @@ namespace Upwork_2019_08_08.Models
         public string filename { get; set; }
         public char status { get; set; }
         public DateTime datetime { get; set; }
-        public int departmentID { get; set; }
-       
+        public int? departmentID { get; set; }
+
+
         [ForeignKey("clientID")]
         public Client Client { get; set; }
         [ForeignKey("departmentID")]
-        public Departament Departament { get; set; }
+        public Department Department { get; set; }
+
         public ICollection<Message> Messages { get; set; }
     }
 }

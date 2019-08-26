@@ -16,6 +16,6 @@ namespace Upwork_2019_08_08.Models
         public Client Client { get; set; }
 
         [ForeignKey("departamentID")]
-        public Departament Departament { get; set; }
+        public Company Company { get; set; }
     }
 }

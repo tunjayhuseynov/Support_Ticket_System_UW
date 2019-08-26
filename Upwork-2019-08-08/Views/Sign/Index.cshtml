@@ -37,25 +37,28 @@
                                         <form action="@Url.Action("SignInProcess","Sign")" method="post">
                                             @if (HttpContextAccessor.HttpContext.Session.GetInt32("AuthFailed") == 1)
                                             {
-                                            <div class="alert alert-danger" role="alert">
-                                                Credentials does not match
-                                            </div>
+                                                <div class="alert alert-danger" role="alert">
+                                                    Credentials does not match
+                                                </div>
 
                                                 HttpContextAccessor.HttpContext.Session.Remove("AuthFailed");
                                             }
                                             <h5 style="font-weight:500;" class="loginTextColor">LOG IN</h5>
-                                            <input data-validation="email" type="email" class="form-control" name="email" id="email" placeholder="E-mail Address">
-                                            <input  data-validation-error-msg="Password must not be less than 6 characters" type="password" class="form-control" name="password" id="password" placeholder="Password">
+                                            <input required type="email" class="form-control" name="email" id="email" placeholder="E-mail Address">
+                                            <input required data-validation-error-msg="Password must not be less than 6 characters" type="password" class="form-control" name="password" id="password" placeholder="Password">
                                             <input type="checkbox" value="checked" name="remember" id="remember"> <span class="RememberText loginTextColor">Remember me</span>
                                             <br>
-                                            <input type="submit" class="btn btn-primary" style="background-color: #49819A; border: none" value="Sign In">
+                                            <input type="submit" class="btn btn-primary" style="background-color: #49819A; width: 100%; border: none" value="Sign In">
                                         </form>
-                                        <button type="button" class="btn btn-link"><a href="">Forgot Password?</a></button>
+                                        <button type="button" class="btn btn-link"><a href="@Url.Action("GetEmailForPassword","Sign")">Forgot Password?</a></button>
 
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div style="width: 100%" class="text-center">
+                        <img src="~/static/images/sslimg.png" />
                     </div>
                 </div>
                 <div class="offset-lg-4"></div>
@@ -72,14 +75,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 
     <script>
-        
-      $.validate({
-    validateOnBlur : false, // disable validation when input looses focus
-    errorMessagePosition : 'top', // Instead of 'inline' which is default
-    scrollToTopOnError : false // Set this property to true on longer forms
-  });
+
     </script>
 </body>
 </html>

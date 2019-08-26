@@ -6,43 +6,51 @@
 }
 
 <style>
-    input{
+    input {
         margin-bottom: 15px;
     }
 </style>
 
-<h1 style="color:#1c536b">User #@Model.id</h1>
-<br />
 
 <form method="post" action="@Url.Action("EditProcess","Home")">
-    <input type="hidden" value="@Model.id" name="UserId"/>
-    <h3 style="color:#1c536b">Name: </h3>
-    <input type="text" value="@Model.name" name="name" />
-    <br />
-    <h3 style="color:#1c536b">Surname:</h3>
-    <input type="text" value="@Model.surname" name="surname" />
-    <br />
-    <h3 style="color:#1c536b">Email: </h3>
-    <input type="email" value="@Model.email" name="email" />
-    <br />
-    <h3 style="color:#1c536b">Status: </h3>
-    <select name="status" id="status">
-        @if (Model.isAdmin == true)
-        {
-            <option value="1" selected>Super Admin</option>
-            <option value="0">Account Manager</option>
-        }
-        else
-        {
-            <option value="1">Super Admin</option>
-            <option value="0" selected>Account Manager</option>
+    <div class="container-fluid viewbacks">
+        <h2 style="color:#1c536b">Admin User #@Model.id</h2> <br />
+        <div class="row">
+            <input type="hidden" value="@Model.id" name="UserId" />
+            <div class="col-6">
+                <h3 style="color:#1c536b">Name: </h3>
+                <input type="text" class="form-control" value="@Model.name" name="name" /> <br />
+            </div>
+            <div class="col-6">
+                <h3 style="color:#1c536b">Surname:</h3>
+                <input type="text" class="form-control" value="@Model.surname" name="surname"/> <br />
+            </div>
+            <div class="col-6">
+                <h3 style="color:#1c536b">Email:</h3>
+                <input type="text" class="form-control" value="@Model.email" name="email"/> <br />
+            </div>
+            <div class="col-6">
+                <h3 style="color:#1c536b">Status:</h3>
+                <select name="status" id="status" required class="form-control">
+                    @if (Model.isAdmin == true)
+                    {
+                        <option value="1" selected>Super Admin</option>
+                        <option value="0">Account Manager</option>
+                    }
+                    else
+                    {
+                        <option value="1">Super Admin</option>
+                        <option value="0" selected>Account Manager</option>
 
-        }
+                    }
 
 
-    </select>
-
-    <br />
-    <button style="background: #1c536b; border: #1c536b; margin-top: 35px;" type="submit" class="btn btn-primary">Save</button>
-
+                </select> <br />
+            </div>
+            <div class="col-12 text-center">
+                
+                <button style="background: #1c536b; border: #1c536b; margin-top: 35px;" type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
 </form>

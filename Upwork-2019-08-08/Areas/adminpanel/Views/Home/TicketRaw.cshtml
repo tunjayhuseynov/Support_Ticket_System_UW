@@ -11,7 +11,7 @@
          </button>-->
     </span>
 </h2>
-<table class="table table-bordered ">
+<table class="table table-bordered responsive " style="width: 100%">
     <thead class="tablecolor">
         <tr>
             <th scope="col">#</th>
@@ -55,7 +55,7 @@
                             break;
                     }
                 </td>
-                <td><a href="@Url.Action("ViewTicket","Home", new {id=item.id })" target="_blank">View Ticket</a></td>
+                <td class="text-center"><a href="@Url.Action("ViewTicket","Home", new {id=item.id })" target="_blank" title="View" class="maincolor"><i class="fas fa-eye "></i> </a></td>
                 <!-- <td></td> -->
 
             </tr>
@@ -130,6 +130,7 @@
 <script>
 
     $(".table").DataTable({
+        responsive: true,
         dom: 'lBfrtip',
         buttons: [
             'pdfHtml5', 'excel'

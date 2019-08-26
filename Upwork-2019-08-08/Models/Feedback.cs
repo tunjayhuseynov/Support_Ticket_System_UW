@@ -20,6 +20,7 @@ namespace Upwork_2019_08_08.Models
         public string name { get; set; }
         public string email { get; set; }
         public string subject { get; set; }
+        public string cellPhone { get; set; }
         public Client Client { get; set; }
 
     }

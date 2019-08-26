@@ -11,13 +11,14 @@
       </button>-->
 </span>
 </h2>
-<table class="table table-bordered  ">
+<table class="table table-bordered responsive" style="width: 100%">
     <thead class="tablecolor">
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">E-mail</th>
             <th scope="col">Subject</th>
+            <th scope="col">Cell Number</th>
             <th scope="col">Date</th>
             <th scope="col">Action</th>
         </tr>
@@ -32,8 +33,9 @@
                 <td>@item.name</td>
                 <td>@item.email</td>
                 <td>@item.subject</td>
+                <td>@item.cellPhone</td>
                 <td>@item.datetime.ToString("MMMM dd yyyy hh:mm")</td>
-                <td><a href="#Show" onclick="getMessage(@item.id)" data-target="#exampleModalCenter" data-toggle="modal">Show Message </a>| <a href="#Delete" onclick="deleteMessage(@item.id)"> Delete</a></td>
+                <td class="aPadding text-center"><a href="#Show" onclick="getMessage(@item.id)" data-target="#exampleModalCenter" class="maincolor" data-toggle="modal" title="Message"><i class="fas fa-eye "></i>  </a>| <a title="Delete" href="#Delete" class="maincolor" onclick="deleteMessage(@item.id)">  <i class="fas fa-trash-alt"></i></a></td>
             </tr>
         }
 
@@ -127,7 +129,7 @@
 <script>
 
     $(".table").DataTable(
-        {
+        {   responsive: true,
             dom: 'lBfrtip',
             buttons: [
                 'pdfHtml5', 'excel',
