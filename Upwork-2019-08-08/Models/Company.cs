@@ -21,7 +21,7 @@ namespace Upwork_2019_08_08.Models
         public bool? isActive { get; set; }
         public DateTime? activedate { get; set; }
         public int? lastModifiedBy { get; set; }
-
+        public bool? isDelete { get; set; }
 
         public Admin Admin { get; set; }
         

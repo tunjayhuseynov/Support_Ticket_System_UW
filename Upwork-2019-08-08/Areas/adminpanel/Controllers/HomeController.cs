@@ -254,7 +254,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         public IActionResult FeedbackRaw()
         {
             Task.Delay(500).Wait();
-            List<Feedback> feedbacks = _context.Feedbacks.OrderByDescending(w => w.datetime).ToList();
+            List<Feedback> feedbacks = _context.Feedbacks.Where(s=>s.isDelete != true).OrderByDescending(w => w.datetime).ToList();
             return View(feedbacks);
         }
 
@@ -268,7 +268,9 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
             {
-                _context.Feedbacks.Remove(_context.Feedbacks.Find(id));
+                Feedback feedback = _context.Feedbacks.Find(id);
+                feedback.isDelete = true;
+                _context.Feedbacks.Update(feedback);
                 _context.SaveChanges();
             }
 
@@ -410,11 +412,11 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
             {
-                departaments = _context.Companies.Include(w => w.Client).ToList();
+                departaments = _context.Companies.Include(w => w.Client).Where(s=>s.isDelete != true).ToList();
             }
             else if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                departaments = _context.AmAndDepartaments.Include(w => w.Company).Where(s => s.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault()).Select(a => a.Company).Include(a => a.Client).ToList();
+                departaments = _context.AmAndDepartaments.Include(w => w.Company).Where(s => s.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault()).Select(a => a.Company).Include(a => a.Client).Where(s=>s.isDelete != true).ToList();
 
             }
 
@@ -546,7 +548,9 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
             }
 
-            _context.Companies.Remove(_context.Companies.Find(id));
+            Company company = _context.Companies.Find(id);
+            company.isDelete = true;
+            _context.Companies.Update(company);
             _context.SaveChanges();
 
             return Content("Done");

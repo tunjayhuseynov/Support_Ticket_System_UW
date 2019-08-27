@@ -1,0 +1,428 @@
+body{
+    margin: 0;
+    position: relative;
+    background-color: #AAA;
+    height: 100vh;
+}
+
+
+
+.bckwhite{
+    background-color: white;
+}
+.web-navbar{
+height: 75px;
+}
+.menunav{
+    width: 100px;
+}
+.nav{
+    
+    position: absolute;
+    float: left;
+}
+
+.nav i{
+    font-size: 20px;
+}
+
+.menunav img{
+    max-height: 75px;
+    height: auto;
+}
+
+.nopadding{
+    margin: 0 -15px;
+}
+.semipadding{
+    margin: 0 -8px;
+}
+.layout-ul{
+    list-style-type: none;
+    padding-left: 0px;
+    background: #bdbdbd;
+}
+
+    .layout-ul > li {
+        padding: 15px 0;
+        border-bottom: .1px solid #d8d8d8;
+    }
+
+    .layout-ul > li:hover {
+        background-color: #1c536b;
+    }
+
+.layout-ul>li>a{
+    color: white;
+    text-decoration: none;
+}
+
+.main {
+    position: relative;
+    left: 100px;
+    top: 0;
+    width: calc(100% - 100px);
+    background-color: #ebebeb;
+}
+
+.mycard{
+    padding-top: 20px;
+    cursor: pointer;
+}
+
+
+#loading{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: white;
+    z-index: 4;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 16px);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.vertical-center-text {
+    margin: 0;
+    position: absolute;
+    top: 36%;
+    left: calc(50% - 357px);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.textpmodel {
+    position: absolute;
+    top: 170px;
+    padding: 0px 35px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.BodyPart{
+    height: calc(100vh - 75px);
+    background-color: rgb(235, 235, 235);
+}
+
+.Relative{
+    position: relative;
+}
+
+.ProfileMenu {
+    display: none;
+    position: absolute;
+    right: 0;
+    font-size: 14px;
+    width: 100%;
+    top: 50px;
+    z-index: 10;
+    padding: 0 0 0 10px;
+    background-color: #1c536b;
+}
+
+.ProfileMenu>ul{
+    font-weight: 500;
+    padding: 0;
+    color: white;
+    list-style-type: none;
+
+}
+
+    .ProfileMenu > ul > li {
+        padding-top: 10px;
+        cursor: pointer;
+        transition: all .5s ease;
+    }
+
+.ProfileMenu>ul>li:hover{
+   color: #ffed27;
+}
+
+.DisplayOn{
+    display: inline;
+}
+
+.logo{
+    height: 75px;
+}
+
+.loginBox {
+    box-shadow: -6px 5px 20px 0px #636363;
+    margin-top: 50px;
+    width: 100%;
+    background-color: white;
+}
+
+.loginImage {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.loginForm {
+    margin-top: 20px;
+    padding: 20px 70px;
+}
+
+    .loginForm i {
+        font-size: 30px;
+    }
+
+    .loginForm input {
+        margin: 10px 0;
+    }
+
+.loginTextColor {
+    color: rgb(80, 80, 80);
+}
+
+.tablecolor {
+    background-color: #1c536b;
+    color: white;
+}
+
+#pagination a {
+    color: black;
+}
+
+td {
+    word-break: break-all;
+    max-width: 150px;
+}
+
+.searchbox {
+    width: 200px;
+    float: right;
+}
+
+.maincolor {
+    color: #1c536b!important;
+}
+
+.activeRoute {
+    background-color: #1c536b;
+}
+
+#finished{
+    height: 230px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #1c536b !important;
+    color: white !important;
+    border: 1px solid #1c536b!important;
+}
+.paginate_button:hover {
+    background: #1c536b !important;
+}
+
+#DataTables_Table_0_paginate{
+    padding: 20px 0!important;
+}
+
+.pdfpadding{
+    margin-left: 20px;
+}
+.dt-buttons {
+    margin-left: 30px !important;
+}
+
+    .dt-buttons .buttons-html5 {
+        border: #1c536b !important;
+        background: #1c536b!important;
+    }
+    .dt-buttons .buttons-html5  span{
+        color: white;
+    }
+
+
+#btnMail p {
+    margin-bottom: 5px;
+}
+
+.card {
+    margin-bottom: 25px !important;
+   /* border: 2px solid #1c536b; */
+}
+
+#btnMail {
+    font-weight: 600 !important;
+    color: #1c536b!important;
+}
+
+.accordion > .card:first-of-type {
+   /* border-bottom: 2px solid #1c536b!important;*/
+}
+.apmenudrop{
+    list-style-type: none;
+    text-align: center;
+    font-size: 13px;
+    padding: 2px;
+}
+
+.apmenudrop li a{
+    color: white;
+}
+#sidemenubar {
+    display: none;
+    position: absolute;
+    left: 100px;
+    top: 0;
+    background-color: #1c536b;
+    padding: 25px 25px;
+    z-index: 10;
+}
+
+.parentsidemenu:hover #sidemenubar{
+    display: inline-block;
+}
+
+.select2-container--default {
+    width: 100% !important;
+}
+
+.txttype {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.statuscolor {
+    color: white;
+    text-align: center;
+}
+
+.statuspadding {
+    padding: 7px 20px;
+}
+
+.finishedone {
+    padding: 50px 0;
+    width: 97%;
+    background-color: palegreen;
+}
+
+.ticketinfo > li {
+    padding: 10px 0;
+    padding-left: 10px;
+}
+
+    .ticketinfo > li > p {
+        margin: 0;
+    }
+
+.ticketinfo {
+    list-style-type: none;
+    box-shadow: -13px 20px 20px 0px #3e3e3e29;
+    padding: 0;
+    border: .5px solid #00000030
+}
+
+.bckWhite {
+    background-color: white;
+}
+
+.bckGray {
+    background-color: #ebebeb;
+}
+
+.infobtn {
+    padding: 5px 30px;
+    background-color: #1c536b;
+    color: white;
+    border: none;
+    margin-left: 10px;
+}
+
+.MobileNav {
+    display: none;
+    position: absolute;
+    left: -150px;
+    top: 75px;
+    z-index: 10;
+    transition: left 1s ease;
+}
+
+    .MobileNav li {
+        padding: 20px;
+        padding-left: 35px;
+    }
+
+.mobiletab {
+    display: none;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    z-index: 15;
+}
+
+.circlemobile {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #1c536b
+}
+
+    .circlemobile i {
+        position: absolute;
+        left: calc(50% - 7px);
+        top: calc(50% - 8px);
+        color: white;
+    }
+.hidelogo{
+    display: none;
+}
+
+
+
+.aPadding a {
+    padding: 0 5px;
+    white-space: nowrap;
+}
+
+.viewback {
+    background-color: white;
+    padding: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .hidenav {
+        display: none;
+    }
+
+    .hidelogo{
+        display: inline;
+    }
+
+    .hidedesignlogo {
+        display: none;
+    }
+
+    .MobileNav {
+        display: inline;
+    }
+
+    .main {
+        left: 0;
+        width: 100%;
+    }
+
+    .mobiletab {
+        display: inline;
+    }
+
+    body {
+        background-color: rgb(235, 235, 235);
+    }
+
+    #sidemenubar{
+        margin-left: 42px;
+    }
+}

@@ -19,6 +19,7 @@ namespace Upwork_2019_08_08.Models
         public char status { get; set; }
         public DateTime datetime { get; set; }
         public int? departmentID { get; set; }
+        public bool? isDelete { get; set; }
 
 
         [ForeignKey("clientID")]

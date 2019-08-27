@@ -19,6 +19,7 @@ namespace Upwork_2019_08_08.Models
         public bool from { get; set; }
         public int fromID { get; set; }
 
+
         [ForeignKey("ticketID")]
         public Ticket Ticket { get; set; }
     }
