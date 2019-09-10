@@ -50,7 +50,7 @@
                     @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
                     {
                         <text>
-                            <a href="#inactive" onabort="ChangeActive(@item.id, @item.isActive)" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>
+                            <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>
                             |<a href="#" onclick="window.open('@Url.Action("EditClientUser","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i> </a>|
                             <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>
                         </text>
@@ -207,7 +207,7 @@
 
         var r;
 
-        if (status == true) {
+        if (status == "True") {
             r = confirm("Are you sure to make inactive the user?");
         } else {
             r = confirm("Are you sure to make active the user?");
@@ -215,8 +215,8 @@
         }
 
         if (r == true) {
-            $.get("/adminpanel/home/ChangeActivation/" + id, function () {
-                alert("Done!")
+            $.get("/adminpanel/home/ChangeActivationUser/" + id, function () {
+                alert("Done!")  
                 window.location.reload();
             })
         }

@@ -37,12 +37,19 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
         public IActionResult SignInProcess(string email, string password, string remember)
         {
+            
             if (_context.AdminUsers.Where(w => w.email == email.Trim()).Count() > 0)
             {
                 AdminUser admin = _context.AdminUsers.Where(w => w.email == email.Trim()).FirstOrDefault();
 
                 if (Hash.Validate(password.Trim(), admin.token, admin.password))
                 {
+                    if(admin.isActive == false)
+                    {
+                        HttpContext.Session.SetInt32("inactive", 1);
+                        return RedirectToAction("Index", "AdminSign");
+                    }
+
                     HttpContext.Session.SetInt32("AdminLogedIn", admin.id);
                     HttpContext.Session.SetString("fullname", admin.name + " " + admin.surname);
                     if (admin.whoIs == 1)

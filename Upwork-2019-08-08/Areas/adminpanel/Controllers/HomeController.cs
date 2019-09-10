@@ -216,7 +216,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 tickets = tickets.OrderByDescending(w => w.status).OrderByDescending(w => w.status == 'n').ToList();
             }
 
-            return View(tickets);
+            return View(tickets.Where(w=>w.isDeleted != true).ToList());
         }
 
         public IActionResult closeticket(int id)
@@ -331,7 +331,9 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
             {
-                _context.AdminUsers.Remove(_context.AdminUsers.Find(id));
+                AdminUser adminUser = _context.AdminUsers.Find(id);
+                adminUser.isDelete = true;
+                _context.AdminUsers.Update(adminUser);
                 _context.SaveChanges();
                 return Content("Done");
             }
@@ -420,7 +422,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
             }
 
-            return View(departaments);
+            return View(departaments.Where(w=> w.isDeleted != true).ToList());
         }
 
 
@@ -591,7 +593,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             List<ClientUser> clients = _context.ClientUsers.Where(w => w.companyID == id).ToList();
             ViewBag.name = _context.Companies.Find(id).name;
             ViewBag.id = id;
-            return View(clients);
+            return View(clients.Where(w=>w.isDeleted != true).ToList());
         }
 
         public IActionResult Deleteclientuser(int id)
@@ -604,7 +606,8 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             }
 
             ClientUser client = _context.ClientUsers.Find(id);
-            _context.ClientUsers.Remove(client);
+            client.isDeleted = true;
+            _context.ClientUsers.Update(client);
             _context.SaveChanges();
 
             return Content("Done");
@@ -683,5 +686,54 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
             return View(_context.AdminUsers.Find(id));
         }
+
+
+
+        //
+        //
+        //
+        // Change Activation of User
+
+        public IActionResult ChangeActivationUser(int id)
+        {
+            ClientUser client = _context.ClientUsers.Find(id);
+
+            client.isActive = client.isActive==true?false:true;
+
+            _context.ClientUsers.Update(client);
+            _context.SaveChanges();
+
+            return Content("Done");
+        }
+
+        public IActionResult ChangeActivationClient(int id)
+        {
+            Company company = _context.Companies.Find(id);
+            List<ClientUser> users = _context.ClientUsers.Where(w => w.companyID == id).ToList();
+            users.ForEach(delegate (ClientUser user)
+            {
+                user.isActive = company.isActive==true?false:true;
+                _context.ClientUsers.Update(user);
+            });
+            company.isActive = company.isActive==true?false:true;
+
+            _context.Companies.Update(company);
+            
+            _context.SaveChanges();
+
+            return Content("Done");
+        }
+
+        public IActionResult ChangeActivationAdmin(int id)
+        {
+            AdminUser admin = _context.AdminUsers.Find(id);
+            admin.isActive = admin.isActive==true?false:true;
+
+            _context.AdminUsers.Update(admin);
+            _context.SaveChanges();
+            return Content("Done");
+        }
+
+
     }
 }

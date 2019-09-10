@@ -46,6 +46,13 @@ namespace Upwork_2019_08_08.Controllers
 
                 if (Hash.Validate(password.Trim(), client.token, client.password))
                 {
+                    if(client.isActive == false)
+                    {
+                        HttpContext.Session.SetInt32("inactive", 1);
+
+                        return RedirectToAction("Index","Sign");
+                    }
+
                     HttpContext.Session.SetInt32("LogedIn", client.id);
 
                     LogHistorie logHistorie = new LogHistorie

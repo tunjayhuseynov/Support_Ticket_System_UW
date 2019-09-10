@@ -43,6 +43,14 @@
 
                                                 HttpContextAccessor.HttpContext.Session.Remove("AuthFailed");
                                             }
+                                            @if(HttpContextAccessor.HttpContext.Session.GetInt32("inactive") == 1){
+
+                                                <div class="alert alert-danger" role="alert">
+                                                    Your company subscription appears to be deactived. Please, contact your managment to resolve this futher
+                                                </div>
+
+                                                HttpContextAccessor.HttpContext.Session.Remove("inactive");
+                                            }
                                             <h5 style="font-weight:500;" class="loginTextColor">LOG IN</h5>
                                             <input required type="email" class="form-control" name="email" id="email" placeholder="E-mail Address">
                                             <input required data-validation-error-msg="Password must not be less than 6 characters" type="password" class="form-control" name="password" id="password" placeholder="Password">

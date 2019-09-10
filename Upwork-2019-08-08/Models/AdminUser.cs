@@ -19,6 +19,7 @@ namespace Upwork_2019_08_08.Models
         public string email { get; set; }
         public int? whoIs { get; set; }
         public bool? isDelete { get; set; }
+        public bool? isActive { get; set; }
 
         [ForeignKey("amID")]
         public ICollection<AmAndDepartament> amAndDepartament { get; set; }

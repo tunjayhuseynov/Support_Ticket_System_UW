@@ -52,6 +52,14 @@
 
                                                 HttpContextAccessor.HttpContext.Session.Remove("AuthFailed");
                                             }
+                                            @if(HttpContextAccessor.HttpContext.Session.GetInt32("inactive") == 1){
+                                                <div class="alert "alert-danger" role="alert">
+                                                    Your account is disabled. Please contact support to resolve the issue. 
+                                                </div>
+
+                                                HttpContextAccessor.HttpContext.Session.Remove("inactive");
+
+                                            }
                                             <h5 style="font-weight:500;" class="loginTextColor">Admin Panel</h5>
                                             <input required type="email" class="form-control" name="email" id="email" placeholder="E-mail Address">
                                             <input required type="password" class="form-control" name="password" id="password" placeholder="Password" data-validation="length" data-validation-length="min6">

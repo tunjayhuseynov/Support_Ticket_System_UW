@@ -28,6 +28,7 @@
             <th scope="col">Contact Person</th>
             <th scope="col">Adress</th>
             <th class="all" scope="col">User amount</th>
+            <th scope="col">Active/Inactive</th>
             <th scope="col">Action</th>
 
             <!-- <th>
@@ -49,15 +50,18 @@
                 <td>@item.contactperson</td>
                 <td>@item.address</td>
                 <td>@item.ClientUsers.Count</td>
+                <td>@if(item.isActive == true){<text>Active</text>}else{<text>Inactive</text>}</td>
                 <td class="aPadding text-center">
                     <a href="#" onclick="window.open('@Url.Action("ViewClient","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="View Client"><i class="fas fa-eye "></i> </a>|
                     @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
-                    {
-                        <text>
-                            <a href="#" onclick="window.open('@Url.Action("EditClient","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i> </a>|
-                            <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>|
-                        </text>
-                    }
+    {
+                <text>
+                    <a href="#" onclick="window.open('@Url.Action("EditClient","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i> </a>|
+                    <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>|
+
+                    <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>|
+                </text>
+}
                     <a href="@Url.Action("ClientsUserPage","Home", new { id=item.id })" class="maincolor" title="Users"> <i class="fas fa-users"></i></a>
 
                 </td>
@@ -221,12 +225,7 @@
     </div>
 </div>
 
-<script>
-
-
-
-
-    $(".table").DataTable({
+<script>$(".table").DataTable({
         responsive: true,
         dom: 'lBfrtip',
         buttons: [
@@ -267,7 +266,7 @@
 
         }
     };
-        
+
 
     var options2 = {
         success: function (responseText) {
@@ -312,4 +311,25 @@
 
     }
 
-</script>
+    function ChangeActive(id, status) {
+
+        var r;
+
+        if (status == "True") {
+            r = confirm("Are you sure to make inactive the user?");
+        } else {
+            r = confirm("Are you sure to make active the user?");
+
+        }
+
+        if (r == true) {
+            $.get("/adminpanel/home/ChangeActivationClient/" + id, function () {
+                alert("Done!")
+                window.location.reload();
+            })
+        }
+        else {
+
+        }
+
+    }</script>

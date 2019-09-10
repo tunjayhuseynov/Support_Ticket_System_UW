@@ -219,14 +219,15 @@
                                             }
                                             @if (files.Length > 0)
                                             {
-                                                <span>
-                                                    Attachments: @foreach (var itemfile in files)
-                                                    {
-                                                        <span> <a href="/files/@itemfile.Split('/').Last()" download>@itemfile.Split('/').Last()</a></span>
+                                                <text>Attachments:</text>
+                                                <span>   @foreach (var itemfile in files)
+                                                { @{string ext = itemfile.Split('/').Last().Split('.')[1]}
+                                                    @if(ext == "png" || ext == "jpg" || ext == "jpeg"){
+                                                        <a href="/files/@itemfile.Split('/').Last()" download>@itemfile.Split('/').Last()</a>
+                                                    }
 
                                                     }
-                                                </span>
-                                            }
+                                               </span>           }
                                         </p>}
                                 </div>
                             </div>

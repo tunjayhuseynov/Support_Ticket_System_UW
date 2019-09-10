@@ -1,0 +1,50 @@
+﻿<Properties StartupConfiguration="{05A8C44E-7162-4859-9F00-2BFD0B136F51}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Upwork-2019-08-08/Views/Home/ViewTicket.cshtml">
+    <Files>
+      <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/UsersRaw.cshtml" Line="76" Column="88" />
+      <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/ManageClients.cshtml" Line="60" Column="89" />
+      <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/ClientsUserPage.cshtml" Line="53" Column="97" />
+      <File FileName="Upwork-2019-08-08/Areas/adminpanel/Controllers/HomeController.cs" Line="715" Column="40" />
+      <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/TicketRaw.cshtml" Line="58" Column="118" />
+      <File FileName="Upwork-2019-08-08/Views/Home/TicketRaw.cshtml" Line="58" Column="119" />
+      <File FileName="Upwork-2019-08-08/Views/Home/ViewTicket.cshtml" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Upwork-2019-08-08" expanded="True">
+            <Node name="Upwork-2019-08-08" expanded="True">
+              <Node name="Areas" expanded="True">
+                <Node name="adminpanel" expanded="True">
+                  <Node name="Controllers" expanded="True" />
+                  <Node name="Views" expanded="True">
+                    <Node name="AdminSign" expanded="True" />
+                    <Node name="Home" expanded="True" />
+                  </Node>
+                </Node>
+              </Node>
+              <Node name="Controllers" expanded="True" />
+              <Node name="Data" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Home" expanded="True">
+                  <Node name="ViewTicket.cshtml" selected="True" />
+                </Node>
+                <Node name="Sign" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.Upwork-2019-08-08 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
