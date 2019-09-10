@@ -25,14 +25,14 @@ namespace Upwork_2019_08_08.Controllers
             token = token.Replace(" ", "+");
             if(who == 0)
             {
-                if(_context.Clients.Find(id).token != token)
+                if(_context.ClientUsers.Find(id).token != token)
                 {
                     return Content("Auth Failed");
                 }
             }
             else if(who == 1)
             {
-                if (_context.Admins.Find(id).token != token)
+                if (_context.ClientUsers.Find(id).token != token)
                 {
                     return Content("Auth Failed");
                 }
@@ -50,29 +50,29 @@ namespace Upwork_2019_08_08.Controllers
             token = token.Replace(" ", "+");
             if (who == 0)
             {
-                if (_context.Clients.Find(userid).token == token)
+                if (_context.ClientUsers.Find(userid).token == token)
                 {
                     var salt = Salt.Create();
                     var hash = Hash.Create(password, salt);
 
-                    Client client = _context.Clients.Find(userid);
+                    ClientUser client = _context.ClientUsers.Find(userid);
                     client.password = hash;
                     client.token = salt;
-                    _context.Clients.Update(client);
+                    _context.ClientUsers.Update(client);
                     _context.SaveChanges();
                 }
             }
             else if (who == 1)
             {
-                if (_context.Admins.Find(userid).token == token)
+                if (_context.AdminUsers.Find(userid).token == token)
                 {
                     var salt = Salt.Create();
                     var hash = Hash.Create(password, salt);
 
-                    Admin admin = _context.Admins.Find(userid);
+                    AdminUser admin = _context.AdminUsers.Find(userid);
                     admin.password = hash;
                     admin.token = salt;
-                    _context.Admins.Update(admin);
+                    _context.AdminUsers.Update(admin);
                     _context.SaveChanges();
                 }
             }

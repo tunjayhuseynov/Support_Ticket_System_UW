@@ -211,7 +211,7 @@ td {
 }
 
 #finished{
-    height: 230px;
+    height: 275px;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
@@ -303,6 +303,7 @@ td {
 }
 
 .finishedone {
+    top: 85px;
     padding: 50px 0;
     width: 97%;
     background-color: palegreen;

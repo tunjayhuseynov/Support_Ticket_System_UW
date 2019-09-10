@@ -91,23 +91,23 @@ namespace Upwork_2019_08_08.Controllers
         public IActionResult ViewTicket(int id)
         {
             List<string> names = new List<string>();
-            List<Message> messages = _context.Messages.Include(w=>w.Ticket.Client).Where(w => w.ticketID == id).ToList();
+            List<Message> messages = _context.Messages.Include(w=>w.Ticket.ClientUser).Where(w => w.ticketID == id).ToList();
 
             foreach (var item in messages)
             {
                 if(item.from == true)
                 {
-                    names.Add(item.Ticket.Client.name);
+                    names.Add(item.Ticket.ClientUser.name);
                 }
                 else
                 {
-                    names.Add(_context.Admins.Where(w => w.id == item.fromID).FirstOrDefault().name);
+                    names.Add(_context.AdminUsers.Where(w => w.id == item.fromID).FirstOrDefault().name);
                 }
             }
 
             ViewBag.names = names;
             ViewBag.ticket = _context.Tickets.Where(w => w.id == id).FirstOrDefault();
-            ViewBag.ClientName = _context.Clients.Where(w=> w.id == HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault(0)).FirstOrDefault().name;
+            ViewBag.ClientName = _context.ClientUsers.Where(w=> w.id == HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault(0)).FirstOrDefault().name;
             ViewBag.department = _context.Tickets.Include(w=>w.Department).Where(s=>s.id == id).FirstOrDefault().Department.name;
 
             if (HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault(0) == _context.Tickets.Where(w=> w.id == id).FirstOrDefault().clientID)
@@ -166,7 +166,7 @@ namespace Upwork_2019_08_08.Controllers
 
 
 
-            var email = _context.Clients.Find(HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault(0)).email;
+            var email = _context.ClientUsers.Find(HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault(0)).email;
 
 
             MimeMessage mailmessage = new MimeMessage();
@@ -191,7 +191,7 @@ namespace Upwork_2019_08_08.Controllers
             SmtpClient client = new SmtpClient();
             client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
             client.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
-            client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertun");
+            client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertuncay");
 
             client.Send(mailmessage);
             client.Disconnect(true);
@@ -338,8 +338,8 @@ namespace Upwork_2019_08_08.Controllers
             string email = String.Empty;
             string token = String.Empty;
 
-            email = _context.Clients.Find(id).email;
-            token = _context.Clients.Find(id).token;
+            email = _context.ClientUsers.Find(id).email;
+            token = _context.ClientUsers.Find(id).token;
 
 
 
@@ -378,7 +378,7 @@ namespace Upwork_2019_08_08.Controllers
         {
 
 
-            return View(_context.Clients.Find(id));
+            return View(_context.ClientUsers.Find(id));
         }
     }
 }

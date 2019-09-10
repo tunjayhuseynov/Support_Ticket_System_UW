@@ -48,17 +48,17 @@
                 <td>@item.name</td>
                 <td>@item.contactperson</td>
                 <td>@item.address</td>
-                <td>@item.Client.Count</td>
+                <td>@item.ClientUsers.Count</td>
                 <td class="aPadding text-center">
-                    <a href="@Url.Action("ViewClient","Home", new { id=item.id })" target="_blank" class="maincolor" title="View Client"><i class="fas fa-eye "></i> </a>|
+                    <a href="#" onclick="window.open('@Url.Action("ViewClient","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="View Client"><i class="fas fa-eye "></i> </a>|
                     @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
                     {
                         <text>
-                            <a href="@Url.Action("EditClient","Home", new { id=item.id })" target="_blank" class="maincolor" title="Edit"> <i class="fas fa-edit"></i> </a>|
+                            <a href="#" onclick="window.open('@Url.Action("EditClient","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i> </a>|
                             <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>|
                         </text>
                     }
-                    <a href="@Url.Action("ClientsUserPage","Home", new { id=item.id })" target="_blank" class="maincolor" title="Users"> <i class="fas fa-users"></i></a>
+                    <a href="@Url.Action("ClientsUserPage","Home", new { id=item.id })" class="maincolor" title="Users"> <i class="fas fa-users"></i></a>
 
                 </td>
                 <!-- <td></td> -->

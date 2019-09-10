@@ -12,7 +12,7 @@ namespace Upwork_2019_08_08.Models
         [Key]
         public int id { get; set; }
 
-        public  int clientID { get; set; }
+        public int clientID { get; set; }
 
         [Column("datetime")]
         public DateTime datetime { get; set; }
@@ -21,8 +21,9 @@ namespace Upwork_2019_08_08.Models
         public string email { get; set; }
         public string subject { get; set; }
         public string cellPhone { get; set; }
-        public bool? isDelete { get; set; }
-        public Client Client { get; set; }
+        public bool? isDeleted { get; set; }
+        [ForeignKey("clientID")]
+        public ClientUser ClientUser { get; set; }
 
     }
 }

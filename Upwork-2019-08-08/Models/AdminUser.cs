@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Upwork_2019_08_08.Models
 {
     // "Admins" table from DB
-    public class Admin
+    public class AdminUser
     {
         [Key]
         public int id { get; set; }
@@ -17,7 +17,7 @@ namespace Upwork_2019_08_08.Models
         public string password { get; set; }
         public string token { get; set; }
         public string email { get; set; }
-        public bool isAdmin { get; set; }
+        public int? whoIs { get; set; }
         public bool? isDelete { get; set; }
 
         [ForeignKey("amID")]
@@ -27,6 +27,9 @@ namespace Upwork_2019_08_08.Models
         public ICollection<Company> Departament { get; set; }
 
         [ForeignKey("createdBy")]
-        public ICollection<Client> Client { get; set; }
+        public ICollection<ClientUser> ClientUsers { get; set; }
+
+        [ForeignKey("whoIs")]
+        public AdminRole AdminRole { get; set; }
     }
 }

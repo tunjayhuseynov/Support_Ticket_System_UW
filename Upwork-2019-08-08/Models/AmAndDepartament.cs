@@ -19,6 +19,6 @@ namespace Upwork_2019_08_08.Models
 
         [ForeignKey("departamentID")]
         public Company Company { get; set; }
-        public Admin Admin { get; set; }
+        public AdminUser AdminUser { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Upwork_2019_08_08.Models
 {
     // "Clients" table from DB
-    public class Client
+    public class ClientUser
     {
     
         public int id { get; set; }
@@ -22,16 +22,17 @@ namespace Upwork_2019_08_08.Models
         public bool? isActive { get; set; }
         public int? lastModifiedBy { get; set; }
         public int? companyID { get; set; }
+        public bool? isDeleted { get; set; }
 
 
-        public Admin Admin { get; set; }
+        public AdminUser AdminUser { get; set; }
         public Company Company { get; set; }
 
 
         public ICollection<LogHistorie> LogHistorie { get; set; }
         public ICollection<Feedback> Feedback { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
-        public ICollection<DepartamentUser> DepartamentUsers { get; set; }
+
 
 
 

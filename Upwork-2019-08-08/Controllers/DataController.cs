@@ -51,7 +51,7 @@ namespace Upwork_2019_08_08.Controllers
             int recordsTotal = 0;
 
             // Getting all Customer data    
-            var customerData = (from tempcustomer in _context.LogHistories.Include(w=>w.Client)
+            var customerData = (from tempcustomer in _context.LogHistories.Include(w=>w.ClientUser)
                                 select tempcustomer);
 
             //Sorting    
@@ -62,7 +62,7 @@ namespace Upwork_2019_08_08.Controllers
             //Search    
             if (!string.IsNullOrEmpty(searchValue))
             {
-                customerData = customerData.Where(m => m.Client.name == searchValue);
+                customerData = customerData.Where(m => m.ClientUser.name == searchValue);
             }
 
             //total number of rows count     

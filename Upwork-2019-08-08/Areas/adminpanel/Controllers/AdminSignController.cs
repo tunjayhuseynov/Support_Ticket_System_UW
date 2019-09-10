@@ -37,15 +37,15 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
         public IActionResult SignInProcess(string email, string password, string remember)
         {
-            if (_context.Admins.Where(w => w.email == email.Trim()).Count() > 0)
+            if (_context.AdminUsers.Where(w => w.email == email.Trim()).Count() > 0)
             {
-                Admin admin = _context.Admins.Where(w => w.email == email.Trim()).FirstOrDefault();
+                AdminUser admin = _context.AdminUsers.Where(w => w.email == email.Trim()).FirstOrDefault();
 
                 if (Hash.Validate(password.Trim(), admin.token, admin.password))
                 {
                     HttpContext.Session.SetInt32("AdminLogedIn", admin.id);
                     HttpContext.Session.SetString("fullname", admin.name + " " + admin.surname);
-                    if (admin.isAdmin)
+                    if (admin.whoIs == 1)
                     {
                         HttpContext.Session.SetInt32("isAdmin", 1);
                     }
@@ -66,7 +66,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
         public IActionResult SignUpProcess(string name, string surname, string email, string password)
         {
-            if (_context.Admins.Where(w => w.email == email.Trim()).Count() > 0)
+            if (_context.AdminUsers.Where(w => w.email == email.Trim()).Count() > 0)
             {
                 HttpContext.Session.SetInt32("Exist", 1);
                 return RedirectToAction("SignUp", "AdminSign");
@@ -74,20 +74,20 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             var salt = Salt.Create();
             var hash = Hash.Create(password.Trim(), salt);
 
-            Admin admin = new Admin
+            AdminUser admin = new AdminUser
             {
                 name = name,
                 surname = surname,
                 email = email.Trim(),
                 password = hash,
                 token = salt,
-                isAdmin = true,
+                whoIs = 1,
             };
 
-            _context.Admins.Add(admin);
+            _context.AdminUsers.Add(admin);
             _context.SaveChanges();
 
-            HttpContext.Session.SetInt32("AdminLogedIn", _context.Admins.Where(w => w.email == email).FirstOrDefault().id);
+            HttpContext.Session.SetInt32("AdminLogedIn", _context.AdminUsers.Where(w => w.email == email).FirstOrDefault().id);
             HttpContext.Session.SetString("fullname", admin.name + " " + admin.surname);
 
             return RedirectToAction("Index", "Home");
@@ -99,14 +99,14 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         }
         public IActionResult Reseting(string emailform)
         {
-            if (_context.Admins.Where(w => w.email == emailform).Any())
+            if (_context.AdminUsers.Where(w => w.email == emailform).Any())
             {
-                int id = _context.Admins.Where(w => w.email == emailform).FirstOrDefault().id;
+                int id = _context.AdminUsers.Where(w => w.email == emailform).FirstOrDefault().id;
                 string email = String.Empty;
                 string token = String.Empty;
 
-                email = _context.Admins.Find(id).email;
-                token = _context.Admins.Find(id).token;
+                email = _context.AdminUsers.Find(id).email;
+                token = _context.AdminUsers.Find(id).token;
 
 
 

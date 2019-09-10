@@ -21,14 +21,13 @@ namespace Upwork_2019_08_08.Models
         public bool? isActive { get; set; }
         public DateTime? activedate { get; set; }
         public int? lastModifiedBy { get; set; }
-        public bool? isDelete { get; set; }
+        public bool? isDeleted { get; set; }
 
-        public Admin Admin { get; set; }
+        public AdminUser AdminUser { get; set; }
         
         public ICollection<AmAndDepartament> amAndDepartament { get; set; }
        
-        public ICollection<DepartamentUser> DepartamentUser { get; set; }
-        public ICollection<Client> Client { get; set; }
+        public ICollection<ClientUser> ClientUsers { get; set; }
 
 
     }

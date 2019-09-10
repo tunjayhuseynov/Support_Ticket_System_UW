@@ -14,30 +14,28 @@ namespace Upwork_2019_08_08.Data
             
         }
 
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<ClientUser> ClientUsers { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<LogHistorie> LogHistories { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<Admin> Admins { get; set; }
+        public DbSet<AdminUser> AdminUsers { get; set; }
         public DbSet<AmAndDepartament> AmAndDepartaments { get; set; }
-        public DbSet<DepartamentUser> DepartamentUsers { get; set; }
-        public DbSet<AmUser> AmUsers { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<AdminRole> AdminRoles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Client>().ToTable("Clients");
+            modelBuilder.Entity<ClientUser>().ToTable("ClientUsers");
             modelBuilder.Entity<Department>().ToTable("Departments");
+            modelBuilder.Entity<AdminRole>().ToTable("AdminRoles");
             modelBuilder.Entity<Company>().ToTable("Companies");
             modelBuilder.Entity<Feedback>().ToTable("Feedbacks");
             modelBuilder.Entity<LogHistorie>().ToTable("LogHistories");
             modelBuilder.Entity<Ticket>().ToTable("Tickets");
             modelBuilder.Entity<Message>().ToTable("Messages");
-            modelBuilder.Entity<Admin>().ToTable("Admins");
+            modelBuilder.Entity<AdminUser>().ToTable("AdminUsers");
             modelBuilder.Entity<AmAndDepartament>().ToTable("AmAndDepartaments");
-            modelBuilder.Entity<DepartamentUser>().ToTable("DepartamentUsers");
-            modelBuilder.Entity<AmUser>().ToTable("AmUsers");
         }
     }
 }

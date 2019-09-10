@@ -40,9 +40,9 @@ namespace Upwork_2019_08_08.Controllers
         [HttpPost]
         public IActionResult SignInProcess(string email, string password, string remember)
         {
-            if(_context.Clients.Where(w=> w.email == email.Trim()).Count() > 0)
+            if(_context.ClientUsers.Where(w=> w.email == email.Trim()).Count() > 0)
             {
-                Client client = _context.Clients.Where(w => w.email == email.Trim()).FirstOrDefault();
+                ClientUser client = _context.ClientUsers.Where(w => w.email == email.Trim()).FirstOrDefault();
 
                 if (Hash.Validate(password.Trim(), client.token, client.password))
                 {
@@ -78,7 +78,7 @@ namespace Upwork_2019_08_08.Controllers
         [HttpPost]
         public IActionResult SignUpProcess(string name, string surname, string email, string password, int departmentID)
         {
-            if(_context.Clients.Where(w=> w.email == email.Trim()).Count() > 0)
+            if(_context.ClientUsers.Where(w=> w.email == email.Trim()).Count() > 0)
             {
                 HttpContext.Session.SetInt32("Exist", 1);
                 return RedirectToAction("SignUp", "Sign");
@@ -86,7 +86,7 @@ namespace Upwork_2019_08_08.Controllers
             var salt = Salt.Create();
             var hash = Hash.Create(password, salt);
 
-            Client client = new Client
+            ClientUser client = new ClientUser
             {
                 name = name,
                 surname = surname,
@@ -95,10 +95,10 @@ namespace Upwork_2019_08_08.Controllers
                 token = salt
             };
 
-            _context.Clients.Add(client);
+            _context.ClientUsers.Add(client);
             _context.SaveChanges();
 
-            HttpContext.Session.SetInt32("LogedIn", _context.Clients.Where(w => w.email == email).FirstOrDefault().id);
+            HttpContext.Session.SetInt32("LogedIn", _context.ClientUsers.Where(w => w.email == email).FirstOrDefault().id);
             HttpContext.Session.SetString("fullname", client.name + " " + client.surname);
 
             return RedirectToAction("Index","Home");
@@ -126,14 +126,14 @@ namespace Upwork_2019_08_08.Controllers
         }
         public IActionResult Reseting(string emailform)
         {
-            if(_context.Clients.Where(w=> w.email == emailform).Any())
+            if(_context.ClientUsers.Where(w=> w.email == emailform).Any())
             {
-                int id = _context.Clients.Where(w => w.email == emailform).FirstOrDefault().id;
+                int id = _context.ClientUsers.Where(w => w.email == emailform).FirstOrDefault().id;
                 string email = String.Empty;
                 string token = String.Empty;
 
-                email = _context.Clients.Find(id).email;
-                token = _context.Clients.Find(id).token;
+                email = _context.ClientUsers.Find(id).email;
+                token = _context.ClientUsers.Find(id).token;
 
 
 
