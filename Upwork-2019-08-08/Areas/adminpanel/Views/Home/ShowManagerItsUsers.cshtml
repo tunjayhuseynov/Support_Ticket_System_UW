@@ -1,0 +1,78 @@
+﻿@model List<Upwork_2019_08_08.Models.ClientUser>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    Layout = "~/Areas/adminpanel/Views/Shared/_Layout.cshtml";
+}
+
+<h2>
+    Users <span>
+        <button type="button"
+                class="btn txttype" data-toggle="modal" data-target="#exampleModalCenterUser">
+            <i style="color:#1c536b" class="fas fa-plus-square"> </i> New User
+        </button>
+    </span>
+</h2>
+<table class="table table-bordered responsive " style="width: 100%">
+    <thead class="tablecolor">
+        <tr>
+            <th data-priority="1" class="all" scope="col">#</th>
+            <th data-priority="2" class="all" scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Email</th>
+            <th scope="col">Active/Inactive</th>
+            <th data-priority="3" class="all" scope="col">Action</th>
+
+            <!-- <th>
+                <input class="form-control searchbox" type="text" placeholder="Search"
+                       aria-label="Search">
+
+            </th>-->
+        </tr>
+    </thead>
+    <tbody class="bckwhite">
+
+        @{ int index = 0;}
+        @foreach (var item in Model)
+        {
+            index++;
+            <tr>
+                <th scope="row">@index.ToString()</th>
+                <td>@item.name</td>
+                <td>@item.surname</td>
+                <td>@item.email</td>
+                <td>
+                    @if (item.isActive == true)
+                    {<span>Active</span> }
+                    else
+                    { <span>Inactive</span>}
+                </td>
+                <td class="aPadding text-center">
+                    <a href="#" onclick="window.open('@Url.Action("ViewClientUser","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="View"><i class="fas fa-eye "></i>  </a>
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
+                    {
+                        <text>
+                            <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>
+                            |<a href="#" onclick="window.open('@Url.Action("EditClientUser","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i> </a>|
+                            <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>
+                        </text>
+                    }
+
+                </td>
+                <!-- <td></td> -->
+
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<script>
+        $(".table").DataTable({
+        responsive: true,
+        dom: 'lBfrtip',
+        buttons: [
+            'pdfHtml5', 'excel'
+        ]
+    });
+</script>

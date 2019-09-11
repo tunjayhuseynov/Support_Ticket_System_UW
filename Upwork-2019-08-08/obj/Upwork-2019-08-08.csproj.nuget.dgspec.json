@@ -1,28 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "/Users/tuncayhuseynov/Desktop/upwork/Upwork-2019-08-08/Upwork-2019-08-08.csproj": {}
+    "C:\\Users\\tunca\\source\\repos\\Upwork-2019-08-08\\Upwork-2019-08-08\\Upwork-2019-08-08.csproj": {}
   },
   "projects": {
-    "/Users/tuncayhuseynov/Desktop/upwork/Upwork-2019-08-08/Upwork-2019-08-08.csproj": {
+    "C:\\Users\\tunca\\source\\repos\\Upwork-2019-08-08\\Upwork-2019-08-08\\Upwork-2019-08-08.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/tuncayhuseynov/Desktop/upwork/Upwork-2019-08-08/Upwork-2019-08-08.csproj",
+        "projectUniqueName": "C:\\Users\\tunca\\source\\repos\\Upwork-2019-08-08\\Upwork-2019-08-08\\Upwork-2019-08-08.csproj",
         "projectName": "Upwork-2019-08-08",
-        "projectPath": "/Users/tuncayhuseynov/Desktop/upwork/Upwork-2019-08-08/Upwork-2019-08-08.csproj",
-        "packagesPath": "/Users/tuncayhuseynov/.nuget/packages/",
-        "outputPath": "/Users/tuncayhuseynov/Desktop/upwork/Upwork-2019-08-08/obj/",
+        "projectPath": "C:\\Users\\tunca\\source\\repos\\Upwork-2019-08-08\\Upwork-2019-08-08\\Upwork-2019-08-08.csproj",
+        "packagesPath": "C:\\Users\\tunca\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tunca\\source\\repos\\Upwork-2019-08-08\\Upwork-2019-08-08\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/Users/tuncayhuseynov/.config/NuGet/NuGet.Config"
+          "C:\\Users\\tunca\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\tunca\\OneDrive\\Desktop": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

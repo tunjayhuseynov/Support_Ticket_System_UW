@@ -60,25 +60,34 @@
                 {<text>Inactive</text>}</td>
                 <td class="aPadding text-center">
 
-                   <a href="#" onclick="window.open('@Url.Action("ViewUser", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="View"><i class="fas fa-eye "></i>  </a>
+                    <a href="#" onclick="window.open('@Url.Action("ViewUser", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="View"><i class="fas fa-eye "></i>  </a>
 
-                   @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
-                   {
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
+                    {
 
-               <text>
+                        <text>
 
-                   |
+                            |
 
-                   <a href="#" onclick="window.open('@Url.Action("EditUser", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i>  </a>|
+                            <a href="#" onclick="window.open('@Url.Action("EditUser", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i>  </a>|
 
-                   <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>|
+                            <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>|
 
-                   <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>|
-                   <a href="#" onclick="window.open('@Url.Action("ResetPassword", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Reset Password"><i class="fas fa-cog"></i></a></text>
+                            <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>|
+                            <a href="#" onclick="window.open('@Url.Action("ResetPassword", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Reset Password"><i class="fas fa-cog"></i></a>|
+                        </text>
+                        if (item.whoIs != 1)
+                        {
+                            <a href="#" onclick="window.open('@Url.Action("ShowManagerItsUsers", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Users"><i class="fas fa-users"></i></a>
+                        }
+                        else
+                        {
+                            <a href="#" class="maincolor" style="color: gray!important" title="Users"><i class="fas fa-users"></i></a>
+                        }
 
-                   }
+                    }
 
-               </td>
+                </td>
                 <!-- <td></td> -->
 
             </tr>

@@ -368,6 +368,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                     password = hash,
                     token = salt,
                     whoIs = role == 1 ? 1 : 2,
+                    isActive = true
                 };
 
                 _context.AdminUsers.Add(admin);
@@ -732,6 +733,22 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             _context.AdminUsers.Update(admin);
             _context.SaveChanges();
             return Content("Done");
+        }
+
+        public IActionResult ShowManagerItsUsers(int id)
+        {
+            List<AmAndDepartament> amAndDepartament = _context.AmAndDepartaments.Where(w => w.amID == id).ToList();
+
+            List<ClientUser> users = new List<ClientUser>();
+
+            foreach (var item in amAndDepartament)
+            {
+                List<ClientUser> user = _context.ClientUsers.Where(w => w.companyID == item.departamentID).ToList();
+
+                users.AddRange(user);
+            }
+
+            return View(users);
         }
 
 

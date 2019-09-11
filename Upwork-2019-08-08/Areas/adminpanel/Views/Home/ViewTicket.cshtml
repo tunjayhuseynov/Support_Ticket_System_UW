@@ -153,13 +153,27 @@
                                     }
                                     @if (files.Length > 0)
                                     {
-                                        <span>
-                                            Attachments: @foreach (var item in files)
-                                            {
-                                                <span> <a href="/files/@item.Split('/').Last()" download>@item.Split('/').Last()</a></span>
+                                 <span>
+                                     Attachments: @foreach (var item in files)
+                                     {
+                                         string ext = item.Split('/').Last().Split('.').Last();
+                                         if (ext == "png" || ext == "jpg" || ext == "jpeg")
+                                         {
+                                             <a href="/files/@item.Split('/').Last()" download class="maincolor"><i class="far fa-image"></i> Image</a>
+                                         }
+                                         else if (ext == "doc")
+                                         {
+                                             <a href="/files/@item.Split('/').Last()" download class="maincolor"><i class="fas fa-file-word"></i> Word</a>
 
-                                            }
-                                        </span>
+                                         }
+                                         else
+                                         {
+                                             <a href="/files/@item.Split('/').Last()" download class="maincolor"><i class="fas fa-file-word"></i> Pdf</a>
+
+                                         }
+
+                                     }
+                                 </span>
                                     }
                                 </p>}
                         </div>
@@ -219,13 +233,27 @@
                                             }
                                             @if (files.Length > 0)
                                             {
-                                                <span>
-                                                    Attachments: @foreach (var itemfile in files)
-                                                    {
-                                                        <span> <a href="/files/@itemfile.Split('/').Last()" download>@itemfile.Split('/').Last()</a></span>
+                                         <span>
+                                             Attachments: @foreach (var itemfile in files)
+                                             {
+                                                 string ext = itemfile.Split('/').Last().Split('.').Last();
+                                                 if (ext == "png" || ext == "jpg" || ext == "jpeg")
+                                                 {
+                                                     <a href="/files/@itemfile.Split('/').Last()" download class="maincolor"><i class="far fa-image"></i> Image</a>
+                                                 }
+                                                 else if (ext == "doc")
+                                                 {
+                                                     <a href="/files/@itemfile.Split('/').Last()" download class="maincolor"><i class="fas fa-file-word"></i> Word</a>
 
-                                                    }
-                                                </span>
+                                                 }
+                                                 else
+                                                 {
+                                                     <a href="/files/@itemfile.Split('/').Last()" download class="maincolor"><i class="fas fa-file-word"></i> Pdf</a>
+
+                                                 }
+
+                                             }
+                                         </span>
                                             }
                                         </p>}
                                 </div>
