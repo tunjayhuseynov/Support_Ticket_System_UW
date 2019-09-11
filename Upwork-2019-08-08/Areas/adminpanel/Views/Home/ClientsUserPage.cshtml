@@ -46,15 +46,15 @@
                 { <span>Active</span> }
                 else { <span>Inactive</span> }</td>
                 <td class="aPadding text-center">
-                    <a href="#" onclick="window.open('@Url.Action("ViewClientUser","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="View"><i class="fas fa-eye "></i>  </a>
+                    <a href="#" data-toggle="modal" data-target="#exampleModal" onclick="getLinkForFrame('@Url.Action("ViewClientUser","Home", new { id=item.id })', 'View')" class="maincolor" title="View"><i class="fas fa-eye "></i>  </a>
                     @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
-                    {
-                        <text>
-                            <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>
-                            |<a href="#" onclick="window.open('@Url.Action("EditClientUser","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i> </a>|
-                            <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>
-                        </text>
-                    }
+    {@* @Url.Action("EditClientUser","Home", new { id=item.id })*@
+                <text>
+                    <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>
+                    |<a href="#" onclick="getLinkForFrame('@Url.Action("EditClientUser","Home", new { id=item.id })', 'Edit')" class="maincolor" data-toggle="modal" data-target="#exampleModal" title="Edit"> <i class="fas fa-edit"></i> </a>|
+                    <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>
+                </text>
+}
 
                 </td>
                 <!-- <td></td> -->
@@ -64,6 +64,33 @@
 
     </tbody>
 </table>
+
+<!--Edit View Model-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 603px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin: -22px -15px;">       
+                <div id="rf" class="spinner-grow" role="status">
+                      <span class="sr-only">Loading...</span>
+                </div>
+                <iframe id="MyFrame" scrolling="no" src="" width="600" height="600" style="border: none;"></iframe>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--End of the Edit View Modal-->
+
 
 
 <div class="modal fade" id="exampleModalCenterUser" tabindex="-1" role="dialog"
@@ -144,16 +171,30 @@
         </div>
     </div>
 </div>
-<script>
-
-
-    $(".table").DataTable({
+<script>$(".table").DataTable({
         responsive: true,
         dom: 'lBfrtip',
         buttons: [
             'pdfHtml5', 'excel'
         ]
     });
+
+    var getIframe = document.getElementById("MyFrame");
+
+    function getLinkForFrame(link, type) {
+        $("#rf").show();
+        $("#exampleModalLabel").html(type)
+        getIframe.src = link;
+        
+        getIframe.addEventListener("load", function () {
+            var $body = $('#MyFrame').contents().find('body')
+            $body.find(".web-navbar").remove()
+            $body.find(".mobiletab").remove()
+            $("#rf").hide()
+        })
+
+    }
+
 
 
     //history.replaceState("", "Random", "/adminpanel");
@@ -216,7 +257,7 @@
 
         if (r == true) {
             $.get("/adminpanel/home/ChangeActivationUser/" + id, function () {
-                alert("Done!")  
+                alert("Done!")
                 window.location.reload();
             })
         }
@@ -224,7 +265,4 @@
 
         }
 
-    }
-
-
-</script>
+    }</script>
