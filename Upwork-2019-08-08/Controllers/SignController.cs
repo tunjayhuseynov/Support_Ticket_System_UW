@@ -13,6 +13,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using System.Net.Http.Headers;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace Upwork_2019_08_08.Controllers
 {
@@ -42,13 +43,21 @@ namespace Upwork_2019_08_08.Controllers
         {
             if(_context.ClientUsers.Where(w=> w.email == email.Trim()).Count() > 0)
             {
-                ClientUser client = _context.ClientUsers.Where(w => w.email == email.Trim()).FirstOrDefault();
+                ClientUser client = _context.ClientUsers.Include(s=>s.Company).Where(w => w.email == email.Trim()).FirstOrDefault();
 
                 if (Hash.Validate(password.Trim(), client.token, client.password))
                 {
                     if(client.isActive == false)
                     {
-                        HttpContext.Session.SetInt32("inactive", 1);
+                        if(client.Company.isActive == false)
+                        {
+                            HttpContext.Session.SetInt32("inactive", 1);
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetInt32("inactive", 2);
+
+                        }
 
                         return RedirectToAction("Index","Sign");
                     }

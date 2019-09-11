@@ -50,6 +50,13 @@
                                                 </div>
 
                                                 HttpContextAccessor.HttpContext.Session.Remove("inactive");
+                                            }else if(HttpContextAccessor.HttpContext.Session.GetInt32("inactive") == 2){
+
+                                                <div class="alert alert-danger" role="alert">
+                                                    Your account appears to be deactived. Please, contact Talent Index to resolve this futher
+                                                </div>
+
+                                                HttpContextAccessor.HttpContext.Session.Remove("inactive");
                                             }
                                             <h5 style="font-weight:500;" class="loginTextColor">LOG IN</h5>
                                             <input required type="email" class="form-control" name="email" id="email" placeholder="E-mail Address">

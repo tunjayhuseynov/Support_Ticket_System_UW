@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{05A8C44E-7162-4859-9F00-2BFD0B136F51}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Upwork-2019-08-08/wwwroot/static/css/style.css">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Upwork-2019-08-08/Areas/adminpanel/Controllers/AdminSignController.cs">
     <Files>
-      <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/ClientsUserPage.cshtml" Line="80" Column="2" />
+      <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/ClientsUserPage.cshtml" Line="49" Column="80" />
       <File FileName="Upwork-2019-08-08/Areas/adminpanel/Controllers/HomeController.cs" />
       <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/EditClientUser.cshtml" Line="17" Column="35" />
       <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/TicketRaw.cshtml" />
@@ -9,7 +9,10 @@
       <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Shared/_Layout.cshtml" Line="1" Column="1" />
       <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/EditClient.cshtml" Line="1" Column="1" />
       <File FileName="Upwork-2019-08-08/Areas/adminpanel/Views/Home/EditUser.cshtml" Line="1" Column="1" />
-      <File FileName="Upwork-2019-08-08/wwwroot/static/css/style.css" Line="428" Column="6" />
+      <File FileName="Upwork-2019-08-08/wwwroot/static/css/style.css" Line="394" Column="2" />
+      <File FileName="Upwork-2019-08-08/Controllers/SignController.cs" Line="58" Column="71" />
+      <File FileName="Upwork-2019-08-08/Views/Sign/Index.cshtml" Line="51" Column="1" />
+      <File FileName="Upwork-2019-08-08/Areas/adminpanel/Controllers/AdminSignController.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,7 +21,9 @@
             <Node name="Upwork-2019-08-08" expanded="True">
               <Node name="Areas" expanded="True">
                 <Node name="adminpanel" expanded="True">
-                  <Node name="Controllers" expanded="True" />
+                  <Node name="Controllers" expanded="True">
+                    <Node name="AdminSignController.cs" selected="True" />
+                  </Node>
                   <Node name="Views" expanded="True">
                     <Node name="AdminSign" expanded="True" />
                     <Node name="Home" expanded="True" />
@@ -34,9 +39,7 @@
               </Node>
               <Node name="wwwroot" expanded="True">
                 <Node name="static" expanded="True">
-                  <Node name="css" expanded="True">
-                    <Node name="style.css" selected="True" />
-                  </Node>
+                  <Node name="css" expanded="True" />
                 </Node>
               </Node>
             </Node>
