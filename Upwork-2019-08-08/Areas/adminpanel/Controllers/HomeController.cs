@@ -183,7 +183,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 SmtpClient client = new SmtpClient();
                 client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
                 client.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
-                client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertun");
+                client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertuncay");
 
                 client.Send(mailmessage);
                 client.Disconnect(true);
@@ -202,7 +202,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             int? id = HttpContext.Session.GetInt32("isAdmin");
             if (id == 1)
             {
-                tickets = _context.Tickets.Include(s=>s.ClientUser.Company).OrderByDescending(w => w.status).OrderByDescending(w => w.status == 'n').ToList();
+                tickets = _context.Tickets.Include(s=>s.ClientUser.Company).Include(q=>q.Department).OrderByDescending(w => w.status).OrderByDescending(w => w.datetime).OrderByDescending(w => w.status == 'n').ToList();
             }
             else if (id == 0)
             {
@@ -211,9 +211,9 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
                 foreach (var item in DepartamentID)
                 {
-                    tickets.AddRange(_context.Tickets.Include(s => s.ClientUser.Company).Where(w => w.ClientUser.companyID == item).ToList());
+                    tickets.AddRange(_context.Tickets.Include(s => s.ClientUser.Company).Include(q => q.Department).Where(w => w.ClientUser.companyID == item).ToList());
                 }
-                tickets = tickets.OrderByDescending(w => w.status).OrderByDescending(w => w.status == 'n').ToList();
+                tickets = tickets.OrderByDescending(w => w.status).OrderByDescending(w => w.datetime).OrderByDescending(w => w.status == 'n').ToList();
             }
 
             return View(tickets.Where(w=>w.isDeleted != true).ToList());
@@ -343,7 +343,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
 
         [HttpPost]
-        public IActionResult AddAdminUser(string name, string surname, string email, string password, int role, int[] users)
+        public IActionResult AddAdminUser(string name, string surname, string email, string password, string cell, int role, int[] users)
         {
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
             {
@@ -368,7 +368,8 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                     password = hash,
                     token = salt,
                     whoIs = role == 1 ? 1 : 2,
-                    isActive = true
+                    isActive = true,
+                    cellNumber = cell,
                 };
 
                 _context.AdminUsers.Add(admin);
@@ -415,11 +416,11 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 
             if (HttpContext.Session.GetInt32("isAdmin") == 1)
             {
-                departaments = _context.Companies.Include(w => w.ClientUsers).Where(s=>s.isDeleted != true).ToList();
+                departaments = _context.Companies.Include(w => w.ClientUsers).Include(s=>s.AdminUser).Where(s=>s.isDeleted != true).ToList();
             }
             else if (HttpContext.Session.GetInt32("isAdmin") == 0)
             {
-                departaments = _context.AmAndDepartaments.Include(w => w.Company).Where(s => s.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault()).Select(a => a.Company).Include(a => a.ClientUsers).Where(s=>s.isDeleted != true).ToList();
+                departaments = _context.AmAndDepartaments.Include(w => w.Company).Where(s => s.amID == HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault()).Select(a => a.Company).Include(a => a.ClientUsers).Include(s=>s.AdminUser).Where(s=>s.isDeleted != true).ToList();
 
             }
 
@@ -443,6 +444,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 isActive = true,
                 createdDate = DateTime.Now,
                 createdBy = HttpContext.Session.GetInt32("AdminLogedIn").GetValueOrDefault(),
+                isDeleted = false,
 
             };
 
@@ -517,7 +519,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             SmtpClient client = new SmtpClient();
             client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
             client.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
-            client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertun");
+            client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertuncay");
 
             client.Send(message);
             client.Disconnect(true);
@@ -752,5 +754,52 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         }
 
 
+        public IActionResult ServiceRequest()
+        {
+            Task.Delay(500).Wait();
+
+
+            List<ServiceRequest> serviceRequests = new List<ServiceRequest>();
+
+
+            if (HttpContext.Session.GetInt32("isAdmin") == 0)
+            {
+                List<Company> department = _context.AmAndDepartaments.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(a=>a.Company).ToList();
+                foreach (var item in department)
+                {
+                    serviceRequests.AddRange(_context.ServiceRequests.Include(w=>w.ClientUser).Include(a=>a.Responses).Where(w => w.ClientUser.companyID == item.id).ToList());
+                }
+            }
+            else if(HttpContext.Session.GetInt32("isAdmin") == 1)
+            {
+                serviceRequests = _context.ServiceRequests.Include(w=>w.ClientUser).Include(a=>a.Responses).ToList();
+            }
+
+            foreach (var item in serviceRequests.Where(w=>w.status == 'n').ToList())
+            {
+                if (_context.Responses.Select(s=>s.serviceRequestId).ToList().Contains(item.id))
+                {
+                    item.status = (char)Status.Closed;
+                    _context.ServiceRequests.Update(item);
+                    _context.SaveChanges();
+                }
+            }
+
+            return View(serviceRequests);
+        }
+
+        public IActionResult GetDetails(int id)
+        {
+            List<ServiceRequest> services = _context.ServiceRequests.Where(w => w.id == id).ToList();
+            List<Detail> details = new List<Detail>();
+
+            foreach (var item in services)
+            {
+                details.AddRange(_context.Details.Include(s => s.serviceType).Where(w => w.serviceRequestId == item.id).ToList());
+            }
+            return Json(new { number = details.Select(w => w.idNumber), servicename = details.Select(w => w.serviceType.name) });
+        }
+
     }
+
 }

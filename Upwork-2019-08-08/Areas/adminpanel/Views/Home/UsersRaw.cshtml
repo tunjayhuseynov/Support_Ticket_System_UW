@@ -23,9 +23,10 @@
             <th scope="col">Name</th>
             <th scope="col">Surname</th>
             <th scope="col">Email</th>
+            <th scope="col">Cell Number</th>
             <th scope="col">Role</th>
-            <th scope="col">Active/Inactive</th>
-            <th scope="col">Action</th>
+            <th scope="col">Activity</th>
+            <th scope="col" style="width: 230px;">Action</th>
 
             <!-- <th>
                 <input class="form-control searchbox" type="text" placeholder="Search"
@@ -46,6 +47,7 @@
                 <td>@item.name</td>
                 <td>@item.surname</td>
                 <td>@item.email </td>
+                <td>@item.cellNumber</td>
                 <td>
                     @if (@item.whoIs == 1)
                     {
@@ -54,51 +56,80 @@
                     else
                     { <text>Account Manager</text>}
                 </td>
-                <td>@if (item.isActive == true)
-                {<text>Active</text>}
+                <td>
+                    @if (item.isActive == true)
+                    {<text>Active</text>}
                 else
-                {<text>Inactive</text>}</td>
-                <td class="aPadding text-center">
+                {<text>Inactive</text>}
+            </td>
+            <td class="aPadding text-center">
 
-                    <a href="#" onclick="window.open('@Url.Action("ViewUser", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="View"><i class="fas fa-eye "></i>  </a>
+                <a href="#" data-toggle="modal" data-target="#exampleModal" onclick="getLinkForFrame('@Url.Action("ViewUser","Home", new { id=item.id })', 'View')" class="maincolor" title="View"><i class="fas fa-eye "></i>  </a>
 
-                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
+                @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
+                {
+
+                    <text>
+
+                        |
+
+                        <a href="#" data-toggle="modal" data-target="#exampleModal" onclick="getLinkForFrame('@Url.Action("EditUser","Home", new { id=item.id })', 'Edit')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i>  </a>|
+
+                        <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>|
+
+                        <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>|
+                        <a href="#" onclick="window.open('@Url.Action("ResetPassword", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Reset Password"><i class="fas fa-cog"></i></a>|
+                    </text>
+                    if (item.whoIs != 1)
                     {
-
-                        <text>
-
-                            |
-
-                            <a href="#" onclick="window.open('@Url.Action("EditUser", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i>  </a>|
-
-                            <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>|
-
-                            <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>|
-                            <a href="#" onclick="window.open('@Url.Action("ResetPassword", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Reset Password"><i class="fas fa-cog"></i></a>|
-                        </text>
-                        if (item.whoIs != 1)
-                        {
-                            <a href="#" onclick="window.open('@Url.Action("ShowManagerItsUsers", "Home", new { id = item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Users"><i class="fas fa-users"></i></a>
-                        }
-                        else
-                        {
-                            <a href="#" class="maincolor" style="color: gray!important" title="Users"><i class="fas fa-users"></i></a>
-                        }
-
+                        <a href="#" data-toggle="modal" data-target="#exampleModal" onclick="getLinkForFrame('@Url.Action("ShowManagerItsUsers","Home", new { id=item.id })', 'Users')" class="maincolor" title="Users"><i class="fas fa-users"></i></a>
+                    }
+                    else
+                    {
+                        <a href="#" class="maincolor" style="color: gray!important" title="Users"><i class="fas fa-users"></i></a>
                     }
 
-                </td>
-                <!-- <td></td> -->
+                }
 
-            </tr>
-                       
-                   
-        }
+            </td>
+            <!-- <td></td> -->
 
-                      
+        </tr>
+
+
+    }
+
+
 
     </tbody>
 </table>
+
+
+<!--Edit View Model-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 603px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin: -22px -15px;">
+                <div id="rf" class="spinner-grow" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <iframe id="MyFrame" scrolling="auto" src="" width="600" height="600" style="border: none;"></iframe>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--End of the Edit View Modal-->
 
 @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
 {
@@ -147,7 +178,13 @@
                                         <input type="password" class="form-control" name="password" required /> <br />
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-6">
+                                    <div class="semipadding">
+                                        <label for="cell" style="font-size: 20px;">Cell Number:</label> <br />
+                                        <input type="text" class="form-control" name="cell" required /> <br />
+                                    </div>
+                                </div>
+                                <div class="col-6">
                                     <div class="semipadding">
                                         <select id="RoleSelection" name="role" class="form-control" required>
                                             <option disabled selected value="">Role</option>
@@ -192,90 +229,139 @@
 
 }
 
-    <script>$('.js-example-basic-multiple').select2({
-            placeholder: "Select users"
+<script>
+    $('.js-example-basic-multiple').select2({
+        placeholder: "Select users"
 
-        });
+    });
 
-        $('.select2-container--default').hide()
+    $('.select2-container--default').hide()
 
 
-        $("#RoleSelection").change(function () {
-            if ($(this).val() == 0) {
-                $(".select2-container--default").show()
-            } else {
-                $(".select2-container--default").hide()
-                $('.js-example-basic-multiple').val(null).trigger('change');
+    $("#RoleSelection").change(function () {
+        if ($(this).val() == 0) {
+            $(".select2-container--default").show()
+        } else {
+            $(".select2-container--default").hide()
+            $('.js-example-basic-multiple').val(null).trigger('change');
 
-            }
+        }
+    })
+
+    $(".table").DataTable({
+        responsive: true,
+        dom: 'lBfrtip',
+        buttons: [
+                                    {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ,6]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ,6]
+                }
+            },
+        ]
+    });
+    history.replaceState("", "Random", "/adminpanel");
+
+
+        var getIframe = document.getElementById("MyFrame");
+
+    function getLinkForFrame(link, type) {
+        getIframe.style.visibility = "hidden"
+        $("#rf").show();
+        $("#exampleModalLabel").html(type)
+        getIframe.src = link;
+
+        getIframe.addEventListener("load", function () {
+            getIframe.style.visibility = "visible"
+            var $body = $('#MyFrame').contents().find('body')
+            $body.find(".web-navbar").remove()
+            $body.find(".mobiletab").remove()
+            $("#rf").hide()
         })
 
-        $(".table").DataTable({
-            responsive: true,
-            dom: 'lBfrtip',
-            buttons: [
-                'pdfHtml5', 'excel'
-            ]
-        });
-        history.replaceState("", "Random", "/adminpanel");
+    }
 
 
-        $(".loadingModel").hide();
-        $("#finished").hide();
+    $(".loadingModel").hide();
+    $("#finished").hide();
 
-        var options = {
-            success: function () {
+    var options = {
+        success: function () {
 
-                $('#exampleModalCenter').modal('hide')
-                $('#exampleModalCenter').on('hidden.bs.modal', function (e) {
-                    $("#adminusermenu").click()
-                })
+            $('#exampleModalCenter').modal('hide')
+            $('#exampleModalCenter').on('hidden.bs.modal', function (e) {
+                $("#adminusermenu").click()
+            })
 
-            },
-            beforeSubmit: function (arr, $form, options) {
+        },
+        beforeSubmit: function (arr, $form, options) {
 
-                $("#submiting").click(() => $(".loadingModel").show())
+            $("#submiting").click(() => $(".loadingModel").show())
 
-            }
-        };
+        }
+    };
 
-        $('#addAction').ajaxForm(options);
+    $('#addAction').ajaxForm(options);
 
-        function myFunction(id) {
 
-            var r = confirm("Are you sure to delete the user?");
+            var getIframe = document.getElementById("MyFrame");
 
-            if (r == true) {
-                $.get("/adminpanel/home/DeleteUser/" + id, function () {
-                    $("#adminusermenu").click()
-                    alert("Done!")
-                })
-            }
-            else {
+    function getLinkForFrame(link, type) {
+        $("#rf").show();
+        $("#exampleModalLabel").html(type)
+        getIframe.src = link;
+        
+        getIframe.addEventListener("load", function () {
+            var $body = $('#MyFrame').contents().find('body')
+            $body.find(".web-navbar").remove()
+            $body.find(".mobiletab").remove()
+            $("#rf").hide()
+        })
 
-            }
+    }
+
+
+    function myFunction(id) {
+
+        var r = confirm("Are you sure to delete the user?");
+
+        if (r == true) {
+            $.get("/adminpanel/home/DeleteUser/" + id, function () {
+                $("#adminusermenu").click()
+                alert("Done!")
+            })
+        }
+        else {
 
         }
 
-        function ChangeActive(id, status) {
+    }
 
-            var r;
+    function ChangeActive(id, status) {
 
-            if (status == "True") {
-                r = confirm("Are you sure to make inactive the user?");
-            } else {
-                r = confirm("Are you sure to make active the user?");
+        var r;
 
-            }
+        if (status == "True") {
+            r = confirm("Are you sure to make inactive the user?");
+        } else {
+            r = confirm("Are you sure to make active the user?");
 
-            if (r == true) {
-                $.get("/adminpanel/home/ChangeActivationAdmin/" + id, function () {
-                    alert("Done!")
-                    window.location.reload();
-                })
-            }
-            else {
+        }
 
-            }
+        if (r == true) {
+            $.get("/adminpanel/home/ChangeActivationAdmin/" + id, function () {
+                alert("Done!")
+                $("#adminusermenu").click()
+            })
+        }
+        else {
 
-        }</script>
+        }
+
+    }</script>

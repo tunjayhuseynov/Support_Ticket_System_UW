@@ -1,0 +1,147 @@
+﻿@model List<Upwork_2019_08_08.Models.ServiceRequest>
+@{
+    Layout = null;
+}
+
+<h2>
+    Service Requests
+</h2>
+<table class="table table-bordered responsive" style="width: 100%">
+    <thead class="tablecolor">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Client Name</th>
+            <th scope="col">IDs Amount</th>
+            <th scope="col">Created Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+
+
+        </tr>
+    </thead>
+    <tbody class="bckwhite">
+
+        @{ int index = 0;}
+        @foreach (var item in Model)
+        {
+            index++;
+            <tr>
+                <th scope="row">@index.ToString()</th>
+                <td>@item.ClientUser.name</td>
+                <td>@item.noOfIds</td>
+                <td>@item.createdTime.ToString("MMMM dd yyyy hh:mm")</td>
+                <td class="statuscolor statuspadding ">
+                    @switch (item.status)
+                    {
+                        case 'n':
+                            <div style="background-color: red"><span style="font-weight: 700">New</span></div>
+                            break;
+                        case 'c':
+                            <div class="" style="background-color: green"><span style="font-weight: 700">Closed</span></div>
+                            break;
+                    }
+                </td>
+                <td class="text-center">
+
+                    <a data-toggle="modal" onclick="getDetails(@item.id)" data-target="#exampleModal" href="#" class="maincolor" title="View"><i class="fas fa-eye "></i> </a>
+                    @if (item.Responses.Any())
+                    {
+                        <text>|
+                            <a href="//@item.Responses.First().reportLink" class="maincolor" title="Result"><i class="fas fa-copy"></i>></a>
+                        </text>}
+                </td>
+
+
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<!--Edit View Model-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 603px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ID List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+
+                <div class="container-fluid">
+                    <div class="row" id="inmodal">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--End of the Edit View Modal-->
+
+<script>
+
+    $(".table").DataTable({
+        responsive: true,
+        dom: 'lBfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4]
+                }
+            },
+
+        ]
+    });
+    history.replaceState("", "Random", "/adminpanel");
+
+        function getDetails(id) {
+        $.getJSON("/adminpanel/Home/GetDetails/" + id, function (data) {
+            var numbers = [];
+            var names = [];
+              $.each( data, function( key, val ) {
+                  if (key == "number") {
+                      numbers = val;
+                  } else if (key == "servicename") {
+                      names = val
+                  }
+
+
+              });
+
+            
+                  $("#inmodal").html(" ")
+                  for (var i = 0; i < numbers.length; i++) {
+                      $("#inmodal").append(`
+
+                            <div class="col-2" style="margin-top: 8px"> <h5>ID #${i+1}:</h5></div>
+                            <div class="col-6">
+                                <input required disabled name="ids[]" value="${numbers[i]}" class="form-control" type="text" /> <br />
+                            </div>
+                            <div class="col-4">
+                                <select required disabled class="custom-select" name="types[]">
+                                    <option selected disabled>${names[i]}</option>
+
+
+                                </select>
+                            </div>
+`)
+                  }
+
+        })
+    }
+
+</script>

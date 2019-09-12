@@ -56,46 +56,27 @@
                     }
                 </td>
                 <td class="text-center"><a href="@Url.Action("ViewTicket","Home", new { id=item.id })" class="maincolor"  title="View Ticket"><i class="fas fa-eye "></i> </a></td>
-                <!-- <td></td> -->
 
             </tr>
         }
 
     </tbody>
 </table>
-<!--
-<nav aria-label="..." id="pagination">
-    <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-            <span class="page-link">Previous</span>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active" aria-current="page">
-            <span class="page-link" style="background-color: #1c536b; border-color: #1c536b">
-                2
-                <span class="sr-only">(current)</span>
-            </span>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-        </li>
-    </ul>
-    -->
+
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 736px!important;" role="document">
         <div class="modal-content">
             <div id="finished">
                 <div class="d-flex justify-content-center vertical-center-text finishedone">
-                    <h3>Ticket Created <i style="color: green;" class="far fa-check-circle"></i></h3>
+                    <h3 id="res">Ticket Created <i style="color: green;" class="far fa-check-circle"></i></h3>
                 </div>
                 <p class="textpmodel">
 
                     Your ticket has been successfully created. An email has been sent to your address with the ticket information. If you would like to view this ticket now you can do so.
 
                 </p>
-                <button class="btn btn-primary" style="position: absolute; top: 225px; left: calc(50% - 38px);" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary" style="position: absolute; top: 225px; left: calc(50% - 38px);" data-dismiss="modal">Done</button>
             </div>
             <div class="modal-header model-header-success">
                 <h5 class="modal-title" id="exampleModalLongTitle">Add Ticket</h5>
@@ -185,7 +166,19 @@
         responsive: true,
         dom: 'lBfrtip',
         buttons: [
-            'pdfHtml5', 'excel'
+                        {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                }
+            },
+     
         ]
     });
     history.replaceState("", "Random", "/");
@@ -210,6 +203,7 @@
                     $("#finished").show()
 
             //$('#exampleModalCenter').modal('hide')
+            $("#res").html("Ticket #" + responseText + " Created")
 
             $('#exampleModalCenter').on('hidden.bs.modal', function (e) {
                 $("#ticketmenu").click()

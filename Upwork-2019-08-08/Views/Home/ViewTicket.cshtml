@@ -110,7 +110,9 @@
                                             <div class="col-12">
                                                 <input type="hidden" value="@ViewBag.ticket.id" name="ticketid" />
                                                 <label for="files" style="font-size: 20px;">Attachments:</label> <br />
-                                                <input type="file" id="file" accept=".pdf, .doc, .jpeg, .png, .jpg" class="form-control-file" name="files" multiple /> <br />
+                                                <input type="file" id="file" accept=".pdf, .doc, .jpeg, .png, .jpg" class="form-control-file" name="files" multiple /> 
+                                                <h6 style="padding-top: 12px; font-size: 12px; padding-bottom: 12px; color: #4e4e4e;">*Accepted files are .pdf, .doc, .jpeg, .png, .jpg formats and each file must not be more than 2 Mb</h6>
+
                                             </div>
                                             <div class="col-12 text-center">
                                                 <button type="submit" id="submiting" class="btn btn-primary">Reply</button>
@@ -155,9 +157,9 @@
                                     {
                                  <span>
                                      Attachments: @foreach (var item in files)
-                                     {
-                                         string ext = item.Split('/').Last().Split('.').Last();
-                                         if (ext == "png" || ext == "jpg" || ext == "jpeg")
+                                     { <p>
+                                         @{string ext = item.Split('/').Last().Split('.').Last();}
+                                         @if (ext == "png" || ext == "jpg" || ext == "jpeg")
                                          {
                                              <a href="/files/@item.Split('/').Last()" download class="maincolor"><i class="far fa-image"></i> Image</a>
                                          }
@@ -168,11 +170,11 @@
                                          }
                                          else
                                          {
-                                             <a href="/files/@item.Split('/').Last()" download class="maincolor"><i class="fas fa-file-word"></i> Pdf</a>
+                                             <a href="/files/@item.Split('/').Last()" download class="maincolor"><i class="fas fa-file-pdf"></i> Pdf</a>
 
                                          }
 
-
+                                       </p>
                                      }
                                  </span>
                                     }
@@ -237,9 +239,9 @@
                                                 <text>Attachments:</text>
                                          <span>
                                              @foreach (var itemfile in files)
-                                             {
-                                                 string ext = itemfile.Split('/').Last().Split('.')[1];
-                                                 if (ext == "png" || ext == "jpg" || ext == "jpeg")
+                                             { <p>
+                                                 @{string ext = itemfile.Split('/').Last().Split('.')[1];}
+                                                 @if (ext == "png" || ext == "jpg" || ext == "jpeg")
                                                  {
                                                      <a href="/files/@itemfile.Split('/').Last()" download class="maincolor"><i class="far fa-image"></i>Image</a>
                                                  }
@@ -250,10 +252,10 @@
                                                  }
                                                  else
                                                  {
-                                                     <a href="/files/@itemfile.Split('/').Last()" download class="maincolor"><i class="fas fa-file-word"></i> Pdf</a>
+                                                     <a href="/files/@itemfile.Split('/').Last()" download class="maincolor"><i class="fas fa-file-pdf"></i> Pdf</a>
 
                                                  }
-
+                                              </p>
                                              }
                                          </span>           }
                                         </p>}

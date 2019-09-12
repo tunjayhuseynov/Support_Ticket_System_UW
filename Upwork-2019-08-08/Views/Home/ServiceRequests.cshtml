@@ -1,0 +1,269 @@
+﻿@model List<Upwork_2019_08_08.Models.ServiceRequest>
+
+@{
+    Layout = null;
+}
+
+<h2>
+    Service Requests <span>
+        <button type="button"
+                class="btn txttype" data-toggle="modal" data-target="#exampleModalCenter">
+            <i style="color:#1c536b" class="fas fa-plus-square"> </i> Request
+        </button>
+    </span>
+</h2>
+<table class="table table-bordered responsive" style="width: 100%">
+    <thead class="tablecolor">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">IDs Amount</th>
+            <th scope="col">Created Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody class="bckwhite">
+
+        @{ int index = 0;}
+        @foreach (var item in Model)
+        {
+            index++;
+        <tr>
+            <th scope="row">@index.ToString()</th>
+            <td>@item.noOfIds</td>
+            <td>@item.createdTime.ToString("MMMM dd yyyy hh:mm")</td>
+            <td class="statuscolor statuspadding ">
+                @switch (item.status)
+                {
+                    case 'n':
+                        <div style="background-color: red"><span style="font-weight: 700">New</span></div>
+                        break;
+                    case 'c':
+                        <div class="" style="background-color: green"><span style="font-weight: 700">Closed</span></div>
+                        break;
+                }
+            </td>
+            <td class="text-center">
+                <a data-toggle="modal" data-target="#exampleModal" href="#" onclick="getDetails(@item.id)" class="maincolor" title="View"><i class="fas fa-eye "></i> </a>
+                @if (item.Responses.Any())
+                {
+                    <text>|
+                        <a href="//@item.Responses.First().reportLink" class="maincolor" title="Result"><i class="fas fa-copy"></i></a>
+                    </text>
+                }
+            </td>
+        </tr>
+        }
+
+    </tbody>
+</table>
+
+<!--Edit View Model-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 603px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ID List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container-fluid">
+                    <div class="row" id="inmodal">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--End of the Edit View Modal-->
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 736px!important;" role="document">
+        <div class="modal-content">
+            <div id="finished">
+                <div class="d-flex justify-content-center vertical-center-text finishedone">
+                    <h3 id="res">Ticket Created <i style="color: green;" class="far fa-check-circle"></i></h3>
+                </div>
+                <p class="textpmodel">
+
+                    Your request has been successfully created. An email has been sent to your address with the request information. If you would like to view this request, now you can do so.
+
+                </p>
+                <button class="btn btn-primary" style="position: absolute; top: 225px; left: calc(50% - 38px);" data-dismiss="modal">Done</button>
+            </div>
+            <div class="modal-header model-header-success">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="addAction" action="@Url.Action("AddServiceRequest", "Home")" method="post">
+
+                <div class="modal-body">
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="semipadding">
+                                    <button id="addText" class="btn btn-info">Add ID text</button>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="semipadding" id="formtexts">
+                                    <label for="id" style="font-size: 20px;">Id:</label><br>
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <input required name="ids[]" class="form-control" type="text" /> <br />
+                                        </div>
+                                        <div class="col-4">
+                                            <select required class="custom-select" name="types[]">
+                                                <option selected disabled>Select</option>
+                                                @foreach (var item in ViewBag.type)
+                                                {
+                                                    <option value="@item.id">@item.name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="submiting" class="btn btn-primary">Add</button>
+                </div>
+                <div id="loading" class="loadingModel">
+                    <div class="d-flex justify-content-center vertical-center ">
+                        <div class="spinner-grow" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $("#addText").click(function (e) {
+        e.preventDefault()
+        $("#formtexts").append(`<div class="row" style="position: relative; margin-bottom: 25px;"> <div class="col-8"> <input required name="ids[]" class="form-control" type="text" /> <i onclick="RemoveInput(this)" class="fas fa-minus-circle" style="color: red;  position: absolute; font-size: 20px; right: 21px; top: 0; margin-top: 10px;"></i> </div>  <div class="col-4"> <select required class="custom-select" name="types[]">
+      <option selected disabled>Select</option>
+         @foreach (var item in ViewBag.type)
+{
+                <option value="@item.id">@item.name</option>
+}
+                   </select>
+                  </div> <br /></div>`);
+    })
+
+    function RemoveInput(element) {
+        $(element).parent().parent().remove();
+    }
+
+    $(".table").DataTable({
+        responsive: true,
+        dom: 'lBfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [0,1,2,3,4]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4 ]
+                }
+            },
+
+        ]
+    });
+    history.replaceState("", "Random", "/");
+
+
+    $(".loadingModel").hide();
+    $("#finished").hide();
+
+    var options = {
+        success: function (responseText) {
+
+            $(".loadingModel").hide();
+            $(".model-header-success").hide();
+            $("#addAction").hide()
+            $("#finished").show()
+
+            //$('#exampleModalCenter').modal('hide')
+            $("#res").html("Request #" + responseText + " Created")
+
+            $('#exampleModalCenter').on('hidden.bs.modal', function (e) {
+                $("#servicerequestmenu").click()
+            })
+
+        },
+        beforeSubmit: function (arr, $form, options) {
+            $(".loadingModel").show();
+
+        }
+    };
+
+    $('#addAction').ajaxForm(options);
+
+
+    function getDetails(id) {
+        $.getJSON("/Home/GetDetails/" + id, function (data) {
+            var numbers = [];
+            var names = [];
+              $.each( data, function( key, val ) {
+                  if (key == "number") {
+                      numbers = val;
+                  } else if (key == "servicename") {
+                      names = val
+                  }
+
+
+              });
+
+            
+                  $("#inmodal").html(" ")
+                  for (var i = 0; i < numbers.length; i++) {
+                      $("#inmodal").append(`
+
+                            <div class="col-2" style="margin-top: 8px"> <h5>ID #${i+1}:</h5></div>
+                            <div class="col-6">
+                                <input required disabled name="ids[]" value="${numbers[i]}" class="form-control" type="text" /> <br />
+                            </div>
+                            <div class="col-4">
+                                <select required disabled class="custom-select" name="types[]">
+                                    <option selected disabled>${names[i]}</option>
+
+
+                                </select>
+                            </div>
+`)
+                  }
+
+        })
+    }
+
+
+</script>

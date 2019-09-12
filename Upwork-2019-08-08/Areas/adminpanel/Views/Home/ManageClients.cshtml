@@ -12,24 +12,27 @@
             <button type="button"
                     class="btn txttype" data-toggle="modal" data-target="#exampleModalCenter">
                 <i style="color:#1c536b" class="fas fa-plus-square"> </i> New Client
-            </button> }
-            <button type="button"
-                    class="btn txttype" data-toggle="modal" data-target="#exampleModalCenterUser">
-                <i style="color:#1c536b" class="fas fa-plus-square"> </i> New User
-            </button>
-       
+            </button>}
+        <button type="button"
+                class="btn txttype" data-toggle="modal" data-target="#exampleModalCenterUser">
+            <i style="color:#1c536b" class="fas fa-plus-square"> </i> New User
+        </button>
+
     </span>
 </h2>
 <table class="table table-bordered responsive " style="width: 100%">
     <thead class="tablecolor">
         <tr>
             <th data-priority="1" class="all" scope="col">#</th>
-            <th data-priority="2" class="all" scope="col">Company Name</th>
-            <th scope="col">Contact Person</th>
+            <th data-priority="2" class="all" scope="col">Company</th>
+            <th scope="col">Contact</th>
             <th scope="col">Adress</th>
-            <th class="all" scope="col">User amount</th>
-            <th scope="col">Active/Inactive</th>
-            <th scope="col">Action</th>
+            <th scope="col">E-mail</th>
+            <th class="all" scope="col">User #</th>
+            <th scope="col">Created Date</th>
+            <th scope="col">Created By</th>
+            <th scope="col">Activity</th>
+            <th scope="col" style="width: 200px;">Action</th>
 
             <!-- <th>
                 <input class="form-control searchbox" type="text" placeholder="Search"
@@ -49,29 +52,63 @@
                 <td>@item.name</td>
                 <td>@item.contactperson</td>
                 <td>@item.address</td>
+                <td>@item.email</td>
                 <td>@item.ClientUsers.Count</td>
-                <td>@if(item.isActive == true){<text>Active</text>}else{<text>Inactive</text>}</td>
-                <td class="aPadding text-center">
-                    <a href="#" onclick="window.open('@Url.Action("ViewClient","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="View Client"><i class="fas fa-eye "></i> </a>|
-                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
-    {
-                <text>
-                    <a href="#" onclick="window.open('@Url.Action("EditClient","Home", new { id=item.id })','Pop Up','width=600,height=400')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i> </a>|
-                    <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>|
+                <td>@item.createdDate.Value.ToString("MMMM dd yyyy hh:mm")</td>
+                <td>@item.AdminUser.name</td>
+                <td>
+                    @if (item.isActive == true)
+                    {<text>Active</text>}
+                else
+                {<text>Inactive</text>}
+            </td>
+            <td class="aPadding text-center">
+                <a href="#" data-toggle="modal" data-target="#exampleModal" onclick="getLinkForFrame('@Url.Action("ViewClient","Home", new { id=item.id })', 'View')" class="maincolor" title="View Client"><i class="fas fa-eye "></i> </a>|
+                @if (HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
+                {
+                    <text>
+                        <a href="# " data-toggle="modal" data-target="#exampleModal" onclick="getLinkForFrame('@Url.Action("EditClient","Home", new { id=item.id })', 'Edit')" class="maincolor" title="Edit"> <i class="fas fa-edit"></i> </a>|
+                        <a href="#inactive" onclick="ChangeActive(@item.id, '@item.isActive')" class="maincolor" title="Active/Inactive"> <i class="fas fa-user-lock"></i> </a>|
 
-                    <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>|
-                </text>
-}
-                    <a href="@Url.Action("ClientsUserPage","Home", new { id=item.id })" class="maincolor" title="Users"> <i class="fas fa-users"></i></a>
+                        <a href="#delete" onclick="myFunction(@item.id)" class="maincolor" title="Delete"> <i class="fas fa-trash-alt"></i> </a>|
+                    </text>
+                }
+                <a href="@Url.Action("ClientsUserPage","Home", new { id=item.id })" class="maincolor" title="Users"> <i class="fas fa-users"></i></a>
 
-                </td>
-                <!-- <td></td> -->
+            </td>
+            <!-- <td></td> -->
 
-            </tr>
-        }
+        </tr>
+    }
 
     </tbody>
 </table>
+
+<!--Edit View Model-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 603px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin: -22px -15px;">
+                <div id="rf" class="spinner-grow" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <iframe id="MyFrame" scrolling="no" src="" width="600" height="600" style="border: none;"></iframe>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--End of the Edit View Modal-->
 
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -225,11 +262,23 @@
     </div>
 </div>
 
-<script>$(".table").DataTable({
+<script>
+    $(".table").DataTable({
         responsive: true,
         dom: 'lBfrtip',
         buttons: [
-            'pdfHtml5', 'excel'
+                                    {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ,6,7,8]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ,6,7,8]
+                }
+            },
         ]
     });
 
@@ -237,6 +286,26 @@
         placeholder: "Select users"
 
     });
+
+
+    var getIframe = document.getElementById("MyFrame");
+
+    function getLinkForFrame(link, type) {
+        getIframe.style.visibility = "hidden"
+        $("#rf").show();
+        $("#exampleModalLabel").html(type)
+        getIframe.src = link;
+
+        getIframe.addEventListener("load", function () {
+            getIframe.style.visibility = "visible"
+            var $body = $('#MyFrame').contents().find('body')
+            $body.find(".web-navbar").remove()
+            $body.find(".mobiletab").remove()
+            $("#rf").hide()
+        })
+
+    }
+
 
     history.replaceState("", "Random", "/adminpanel");
 

@@ -24,6 +24,11 @@ namespace Upwork_2019_08_08.Data
         public DbSet<AmAndDepartament> AmAndDepartaments { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<AdminRole> AdminRoles { get; set; }
+        public DbSet<ServiceRequest> ServiceRequests { get; set; }
+        public DbSet<Detail> Details { get; set; }
+        public DbSet<ServiceType> ServiceTypes { get; set; }
+        public DbSet<Response> Responses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ClientUser>().ToTable("ClientUsers");
@@ -36,6 +41,11 @@ namespace Upwork_2019_08_08.Data
             modelBuilder.Entity<Message>().ToTable("Messages");
             modelBuilder.Entity<AdminUser>().ToTable("AdminUsers");
             modelBuilder.Entity<AmAndDepartament>().ToTable("AmAndDepartaments");
+            modelBuilder.Entity<ServiceRequest>().ToTable("ServiceRequests");
+            modelBuilder.Entity<Detail>().ToTable("Details");
+            modelBuilder.Entity<ServiceType>().ToTable("ServiceTypes");
+            modelBuilder.Entity<Response>().ToTable("Responses");
+
         }
     }
 }

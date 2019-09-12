@@ -132,7 +132,18 @@
         {   responsive: true,
             dom: 'lBfrtip',
             buttons: [
-                'pdfHtml5', 'excel',
+                {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4 ]
+                }
+            },
             ]
         });
     history.replaceState("", "Random", "/");

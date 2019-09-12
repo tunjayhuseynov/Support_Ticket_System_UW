@@ -175,7 +175,7 @@ namespace Upwork_2019_08_08.Controllers
                 SmtpClient client = new SmtpClient();
                 client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
                 client.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
-                client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertun");
+                client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertuncay");
 
                 client.Send(message);
                 client.Disconnect(true);

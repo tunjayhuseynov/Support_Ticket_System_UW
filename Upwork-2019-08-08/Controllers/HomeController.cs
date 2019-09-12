@@ -197,7 +197,7 @@ namespace Upwork_2019_08_08.Controllers
             client.Disconnect(true);
             client.Dispose();
 
-            return Content("Done");
+            return Content(ticket.id.ToString());
         }
 
 
@@ -365,7 +365,7 @@ namespace Upwork_2019_08_08.Controllers
             SmtpClient client = new SmtpClient();
             client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
             client.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
-            client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertun");
+            client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertuncay");
 
             client.Send(message);
             client.Disconnect(true);
@@ -381,6 +381,70 @@ namespace Upwork_2019_08_08.Controllers
             return View(_context.ClientUsers.Find(id));
         }
 
+
+        public IActionResult ServiceRequests()
+        {
+            List<ServiceRequest> requests = _context.ServiceRequests.Include(w=>w.Responses).Where(w => w.clientUserId == HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault(0)).ToList();
+            ViewBag.type = _context.ServiceTypes.ToList();
+
+            foreach (var item in requests.Where(w => w.status == 'n').ToList())
+            {
+                if (_context.Responses.Select(s => s.serviceRequestId).ToList().Contains(item.id))
+                {
+                    item.status = (char)Status.Closed;
+                    _context.ServiceRequests.Update(item);
+                    _context.SaveChanges();
+                }
+            }
+
+            return View(requests);
+        }
+
+        [HttpPost]
+        public IActionResult AddServiceRequest(string[] ids, int[] types)
+        {
+            ServiceRequest service = new ServiceRequest
+            {
+                clientUserId = HttpContext.Session.GetInt32("LogedIn").GetValueOrDefault(0),
+                createdTime = DateTime.Now,
+                status = (char)Status.New,
+                noOfIds = ids.Count(),
+            };
+
+            _context.ServiceRequests.Add(service);
+            _context.SaveChanges();
+
+            List<Detail> details = new List<Detail>();
+
+            for (int i = 0; i < ids.Count(); i++)
+            {
+                Detail detail = new Detail
+                {
+                    idNumber = ids[i],
+                    serviceRequestId = service.id,
+                    serviceTypeId = types[i]
+                };
+                details.Add(detail);
+
+            }
+
+            _context.Details.AddRange(details);
+            _context.SaveChanges();
+
+            return Content(service.id.ToString());
+        }
+
+        public IActionResult GetDetails(int id)
+        {
+            List<ServiceRequest> services = _context.ServiceRequests.Where(w => w.id == id).ToList();
+            List<Detail> details = new List<Detail>();
+
+            foreach (var item in services)
+            {
+                details.AddRange(_context.Details.Include(s=>s.serviceType).Where(w => w.serviceRequestId == item.id).ToList());
+            }
+            return Json(new { number = details.Select(w=>w.idNumber), servicename = details.Select(w=>w.serviceType.name) });
+        }
 
 
     }
