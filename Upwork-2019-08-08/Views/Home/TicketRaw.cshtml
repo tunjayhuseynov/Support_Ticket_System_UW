@@ -1,6 +1,7 @@
 ﻿@model List<Upwork_2019_08_08.Models.Ticket>
 @{
     Layout = null;
+        
 }
 
 <h2>
@@ -14,7 +15,6 @@
 <table class="table table-bordered responsive" style="width: 100%">
     <thead class="tablecolor">
         <tr>
-            <th scope="col">#</th>
             <th scope="col">Reference Num.</th>
             <th scope="col">Subject</th>
             <th scope="col">Message</th>
@@ -31,13 +31,11 @@
     </thead>
     <tbody class="bckwhite">
 
-        @{ int index = 0;}
         @foreach (var item in Model)
         {
-            index++;
+
             <tr>
-                <th scope="row">@index.ToString()</th>
-                <td><a href="@Url.Action("ViewTicket","Home", new {id=item.id })" target="_blank">Ref-@item.id.ToString("D9")</a></td>
+                <td><a href="@Url.Action("ViewTicket","Home", new {id=item.id })" >@item.TicketRefNumber</a></td>
                 <td>@item.subject</td>
                 <td>@item.message</td>
                 <td>@item.datetime.ToString("MMMM dd yyyy hh:mm")</td>
@@ -93,13 +91,13 @@
                             <div class="col-6">
                                 <div class="semipadding">
                                     <label for="name" style="font-size: 20px;">Name:</label><br>
-                                    <input required name="name" value="Tunjay Huseynov" disabled class="form-control" type="text" /> <br />
+                                    <input required name="name" value="@ViewBag.clientuser.name" disabled class="form-control" type="text" /> <br />
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="semipadding">
                                     <label for="email" style="font-size: 20px;">Email Address:</label><br>
-                                    <input required name="email" value="tunjayhuseynov@gmail.com" disabled class="form-control" type="text" /> <br />
+                                    <input required name="email" value="@ViewBag.clientuser.email" disabled class="form-control" type="text" /> <br />
                                 </div>
                             </div>
                             <div class="col-12">
@@ -168,14 +166,16 @@
         buttons: [
                         {
                 extend: 'excelHtml5',
+                title: 'Tickets',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                    columns: [ 0, 1, 2, 3, 4 ]
                 }
             },
             {
                 extend: 'pdfHtml5',
+                title: 'Tickets',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                    columns: [ 0, 1, 2, 3, 4]
                 }
             },
      

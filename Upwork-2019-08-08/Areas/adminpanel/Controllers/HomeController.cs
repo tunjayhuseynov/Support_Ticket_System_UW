@@ -13,6 +13,8 @@ using System.IO;
 using MailKit.Net.Smtp;
 using MimeKit;
 using MailKit.Security;
+using Upwork_2019_08_08.Middleware;
+using Microsoft.Extensions.Options;
 
 namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
 {
@@ -21,6 +23,7 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
     public class HomeController : Controller
     {
         private string filenameProcess;
+        private ConfidentialInfo confidentialInfo { get; set; }
 
         enum Status
         {
@@ -33,10 +36,11 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
         private readonly SystemContext _context;
         private IHostingEnvironment _env;
 
-        public HomeController(SystemContext context, IHostingEnvironment env)
+        public HomeController(SystemContext context, IHostingEnvironment env, IOptions<ConfidentialInfo> setting)
         {
             _context = context;
             _env = env;
+            confidentialInfo = setting.Value;
 
         }
 
@@ -156,38 +160,25 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 _context.Tickets.Update(ticket);
                 _context.SaveChanges();
 
-                string email = String.Empty;
+                try
+                {
+                    string email = String.Empty;
 
-                email = _context.Tickets.Include(w => w.ClientUser).Where(a => a.id == ticketid).FirstOrDefault().ClientUser.email;
-
-
-                MimeMessage mailmessage = new MimeMessage();
-
-                MailboxAddress from = new MailboxAddress("Talent Index",
-                "admin@example.com");
-                mailmessage.From.Add(from);
-
-                MailboxAddress to = new MailboxAddress("User",
-                email);
-
-                mailmessage.To.Add(to);
-
-                mailmessage.Subject = "The Ticket Is In Progress";
-
-                BodyBuilder bodyBuilder = new BodyBuilder();
-                bodyBuilder.HtmlBody = "<h1>Do Not Reply To This Mail Address!</h1> <h4>Link: </h4> <p> You ticket #" + ticketid + "  is in progress. Please, check your ticket</p>";
+                    email = _context.Tickets.Include(w => w.ClientUser).Where(a => a.id == ticketid).FirstOrDefault().ClientUser.email;
 
 
-                mailmessage.Body = bodyBuilder.ToMessageBody();
 
-                SmtpClient client = new SmtpClient();
-                client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
-                client.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
-                client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertuncay");
+                    string subject = "The Ticket Is In Progress";
 
-                client.Send(mailmessage);
-                client.Disconnect(true);
-                client.Dispose();
+                    string messageText = "<h1>Do Not Reply To This Mail Address!</h1> <h4>Link: </h4> <p> You ticket #" + ticket.TicketRefNumber + "  is in progress. Please, check your ticket</p>";
+
+                    SendMessage<String>("Support", messageText, email, subject);
+                }
+                catch (Exception)
+                {
+
+                    
+                }
             }
             _context.Messages.Add(message);
             _context.SaveChanges();
@@ -495,35 +486,22 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
             email = _context.AdminUsers.Find(id).email;
             token = _context.AdminUsers.Find(id).token;
 
+            string hostName = HttpContext.Request.Host.Host;
+            int? port = HttpContext.Request.Host.Port;
+
+            try
+            {
+
+                string subject = "Reset Password";
+
+                string messageText =  "<h1>Do Not Reply To This Mail Address!</h1> <h4>Link: </h4> <p>https://"+hostName+":"+port+"/reset/index/" + id + "?token=" + token + "&who=" + 1 + "</p>";
+                SendMessage<String>("Support", messageText, email, subject);
+            }
+            catch (Exception)
+            {
 
 
-            MimeMessage message = new MimeMessage();
-
-            MailboxAddress from = new MailboxAddress("Talent Index",
-            "admin@example.com");
-            message.From.Add(from);
-
-            MailboxAddress to = new MailboxAddress("User",
-            email);
-
-            message.To.Add(to);
-
-            message.Subject = "Reset Password";
-
-            BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = "<h1>Do Not Reply To This Mail Address!</h1> <h4>Link: </h4> <p>https://localhost:44339/reset/index/" + id + "?token=" + token + "&who=" + 1 + "</p>";
-
-
-            message.Body = bodyBuilder.ToMessageBody();
-
-            SmtpClient client = new SmtpClient();
-            client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
-            client.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
-            client.Authenticate("tuncayhuseynov@gmail.com", "5591980supertuncay");
-
-            client.Send(message);
-            client.Disconnect(true);
-            client.Dispose();
+            }
 
             return Content("Check You E-mail");
         }
@@ -767,12 +745,12 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 List<Company> department = _context.AmAndDepartaments.Where(w => w.amID == HttpContext.Session.GetInt32("AdminLogedIn")).Select(a=>a.Company).ToList();
                 foreach (var item in department)
                 {
-                    serviceRequests.AddRange(_context.ServiceRequests.Include(w=>w.ClientUser).Include(a=>a.Responses).Where(w => w.ClientUser.companyID == item.id).ToList());
+                    serviceRequests.AddRange(_context.ServiceRequests.Include(w=>w.ClientUser.Company).Include(a=>a.Responses).Where(w => w.ClientUser.companyID == item.id).ToList());
                 }
             }
             else if(HttpContext.Session.GetInt32("isAdmin") == 1)
             {
-                serviceRequests = _context.ServiceRequests.Include(w=>w.ClientUser).Include(a=>a.Responses).ToList();
+                serviceRequests = _context.ServiceRequests.Include(w=>w.ClientUser.Company).Include(a=>a.Responses).ToList();
             }
 
             foreach (var item in serviceRequests.Where(w=>w.status == 'n').ToList())
@@ -798,6 +776,37 @@ namespace Upwork_2019_08_08.Areas.adminpanel.Controllers
                 details.AddRange(_context.Details.Include(s => s.serviceType).Where(w => w.serviceRequestId == item.id).ToList());
             }
             return Json(new { number = details.Select(w => w.idNumber), servicename = details.Select(w => w.serviceType.name) });
+        }
+
+        private void SendMessage<T>(string emailName, string messageText, string toEmail, string subject)
+        {
+            MimeMessage message = new MimeMessage();
+
+            MailboxAddress from = new MailboxAddress(emailName,
+            confidentialInfo.SupportEmail);
+            message.From.Add(from);
+
+            MailboxAddress to = new MailboxAddress("User",
+            toEmail);
+
+            message.To.Add(to);
+
+            message.Subject = subject;
+
+            BodyBuilder bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = messageText;
+
+
+            message.Body = bodyBuilder.ToMessageBody();
+
+            SmtpClient client = new SmtpClient();
+            client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
+            client.Connect(confidentialInfo.SMTPemail, Convert.ToInt32(confidentialInfo.Port), SecureSocketOptions.SslOnConnect);
+            client.Authenticate(confidentialInfo.SupportEmail, confidentialInfo.EmailPassword);
+
+            client.Send(message);
+            client.Disconnect(true);
+            client.Dispose();
         }
 
     }

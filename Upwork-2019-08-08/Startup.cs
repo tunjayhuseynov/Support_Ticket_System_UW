@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Upwork_2019_08_08.Data;
 using Microsoft.AspNetCore.Http;
+using Upwork_2019_08_08.Middleware;
 
 namespace Upwork_2019_08_08
 {
@@ -42,6 +43,7 @@ namespace Upwork_2019_08_08
             services.AddSession(options=> {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+            services.Configure<ConfidentialInfo>(Configuration.GetSection("ConfidentialInfo"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

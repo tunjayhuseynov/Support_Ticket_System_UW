@@ -9,9 +9,10 @@
 <table class="table table-bordered responsive" style="width: 100%">
     <thead class="tablecolor">
         <tr>
-            <th scope="col">#</th>
+            <th scope="col">Reference Number</th>
             <th scope="col">Client Name</th>
-            <th scope="col">IDs Amount</th>
+            <th scope="col">User Requested</th>
+            <th scope="col">Total IDs</th>
             <th scope="col">Created Date</th>
             <th scope="col">Status</th>
             <th scope="col">Action</th>
@@ -21,12 +22,13 @@
     </thead>
     <tbody class="bckwhite">
 
-        @{ int index = 0;}
+
         @foreach (var item in Model)
         {
-            index++;
+
             <tr>
-                <th scope="row">@index.ToString()</th>
+                <th scope="row">@item.ServiceRequestReference</th>
+                <td>@item.ClientUser.Company.name</td>
                 <td>@item.ClientUser.name</td>
                 <td>@item.noOfIds</td>
                 <td>@item.createdTime.ToString("MMMM dd yyyy hh:mm")</td>
@@ -47,7 +49,7 @@
                     @if (item.Responses.Any())
                     {
                         <text>|
-                            <a href="//@item.Responses.First().reportLink" class="maincolor" title="Result"><i class="fas fa-copy"></i>></a>
+                            <a href="//@item.Responses.First().reportLink" class="maincolor" target="_blank" title="Result"><i class="fas fa-copy"></i>></a>
                         </text>}
                 </td>
 

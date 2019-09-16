@@ -3,6 +3,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 @*
     @if (ViewBag.ticket.status != 'c')
@@ -56,7 +57,7 @@
                 <tbody>
                     <tr style="border-top: 1px solid #b1b1b1; border-bottom: 1px solid #b1b1b1; padding: 0 5px ">
                         <td style="width: 50%;padding: 10px;">Ticket Number:</td>
-                        <td style="width: 50%">#@ViewBag.ticket.id</td>
+                        <td style="width: 50%">#@ViewBag.ticket.TicketRefNumber</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #b1b1b1;">
                         <td style="width: 50%;padding: 10px;">Subject:</td>
@@ -97,11 +98,11 @@
 
                                             <div class="col-6">
                                                 <label for="name" style="font-size: 19px;">Name:</label><br>
-                                                <input  name="name" value="Tunjay Huseynov" disabled class="form-control" type="text" /> <br />
+                                                <input  name="name" value="@ViewBag.ticket.ClientUser.name @ViewBag.ticket.ClientUser.surname" disabled class="form-control" type="text" /> <br />
                                             </div>
                                             <div class="col-6">
                                                 <label for="email" style="font-size: 19px;">Email Address:</label><br>
-                                                <input name="email" value="tunjayhuseynov@gmail.com" disabled class="form-control" type="text" /> <br />
+                                                <input name="email" value="@ViewBag.ticket.ClientUser.email" disabled class="form-control" type="text" /> <br />
                                             </div>
                                             <div class="col-12">
                                                 <label for="text" style="font-size: 20px;">Message:</label> <br />

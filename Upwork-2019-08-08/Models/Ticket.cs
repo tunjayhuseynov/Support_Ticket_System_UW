@@ -12,6 +12,7 @@ namespace Upwork_2019_08_08.Models
     public class Ticket
     {
         public int id { get; set; }
+        public string TicketRefNumber { get; set; }
         public int clientID { get; set; }
         public string subject { get; set; }
         public string message { get; set; }

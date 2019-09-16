@@ -32,7 +32,7 @@ namespace Upwork_2019_08_08.Controllers
             }
             else if(who == 1)
             {
-                if (_context.ClientUsers.Find(id).token != token)
+                if (_context.AdminUsers.Find(id).token != token)
                 {
                     return Content("Auth Failed");
                 }
@@ -74,6 +74,8 @@ namespace Upwork_2019_08_08.Controllers
                     admin.token = salt;
                     _context.AdminUsers.Update(admin);
                     _context.SaveChanges();
+                    return Redirect("/adminpanel/adminsign/index");
+
                 }
             }
 

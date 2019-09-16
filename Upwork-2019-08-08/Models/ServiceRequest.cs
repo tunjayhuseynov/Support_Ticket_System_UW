@@ -11,6 +11,7 @@ namespace Upwork_2019_08_08.Models
         [Key]
         public int id { get; set; }
         public int clientUserId { get; set; }
+        public string ServiceRequestReference { get; set; }
         public int noOfIds { get; set; }
         public DateTime createdTime { get; set; }
         public char status { get; set; }

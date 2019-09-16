@@ -8,15 +8,15 @@
     Service Requests <span>
         <button type="button"
                 class="btn txttype" data-toggle="modal" data-target="#exampleModalCenter">
-            <i style="color:#1c536b" class="fas fa-plus-square"> </i> Request
+            <i style="color:#1c536b" class="fas fa-plus-square"> </i> New Request
         </button>
     </span>
 </h2>
 <table class="table table-bordered responsive" style="width: 100%">
     <thead class="tablecolor">
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">IDs Amount</th>
+            <th scope="col">Reference Number</th>
+            <th scope="col">Total IDs</th>
             <th scope="col">Created Date</th>
             <th scope="col">Status</th>
             <th scope="col">Action</th>
@@ -24,12 +24,11 @@
     </thead>
     <tbody class="bckwhite">
 
-        @{ int index = 0;}
         @foreach (var item in Model)
         {
-            index++;
+
         <tr>
-            <th scope="row">@index.ToString()</th>
+            <th scope="row">@item.ServiceRequestReference</th>
             <td>@item.noOfIds</td>
             <td>@item.createdTime.ToString("MMMM dd yyyy hh:mm")</td>
             <td class="statuscolor statuspadding ">
@@ -48,7 +47,7 @@
                 @if (item.Responses.Any())
                 {
                     <text>|
-                        <a href="//@item.Responses.First().reportLink" class="maincolor" title="Result"><i class="fas fa-copy"></i></a>
+                        <a href="//@item.Responses.First().reportLink" target="_blank" class="maincolor" title="Result"><i class="fas fa-copy"></i></a>
                     </text>
                 }
             </td>
@@ -91,7 +90,7 @@
         <div class="modal-content">
             <div id="finished">
                 <div class="d-flex justify-content-center vertical-center-text finishedone">
-                    <h3 id="res">Ticket Created <i style="color: green;" class="far fa-check-circle"></i></h3>
+                    <h3 id="res">Request Created <i style="color: green;" class="far fa-check-circle"></i></h3>
                 </div>
                 <p class="textpmodel">
 
@@ -106,7 +105,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="addAction" action="@Url.Action("AddServiceRequest", "Home")" method="post">
+            <form id="addAction" name="ASR" action="@Url.Action("AddServiceRequest", "Home")"  method="post">
 
                 <div class="modal-body">
 
@@ -123,10 +122,11 @@
                                     <div class="row">
                                         <div class="col-8">
                                             <input required name="ids[]" class="form-control" type="text" /> <br />
+                                            <i onclick="RemoveInput(this)" id="firstInput" class="fas fa-minus-circle" style="display: none; color: red;  position: absolute; font-size: 20px; right: 21px; top: 0; margin-top: 10px;"></i>
                                         </div>
                                         <div class="col-4">
                                             <select required class="custom-select" name="types[]">
-                                                <option selected disabled>Select</option>
+                                                <option selected disabled value="">Select</option>
                                                 @foreach (var item in ViewBag.type)
                                                 {
                                                     <option value="@item.id">@item.name</option>
@@ -165,8 +165,12 @@
 
     $("#addText").click(function (e) {
         e.preventDefault()
-        $("#formtexts").append(`<div class="row" style="position: relative; margin-bottom: 25px;"> <div class="col-8"> <input required name="ids[]" class="form-control" type="text" /> <i onclick="RemoveInput(this)" class="fas fa-minus-circle" style="color: red;  position: absolute; font-size: 20px; right: 21px; top: 0; margin-top: 10px;"></i> </div>  <div class="col-4"> <select required class="custom-select" name="types[]">
-      <option selected disabled>Select</option>
+        $("#firstInput").show();
+        $("#formtexts").append(`<div class="row" style="position: relative; margin-bottom: 25px;"> <div class="col-8"> 
+<input required name="ids[]" class="form-control" type="text" /> 
+<i onclick="RemoveInput(this)" class="fas fa-minus-circle" style="color: red;  position: absolute; font-size: 20px; right: 21px; top: 0; margin-top: 10px;"></i>
+</div>  <div class="col-4"> <select required class="custom-select" name="types[]">
+      <option selected disabled value="">Select</option>
          @foreach (var item in ViewBag.type)
 {
                 <option value="@item.id">@item.name</option>
@@ -185,14 +189,16 @@
         buttons: [
             {
                 extend: 'excelHtml5',
+                title: 'Service Requests',
                 exportOptions: {
-                    columns: [0,1,2,3,4]
+                    columns: [0,1,2,3]
                 }
             },
             {
                 extend: 'pdfHtml5',
+                title: 'Service Requests',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4 ]
+                    columns: [ 0, 1, 2, 3 ]
                 }
             },
 
@@ -226,7 +232,7 @@
         }
     };
 
-    $('#addAction').ajaxForm(options);
+
 
 
     function getDetails(id) {
@@ -265,5 +271,33 @@
         })
     }
 
+            $('#addAction').ajaxForm(options);
+
+    function validateID() {
+
+
+    var ex = /^(((\d{2}((0[13578]|1[02])(0[1-9]|[12]\d|3[01])|(0[13456789]|1[012])(0[1-9]|[12]\d|30)|02(0[1-9]|1\d|2[0-8])))|([02468][048]|[13579][26])0229))(( |-)(\d{4})( |-)(\d{3})|(\d{7}))/;
+
+
+        var theIDnumber = document.forms["ASR"]["ids[]"];
+
+        if (Array.isArray(theIDnumber)) {
+            theIDnumber.forEach(function (element) {
+                if (ex.test(element.value) == false) {
+                    // alert code goes here
+                    alert('Please supply a valid ID number');
+                    return false;
+                }
+            })
+        } else {
+                if (ex.test(theIDnumber.value) == false) {
+                    // alert code goes here
+                    alert('Please supply a valid ID number');
+                    return false;
+                }
+        }
+
+        return false;
+}
 
 </script>
